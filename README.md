@@ -1,11 +1,5 @@
-# FracturalCommons
+# GodotFixedVoltatilePhysics
 
-![Deploy](https://github.com/Fractural/FracturalCommons/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/FracturalCommons/actions/workflows/tests.yml/badge.svg)
+![Deploy](https://github.com/Fractural/GodotFixedVoltatilePhysics/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/GodotFixedVoltatilePhysics/actions/workflows/tests.yml/badge.svg)
 
-
-Collection of commonly used GDScript and C# scripts for Godot.
-
-Current features:
-- Custom types
-  - Vector2Int
-- Utility classes
+Fixed-point 2D physics in Godot C# using [cathei's Fixed point fork of VolatilePhysics](https://github.com/cathei/VolatilePhysics-FixedMath).
