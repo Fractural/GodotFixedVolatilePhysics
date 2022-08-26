@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+	<!-- GODOT VERSION DEFINES (KEEP THIS COMMENT) -->
+	<PropertyGroup>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_0_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_1_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_2_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_3_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_4_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_5_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_0_6_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_1_0_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_1_1_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_1_2_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_2_0_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_2_1_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_2_2_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_2_3_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_3_0_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_3_1_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_3_2_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_3_3_OR_NEWER</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_5</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3</DefineConstants>
+		<DefineConstants>$(DefineConstants);GODOT_3_5_0</DefineConstants>
+	</PropertyGroup>
+</Project>
