@@ -23,13 +23,13 @@ jobs:
         env:
           REPO: self
           BRANCH: release
-          FOLDER: addons/GodotFixedVoltatilePhysics
+          FOLDER: addons/GodotFixedVolatilePhysics
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         run: |
           mkdir release
-          mv addons/GodotFixedVoltatilePhysics release
+          mv addons/GodotFixedVolatilePhysics release
           pushd release
           zip -r ../Release.zip *
           popd

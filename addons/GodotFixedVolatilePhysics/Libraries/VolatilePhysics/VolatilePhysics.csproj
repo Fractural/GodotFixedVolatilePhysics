@@ -1,7 +1,17 @@
-<Project Sdk="Godot.NET.Sdk/3.3.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Alexander Shoulson</Authors>
+    <Copyright>Copyright © Alexander Shoulson 2015-2016</Copyright>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <FileVersion>0.5.0.0</FileVersion>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\FixedMath.Net\FixedMath.Net.csproj" />
+  </ItemGroup>
+
 	<!-- GODOT VERSION DEFINES (KEEP THIS COMMENT) -->
 	<PropertyGroup>
 		<DefineConstants>$(DefineConstants);GODOT_3_0_0_OR_NEWER</DefineConstants>

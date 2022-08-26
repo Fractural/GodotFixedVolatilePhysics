@@ -51,7 +51,12 @@ config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/WAT/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/GodotFixedVolatilePhysics/plugin.cfg" )
+
+[logging]
+
+file_logging/enable_file_logging=true
+file_logging/max_log_files=10
 
 [physics]
 

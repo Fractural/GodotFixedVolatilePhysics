@@ -1,7 +1,9 @@
-<Project Sdk="Godot.NET.Sdk/3.3.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
 	<!-- GODOT VERSION DEFINES (KEEP THIS COMMENT) -->
 	<PropertyGroup>
 		<DefineConstants>$(DefineConstants);GODOT_3_0_0_OR_NEWER</DefineConstants>
