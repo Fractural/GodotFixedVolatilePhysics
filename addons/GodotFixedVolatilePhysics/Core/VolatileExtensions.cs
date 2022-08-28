@@ -15,5 +15,15 @@ namespace GodotFixedVolatilePhysics
         {
             return new VoltVector2((Fix64)v.x, (Fix64)v.y);
         }
+
+        public static Rect2 ToGDRect2(this VoltRect2 rect)
+        {
+            return new Rect2(rect.Position.ToGDVector2(), rect.Size.ToGDVector2());
+        }
+
+        public static VoltRect2 ToVoltRect2(this Rect2 rect)
+        {
+            return new VoltRect2(rect.Position.ToVoltVector2(), rect.Size.ToVoltVector2());
+        }
     }
 }

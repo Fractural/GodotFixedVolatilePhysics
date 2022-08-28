@@ -12,7 +12,7 @@ namespace GodotFixedVolatilePhysics.Plugin
 
         protected override void Load()
         {
-            AddSubPlugin(new VolatileShapePlugin());
+            AddSubPlugin(new VolatilePolygonPlugin());
         }
 
         protected override void Unload()

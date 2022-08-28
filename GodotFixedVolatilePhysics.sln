@@ -1,12 +1,17 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodotFixedVolatilePhysics", "GodotFixedVolatilePhysics.csproj", "{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodotFixedVolatilePhysics", "GodotFixedVolatilePhysics.csproj", "{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubProject", "addons\GodotVisualStudioStub\StubProject.csproj", "{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +20,17 @@ Global
 		{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{0BB5CFC8-534D-4408-B29A-50C9FDEE65C1}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83A5A30-7D9A-4BCC-BB56-2974A2AAE767}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC9A5306-CD19-4736-B1F2-7CF06944D688}
 	EndGlobalSection
 EndGlobal

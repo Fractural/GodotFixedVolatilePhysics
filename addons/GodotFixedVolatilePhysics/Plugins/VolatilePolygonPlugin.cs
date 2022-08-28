@@ -5,9 +5,9 @@ using Godot;
 namespace GodotFixedVolatilePhysics.Plugin
 {
     [Tool]
-    public class VolatileShapePlugin : SubPlugin
+    public class VolatilePolygonPlugin : SubPlugin
     {
-        public override string PluginName => nameof(VolatileShapePlugin);
+        public override string PluginName => nameof(VolatilePolygonPlugin);
 
         public class Anchor : Godot.Reference
         {
@@ -25,24 +25,24 @@ namespace GodotFixedVolatilePhysics.Plugin
         }
 
         Anchor[] anchors;
-        VolatileShape editedVolatileShape;
+        VolatilePolygon editedVolatilePolygon;
 
         public override void Edit(Godot.Object @object)
         {
-            if (@object is VolatileShape shape)
-                editedVolatileShape = shape;
+            if (@object is VolatilePolygon shape)
+                editedVolatilePolygon = shape;
         }
 
         public override void MakeVisible(bool visible)
         {
-            if (editedVolatileShape == null) return;
-            if (!visible) editedVolatileShape = null;
+            if (editedVolatilePolygon == null) return;
+            if (!visible) editedVolatilePolygon = null;
             Plugin.UpdateOverlays();
         }
 
         public override bool Handles(Object @object)
         {
-            return @object is VolatileShape;
+            return @object is VolatilePolygon;
         }
 
         const float CIRCLE_RADIUS = 6;
@@ -52,15 +52,15 @@ namespace GodotFixedVolatilePhysics.Plugin
 
         public override void ForwardCanvasDrawOverViewport(Control overlay)
         {
-            if (editedVolatileShape == null || !editedVolatileShape.IsInsideTree()) return;
+            if (editedVolatilePolygon == null || !editedVolatilePolygon.IsInsideTree()) return;
 
-            var transformViewport = editedVolatileShape.GetViewportTransform();
-            var transformGlobal = editedVolatileShape.GetCanvasTransform();
-            var points = editedVolatileShape._Points;
+            var transformViewport = editedVolatilePolygon.GetViewportTransform();
+            var transformGlobal = editedVolatilePolygon.GetCanvasTransform();
+            var points = editedVolatilePolygon._Points;
             anchors = new Anchor[points.Length];
             for (int i = 0; i < points.Length; i++)
             {
-                var anchorPosition = transformViewport * (transformGlobal * (points[i] + editedVolatileShape.GlobalPosition));
+                var anchorPosition = transformViewport * (transformGlobal * (points[i] + editedVolatilePolygon.GlobalPosition));
                 var anchorSize = Vector2.One * CIRCLE_RADIUS * 2f;
                 anchors[i] = new Anchor(i, anchorPosition, new Rect2(anchorPosition - anchorSize / 2f, anchorSize));
                 DrawAnchor(overlay, anchors[i]);
@@ -77,7 +77,7 @@ namespace GodotFixedVolatilePhysics.Plugin
 
         public override bool ForwardCanvasGuiInput(InputEvent @event)
         {
-            if (editedVolatileShape == null || !editedVolatileShape.Visible) return false;
+            if (editedVolatilePolygon == null || !editedVolatilePolygon.Visible) return false;
 
             if (@event is InputEventMouseButton mouseButtonEvent && mouseButtonEvent.ButtonIndex == (int)ButtonList.Left)
             {
@@ -89,7 +89,7 @@ namespace GodotFixedVolatilePhysics.Plugin
                         if (!anchor.rect.HasPoint(mouseButtonEvent.Position)) continue;
                         var undo = Plugin.GetUndoRedo();
                         undo.CreateAction("Move anchor");
-                        undo.AddUndoProperty(editedVolatileShape, nameof(editedVolatileShape._Points), editedVolatileShape._Points);
+                        undo.AddUndoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._Points), editedVolatilePolygon._Points);
                         draggedAnchor = anchor;
                         return true;
                     }
@@ -100,7 +100,7 @@ namespace GodotFixedVolatilePhysics.Plugin
                     DragTo(mouseButtonEvent.Position);
                     draggedAnchor = null;
                     var undo = Plugin.GetUndoRedo();
-                    undo.AddDoProperty(editedVolatileShape, nameof(editedVolatileShape._Points), editedVolatileShape._Points);
+                    undo.AddDoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._Points), editedVolatilePolygon._Points);
                     undo.CommitAction();
                     return true;
                 }
@@ -129,11 +129,11 @@ namespace GodotFixedVolatilePhysics.Plugin
 
         public void DragTo(Vector2 eventPosition)
         {
-            var inverseTransformViewport = editedVolatileShape.GetViewportTransform().AffineInverse();
-            var inverseTransformGlobal = editedVolatileShape.GetCanvasTransform().AffineInverse();
-            var points = (Vector2[])editedVolatileShape._Points.Clone();
-            points[draggedAnchor.index] = inverseTransformViewport * (inverseTransformGlobal * (eventPosition - editedVolatileShape.GlobalPosition));
-            editedVolatileShape._Points = points;
+            var inverseTransformViewport = editedVolatilePolygon.GetViewportTransform().AffineInverse();
+            var inverseTransformGlobal = editedVolatilePolygon.GetCanvasTransform().AffineInverse();
+            var points = (Vector2[])editedVolatilePolygon._Points.Clone();
+            points[draggedAnchor.index] = inverseTransformViewport * (inverseTransformGlobal * (eventPosition - editedVolatilePolygon.GlobalPosition));
+            editedVolatilePolygon._Points = points;
             draggedAnchor.position = eventPosition;
             Plugin.UpdateOverlays();
         }

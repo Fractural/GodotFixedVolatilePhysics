@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShape.cs" type="Script" id=1]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VoltNode2D.cs" type="Script" id=2]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource( 1 )
-initialFixedPoints = PoolByteArray( 4, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0 )
+densityData = PoolByteArray(  )
+restitutionData = PoolByteArray(  )
+frictionData = PoolByteArray(  )
+
+[node name="Node2D2" type="Node2D" parent="."]
+script = ExtResource( 2 )

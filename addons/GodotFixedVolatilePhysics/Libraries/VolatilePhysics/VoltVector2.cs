@@ -28,6 +28,7 @@ namespace Volatile
         public readonly Fix64 y;
 
         public static VoltVector2 zero => new VoltVector2();
+        public static VoltVector2 one => new VoltVector2(Fix64.One, Fix64.One);
 
         public static Fix64 Dot(VoltVector2 a, VoltVector2 b)
         {

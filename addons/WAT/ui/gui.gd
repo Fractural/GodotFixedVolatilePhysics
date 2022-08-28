@@ -118,7 +118,8 @@ func _on_debug_pressed(data = _filesystem.root) -> void:
 
 
 func _on_test_run_finished(results: Array) -> void:
-	_plugin.get_editor_interface().stop_playing_scene() # Check if this works exported
+	if _plugin:
+		_plugin.get_editor_interface().stop_playing_scene() # Check if this works exported
 	Summary.summarize(results)
 	JUnitXML.write(results, Settings, Summary.time_taken)
 	_filesystem.failed.update(results)
