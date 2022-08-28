@@ -2,6 +2,7 @@
 using Godot;
 using System;
 using Volatile;
+using Volatile.GodotEngine;
 
 namespace Volatile
 {
@@ -19,6 +20,14 @@ namespace Volatile
         //
         // Where X is the first vector, Y is the second vector, and T is the translation vector
 
+        public VoltTransform2D(Fix64 rotation, VoltVector2 position)
+        {
+            var cosRotation = Fix64.Cos(rotation);
+            var sinRotation = Fix64.Sin(rotation);
+            X = new VoltVector2(cosRotation, sinRotation);
+            Y = new VoltVector2(-sinRotation, cosRotation);
+            Origin = position;
+        }
         public VoltTransform2D(VoltVector2 x, VoltVector2 y) : this(x, y, VoltVector2.One) { }
 
         public VoltTransform2D(VoltVector2 x, VoltVector2 y, VoltVector2 origin)
@@ -32,37 +41,8 @@ namespace Volatile
         public VoltVector2 Y { get; set; }
         public VoltVector2 Origin { get; set; }
 
-        // Because the bottom row is 0 0 1, the determinant is actually just the 2D determinant of [X Y].
+        // Because the bottom row is [0 0 1], the determinant is actually just the 2D determinant of [X Y].
         public Fix64 Determinant => X.x * Y.y + Y.x * X.y;
-
-        public static bool Approx(VoltTransform2D a, VoltTransform2D b, Fix64 error)
-        {
-            return VoltVector2.Approx(a.X, b.X, error) && VoltVector2.Approx(a.Y, b.Y, error) && VoltVector2.Approx(a.Origin, b.Origin, error);
-        }
-
-        public static VoltTransform2D operator *(VoltTransform2D a, VoltTransform2D b)
-        {
-            var result = a.ToVoltMatrix() * b.ToVoltMatrix();
-            return result.ToVoltTransform2D();
-        }
-
-        public static VoltTransform2D operator +(VoltTransform2D a, VoltTransform2D b)
-        {
-            var result = a.ToVoltMatrix() + b.ToVoltMatrix();
-            return result.ToVoltTransform2D();
-        }
-
-        public static VoltTransform2D operator -(VoltTransform2D a, VoltTransform2D b)
-        {
-            var result = a.ToVoltMatrix() - b.ToVoltMatrix();
-            return result.ToVoltTransform2D();
-        }
-
-        public static VoltVector2 operator *(VoltTransform2D a, VoltVector2 b)
-        {
-            var result = a.ToVoltMatrix() * b.ToVoltMatrix();
-            return result.ToVoltVector2();
-        }
 
         public VoltMatrix ToVoltMatrix()
         {
@@ -71,25 +51,6 @@ namespace Volatile
                 { X.y, Y.y, Origin.y },
                 { Fix64.Zero, Fix64.Zero, Fix64.One }
             });
-        }
-
-        /// <summary>
-        /// Returns the inverse of the transform, accounting for rotation, scaling, and translation.
-        /// </summary>
-        /// <returns>Inverse Transform2D</returns>
-        public VoltTransform2D AffineInverse()
-        {
-            var det = Determinant;
-            if (det == Fix64.Zero)
-                throw new InvalidOperationException("Cannot find inverse when det == 0!");
-            // Calculate inversed basis matrix (Formula for 2x2 is very simple)
-            var inverse = new VoltTransform2D(
-                new VoltVector2(Y.y / det, Y.x / -det),
-                new VoltVector2(X.y / -det, X.x / det)
-            );
-            // Calculate the inversed origin/translation
-            inverse.Origin = inverse.BasisXForm(-Origin);
-            return inverse;
         }
 
         /// <summary>
@@ -113,9 +74,50 @@ namespace Volatile
             return inverse;
         }
 
-        private VoltVector2 RotationScale
+        /// <summary>
+        /// Returns the inverse of the transform, accounting for rotation, scaling, and translation.
+        /// </summary>
+        /// <returns>Inverse Transform2D</returns>
+        public VoltTransform2D AffineInverse()
         {
-            get => new VoltVector2(X.Magnitude, BasisDeterminant().Sign() * Y.Magnitude);
+            var det = Determinant;
+            if (det == Fix64.Zero)
+                throw new InvalidOperationException("Cannot find inverse when det == 0!");
+            // Calculate inversed basis matrix (Formula for 2x2 is very simple)
+            var inverse = new VoltTransform2D(
+                new VoltVector2(Y.y / det, Y.x / -det),
+                new VoltVector2(X.y / -det, X.x / det)
+            );
+            // Calculate the inversed origin/translation
+            inverse.Origin = inverse.BasisXForm(-Origin);
+            return inverse;
+        }
+
+        /// <summary>
+        /// Rotation of the matrix
+        /// </summary>
+        public Fix64 Rotation
+        {
+            get => Fix64.Atan2(X.y, X.x);
+            set
+            {
+                var scale = Scale;
+                var cosRotation = Fix64.Cos(value);
+                var sinRotation = Fix64.Sin(value);
+                X = new VoltVector2(cosRotation, sinRotation);
+                Y = new VoltVector2(-sinRotation, cosRotation);
+                // Reassign scale after changing the rotation
+                // to ensure scale updates correctly.
+                Scale = scale;
+            }
+        }
+
+        /// <summary>
+        /// Scale of the matrix
+        /// </summary>
+        public VoltVector2 Scale
+        {
+            get => new VoltVector2(X.Magnitude, (Fix64)Fix64.Sign(BasisDeterminant()) * Y.Magnitude);
             set
             {
                 X = X.Normalized;
@@ -127,6 +129,23 @@ namespace Volatile
             }
         }
 
+        /// <summary>
+        /// Scales entire affine matrix (basis + origin) by <paramref name="scale"/>
+        /// </summary>
+        /// <param name="scale"></param>
+        public void ScaleEntireMatrix(VoltVector2 scale)
+        {
+            ScaleBasis(scale);
+            Origin = new VoltVector2(
+                Origin.x * scale.x,
+                Origin.y * scale.y
+            );
+        }
+
+        /// <summary>
+        /// Scales the basis matrix (X, Y) by <paramref name="scale"/>
+        /// </summary>
+        /// <param name="scale"></param>
         private void ScaleBasis(VoltVector2 scale)
         {
             X = new VoltVector2(
@@ -139,24 +158,154 @@ namespace Volatile
             );
         }
 
-        public VoltVector2 Scale
+        /// <summary>
+        /// Translates the transform by (<paramref name="x"/>, <paramref name="y"/>), relative to the basis vectors.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Translate(Fix64 x, Fix64 y) => Translate(new VoltVector2(x, y));
+
+        /// <summary>
+        /// Translates the transform by <paramref name="translation"/>, relative to the basis vectors.
+        /// </summary>
+        /// <param name="translation"></param>
+        public void Translate(VoltVector2 translation)
         {
-            get => RotationScale;
-            set
-            {
-                ScaleBasis(value);
-                Origin = new VoltVector2(
-                    Origin.x * value.x,
-                    Origin.y * value.y
-                );
-            }
+            Origin += BasisXForm(translation);
         }
 
-        public
-
-        public void Rotate(Fix64 phi)
+        /// <summary>
+        /// Translates the transform by <paramref name="translation"/>, relative to the basis vectors.
+        /// </summary>
+        /// <param name="translation"></param>
+        public VoltTransform2D Translated(VoltVector2 translation)
         {
+            var copy = this;
+            copy.Translate(translation);
+            return copy;
+        }
 
+        /// <summary>
+        /// Makes the X Y components orthogonal to each other, as well as normalized.
+        /// </summary>
+        public void Orthonormalize()
+        {
+            // Treat x as our starting orthonormal vector https://www.youtube.com/watch?v=TRktLuAktBQ
+            var x = X.Normalized;
+
+            // Lesson in orthonormalizing vectors
+            //         
+            //    y     ..>
+            //      ..''  | c
+            //  ..''      |
+            // /----------|--->
+            //      d        x
+            // |----..----|
+            //      \/
+            //
+            // y dot x = ||y|| ||x|| cosθ       <-- One definition of dot product
+            //
+            // y dot x = ||y|| cosθ
+            //
+            // y dot x
+            // ------- = ||y|| cos0
+            //  ||x||
+            //
+            // Via pythagorean's theorem, we know that ||y|| cos0 represents the length of 'y' that points in the direction of 'x'.
+            //
+            // To solve for this, we have to use the left side of this equation.
+            //
+            // Since we're dealing with a projection onto a normalized vector, we can omit the division by ||x|| (because it's always 1).
+            //
+            // What we're left with is:
+            //      y dot x = length of projection from 'y' onto a normalized 'x'
+            // 
+            // To find the projected vector (d), we need to scale the normalized 'x' by the length of the projection:
+            //      d = x * (y dot x)
+            //
+            // Finally, we can subtract 'x' from 'd' to get a vector 'c' that points from 'd' to 'y' and is orthogonal to 'x'. (See the image above)
+            //
+            // And don't forget to normalize this orthogonal vector!
+            var y = (Y - (x.Dot(Y) * x)).Normalized;
+
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// Returns a new orthonormalized transform
+        /// </summary>
+        /// <returns></returns>
+        public VoltTransform2D Orthonormalized()
+        {
+            var copy = this;
+            copy.Orthonormalize();
+            return copy;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VoltTransform2D trans)
+                return this == trans;
+            return false;
+        }
+
+        public static bool operator ==(VoltTransform2D a, VoltTransform2D b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Origin == b.Origin;
+        }
+
+        public static bool operator !=(VoltTransform2D a, VoltTransform2D b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 17;
+            hashCode = hashCode * 31 + X.GetHashCode();
+            hashCode = hashCode * 31 + Y.GetHashCode();
+            hashCode = hashCode * 31 + Origin.GetHashCode();
+            return hashCode;
+        }
+
+        /// <summary>
+        /// Approximates <paramref name="a"/> == <paramref name="b"/> with a margin of <paramref name="error"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="error"></param>
+        /// <returns>Whether <paramref name="a"/> approximately == <paramref name="b"/></returns>
+        public static bool Approx(VoltTransform2D a, VoltTransform2D b, Fix64 error)
+        {
+            return VoltVector2.Approx(a.X, b.X, error) && VoltVector2.Approx(a.Y, b.Y, error) && VoltVector2.Approx(a.Origin, b.Origin, error);
+        }
+
+        /// <summary>
+        /// Performs matrix multiplication of <paramref name="a"/> * <paramref name="b"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static VoltTransform2D operator *(VoltTransform2D a, VoltTransform2D b)
+        {
+            a.Origin = a.XForm(b.Origin);
+
+            return new VoltTransform2D(
+                new VoltVector2(a.TransposedDotX(b.X), a.TransposedDotX(b.X)),
+                new VoltVector2(a.TransposedDotX(b.Y), a.TransposedDotX(b.Y))
+            );
+        }
+
+        /// <summary>
+        /// Performs matrix vector multiplication to transform <paramref name="b"/> by <paramref name="a"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static VoltVector2 operator *(VoltTransform2D a, VoltVector2 b)
+        {
+            return a.XForm(b);
         }
 
         /// <summary>
@@ -180,12 +329,64 @@ namespace Volatile
         }
 
         /// <summary>
-        /// Returns the transpose of the basis
+        /// Transforms <paramref name="v"/> by the affine matrix.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public VoltVector2 XForm(VoltVector2 v)
+        {
+            // Transpose dot product is equivalent to matrix vector multiplication
+            // Also the bottom row of affine matrix being [0 0 1] means the origin is just added onto first transformation.
+            return new VoltVector2(TransposedDotX(v), TransposedDotY(v)) + Origin;
+        }
+
+        /// <summary>
+        /// Transforms <paramref name="v"/> by the transposed matrix (Excludes scaling). This results in a multiplication by the inverse of the matrix only if it represents a rotation and/or translation.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public VoltVector2 XFormInverse(VoltVector2 v)
+        {
+            v -= Origin;
+            return new VoltVector2(X.Dot(v), Y.Dot(v));
+        }
+
+        /// <summary>
+        /// Sets rotation and scale simultaneously. Is more efficient than setting rotation and scale individually.
+        /// </summary>
+        /// <param name="rotation"></param>
+        /// <param name="scale"></param>
+        public void SetRotationAndScale(Fix64 rotation, VoltVector2 scale)
+        {
+            X = new VoltVector2(
+                Fix64.Cos(rotation) * scale.x,
+                -Fix64.Sin(rotation) * scale.y
+            );
+            Y = new VoltVector2(
+                Fix64.Sin(rotation) * scale.x,
+                Fix64.Cos(rotation) * scale.y
+            );
+        }
+
+        /// <summary>
+        /// Transposes the basis
         /// </summary>
         /// <returns>Transposed basis</returns>
-        public VoltTransform2D Transpose()
+        public void TransposeBasis()
         {
-            return new VoltTransform2D(new VoltVector2(X.x, Y.x), new VoltVector2(X.y, Y.y), Origin);
+            X = new VoltVector2(X.x, Y.x);
+            Y = new VoltVector2(X.y, Y.y);
+        }
+
+        /// <summary>
+        /// Returns the transposed basis
+        /// </summary>
+        /// <returns></returns>
+        public VoltTransform2D TranposedBasis()
+        {
+            var copy = this;
+            copy.TransposeBasis();
+            return copy;
         }
 
         /// <summary>
@@ -207,5 +408,40 @@ namespace Volatile
         /// </summary>
         /// <returns>Determinant of the basis matrix</returns>
         public Fix64 BasisDeterminant() => X.Cross(Y);
+
+        public VoltTransform2D InterpolateWith(VoltTransform2D transform, Fix64 time)
+        {
+            var p1 = Origin;
+            var p2 = transform.Origin;
+
+            var r1 = Rotation;
+            var r2 = transform.Rotation;
+
+            var s1 = Scale;
+            var s2 = transform.Scale;
+
+            var rotVector1 = new VoltVector2(Fix64.Cos(r1), Fix64.Sin(r1));
+            var rotVector2 = new VoltVector2(Fix64.Sin(r2), Fix64.Sin(r2));
+
+            var dot = rotVector1.Dot(rotVector2);
+            dot = VoltMath.Clamp(dot, -Fix64.One, Fix64.One);
+
+            VoltVector2 rotVector;
+            if (Fix64.Approx(dot, Fix64.One))
+            {
+                // The two rotations are parellel (the same)
+                rotVector = VoltVector2.Lerp(rotVector1, rotVector2, time).Normalized;
+            }
+            else
+            {
+                var angle = time * Fix64.Acos(dot);
+                var v3 = (rotVector2 - rotVector1 * dot).Normalized;
+                rotVector = rotVector1 * Fix64.Cos(angle) + v3 * Fix64.Sin(angle);
+            }
+
+            var result = new VoltTransform2D(Fix64.Atan2(rotVector.y, rotVector.x), VoltVector2.Lerp(p1, p2, time));
+            result.ScaleBasis(VoltVector2.Lerp(s1, s2, time));
+            return result;
+        }
     }
 }

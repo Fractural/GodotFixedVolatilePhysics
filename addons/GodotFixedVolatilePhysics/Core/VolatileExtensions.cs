@@ -25,5 +25,15 @@ namespace Volatile.GodotEngine
         {
             return new VoltRect2(rect.Position.ToVoltVector2(), rect.Size.ToVoltVector2());
         }
+
+        public static VoltTransform2D ToVoltTransform2D(this Transform2D transform)
+        {
+            return new VoltTransform2D(transform.x.ToVoltVector2(), transform.y.ToVoltVector2(), transform.origin.ToVoltVector2());
+        }
+
+        public static Transform2D ToGDTransform2D(this VoltTransform2D transform)
+        {
+            return new Transform2D(transform.X.ToGDVector2(), transform.Y.ToGDVector2(), transform.Origin.ToGDVector2());
+        }
     }
 }
