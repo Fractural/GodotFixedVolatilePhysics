@@ -134,6 +134,7 @@ namespace Volatile.GodotEngine.Plugin
             var points = (Vector2[])editedVolatilePolygon._Points.Clone();
             points[draggedAnchor.index] = inverseTransformViewport * (inverseTransformGlobal * (eventPosition - editedVolatilePolygon.GlobalPosition));
             editedVolatilePolygon._Points = points;
+            editedVolatilePolygon.PropertyListChangedNotify();
             draggedAnchor.position = eventPosition;
             Plugin.UpdateOverlays();
         }

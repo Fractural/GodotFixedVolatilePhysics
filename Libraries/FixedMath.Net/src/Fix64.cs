@@ -111,11 +111,9 @@ namespace FixMath.NET
             return FromRaw(result | binaryDecimalNumber);
         }
 
-        public Fix64 Sign()
+        public static Fix64 Lerp(Fix64 a, Fix64 b, Fix64 t)
         {
-            if (this >= Fix64.Zero)
-                return Fix64.One;
-            return -Fix64.One;
+            return a + t * (b - a);
         }
 
         public static bool Approx(Fix64 a, Fix64 b) => Approx(a, b, Epsilon);

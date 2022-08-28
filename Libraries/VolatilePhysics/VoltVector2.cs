@@ -151,5 +151,10 @@ namespace Volatile
         {
             return x * v.y - y * v.x;
         }
+
+        public static VoltVector2 Lerp(VoltVector2 a, VoltVector2 b, Fix64 t)
+        {
+            return new VoltVector2(Fix64.Lerp(a.x, b.x, t), Fix64.Lerp(a.y, b.y, t));
+        }
     }
 }
