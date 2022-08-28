@@ -3,7 +3,7 @@ using Godot;
 using Godot.Attributes;
 
 #if TOOLS
-namespace GodotFixedVolatilePhysics.Plugin
+namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
     public class Plugin : ExtendedPlugin
@@ -12,7 +12,7 @@ namespace GodotFixedVolatilePhysics.Plugin
 
         protected override void Load()
         {
-            AddSubPlugin(new VolatileShapePlugin());
+            AddSubPlugin(new VolatilePolygonPlugin());
         }
 
         protected override void Unload()

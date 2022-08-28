@@ -1,49 +1,16 @@
 using Godot;
 using Volatile;
-using System.Collections.Generic;
 using Godot.Collections;
-using Fractural.Utils;
 using Fractural;
 using FixMath.NET;
-using System.Linq;
-using GDDictionary = Godot.Collections.Dictionary;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     [Tool]
-    public class VolatileShape : Node2D
+    public abstract class VolatileShape : Node2D
     {
-        public List<VoltVector2> FixedPoints { get; private set; }
-        public byte[] initialFixedPoints = new byte[0];
-        public VoltVector2[] GetInitialFixedPoints()
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutData(this.initialFixedPoints);
-            buffer.Seek(0);
-            var length = buffer.GetU16();
-            VoltVector2[] initialFixedPoints = new VoltVector2[length];
-            for (int i = 0; i < length; i++)
-            {
-                initialFixedPoints[i] = new VoltVector2(Fix64.FromRaw(buffer.Get64()), Fix64.FromRaw(buffer.Get64()));
-            }
-            return initialFixedPoints;
-        }
-        public void SetInitialFixedPoints(IEnumerable<VoltVector2> array)
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutU16((ushort)array.Count());
-            foreach (VoltVector2 vector2 in array)
-            {
-                buffer.Put64(vector2.x.RawValue);
-                buffer.Put64(vector2.y.RawValue);
-            }
-            initialFixedPoints = buffer.DataArray;
-            Update();
-        }
-        public void SetInitialFixedPoints(IEnumerable<Vector2> array)
-        {
-            SetInitialFixedPoints(array.Select(x => x.ToVoltVector2()));
-        }
+        public abstract VoltShape PrepareShape(VoltWorld world);
+        public abstract Vector2 ComputeTrueCenterOfMass();
 
         public override void _Ready()
         {
@@ -52,58 +19,174 @@ namespace GodotFixedVolatilePhysics
                 Update();
                 return;
             }
-
-
-            FixedPoints = new List<VoltVector2>(GetInitialFixedPoints());
+            InitValues();
         }
 
-        public override void _Draw()
+        protected virtual void InitValues()
         {
-            if (!Engine.EditorHint) return;
-            var points = GetInitialFixedPoints().Select(x => x.ToGDVector2());
-            var count = points.Count();
-            if (count > 0)
-            {
-                var color = Colors.DeepPink;
-                var fill = color;
-                fill.a = 0.075f;
+            Density = GetDensityFromData();
+        }
 
-                var previousPoint = points.Last();
-                foreach (var point in points)
-                {
-                    DrawLine(previousPoint, point, color, 1, true);
-                    previousPoint = point;
-                }
-                var polygonColors = new Color[count];
-                polygonColors.Populate(fill);
-                DrawPolygon(points.ToArray(), polygonColors);
+        #region Density
+        protected Fix64 density;
+        public Fix64 Density
+        {
+            get
+            {
+                if (Engine.EditorHint)
+                    return GetDensityFromData();
+                else
+                    return density;
+            }
+            set
+            {
+                if (Engine.EditorHint)
+                    SetDensityData(value);
+                else
+                    density = value;
             }
         }
-
-        #region PropertyList
-        public Vector2[] _Points
+        public byte[] densityData = new byte[0];
+        public Fix64 GetDensityFromData()
         {
-            get => GetInitialFixedPoints().Select(x => x.ToGDVector2()).ToArray();
-            set => SetInitialFixedPoints(value);
+            var buffer = new StreamPeerBuffer();
+            buffer.PutData(densityData);
+            buffer.Seek(0);
+            return Fix64.FromRaw(buffer.Get64());
         }
+        public void SetDensityData(float density) => SetDensityData(density);
+        public void SetDensityData(Fix64 density)
+        {
+            var buffer = new StreamPeerBuffer();
+            buffer.Put64(density.RawValue);
+        }
+        public float _Density
+        {
+            get => (float)GetDensityFromData();
+            set => SetDensityData(value);
+        }
+        #endregion
 
-        public override Array _GetPropertyList()
+        #region Restitution
+        protected Fix64 restitution;
+        public Fix64 Restitution
+        {
+            get
+            {
+                if (Engine.EditorHint)
+                    return GetRestitutionFromData();
+                else
+                    return restitution;
+            }
+            set
+            {
+                if (Engine.EditorHint)
+                    SetRestitutionData(value);
+                else
+                    restitution = value;
+            }
+        }
+        public byte[] restitutionData = new byte[0];
+        public Fix64 GetRestitutionFromData()
+        {
+            var buffer = new StreamPeerBuffer();
+            buffer.PutData(restitutionData);
+            buffer.Seek(0);
+            return Fix64.FromRaw(buffer.Get64());
+        }
+        public void SetRestitutionData(float restitution) => SetRestitutionData(restitution);
+        public void SetRestitutionData(Fix64 restitution)
+        {
+            var buffer = new StreamPeerBuffer();
+            buffer.Put64(restitution.RawValue);
+        }
+        public float _Restitution
+        {
+            get => (float)GetRestitutionFromData();
+            set => SetRestitutionData(value);
+        }
+        #endregion
+
+        #region Friction
+        protected Fix64 friction;
+        public Fix64 Friction
+        {
+            get
+            {
+                if (Engine.EditorHint)
+                    return GetFrictionFromData();
+                else
+                    return friction;
+            }
+            set
+            {
+                if (Engine.EditorHint)
+                    SetFrictionData(value);
+                else
+                    friction = value;
+            }
+        }
+        public byte[] frictionData = new byte[0];
+        public Fix64 GetFrictionFromData()
+        {
+            var buffer = new StreamPeerBuffer();
+            buffer.PutData(frictionData);
+            buffer.Seek(0);
+            return Fix64.FromRaw(buffer.Get64());
+        }
+        public void SetFrictionData(float friction) => SetFrictionData(friction);
+        public void SetFrictionData(Fix64 friction)
+        {
+            var buffer = new StreamPeerBuffer();
+            buffer.Put64(friction.RawValue);
+        }
+        public float _Friction
+        {
+            get => (float)GetFrictionFromData();
+            set => SetFrictionData(value);
+        }
+        #endregion
+
+        public override Godot.Collections.Array _GetPropertyList()
         {
             var builder = new PropertyListBuilder();
             builder.AddItem(
-                name: nameof(initialFixedPoints),
+                name: nameof(densityData),
                 type: Variant.Type.RawArray,
                 hint: PropertyHint.None,
                 usage: PropertyUsageFlags.Storage
             );
             builder.AddItem(
-                name: nameof(_Points),
-                type: Variant.Type.Vector2Array,
+                name: nameof(_Density),
+                type: Variant.Type.Real,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Editor
+            );
+            builder.AddItem(
+                name: nameof(restitutionData),
+                type: Variant.Type.RawArray,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Storage
+            );
+            builder.AddItem(
+                name: nameof(_Restitution),
+                type: Variant.Type.Real,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Editor
+            );
+            builder.AddItem(
+                name: nameof(frictionData),
+                type: Variant.Type.RawArray,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Storage
+            );
+            builder.AddItem(
+                name: nameof(_Friction),
+                type: Variant.Type.Real,
                 hint: PropertyHint.None,
                 usage: PropertyUsageFlags.Editor
             );
             return builder.Build();
         }
-        #endregion
     }
 }

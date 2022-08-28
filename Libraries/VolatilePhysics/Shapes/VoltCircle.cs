@@ -73,10 +73,10 @@ namespace Volatile
     {
       base.Reset();
 
-      this.worldSpaceOrigin = VoltVector2.zero;
+      this.worldSpaceOrigin = VoltVector2.Zero;
       this.radius = Fix64.Zero;
       this.sqrRadius = Fix64.Zero;
-      this.bodySpaceOrigin = VoltVector2.zero;
+      this.bodySpaceOrigin = VoltVector2.Zero;
     }
 
     #region Functionality Overrides
@@ -89,7 +89,7 @@ namespace Volatile
       this.Area = this.sqrRadius * VoltMath.PI;
       this.Mass = this.Area * this.Density * VoltConfig.AreaMassRatio;
       this.Inertia =
-        this.sqrRadius / (Fix64)2 + this.bodySpaceOrigin.sqrMagnitude;
+        this.sqrRadius / (Fix64)2 + this.bodySpaceOrigin.SqrMagnitude;
     }
 
     protected override void ApplyBodyPosition()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fractural.Utils;
+using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -14,6 +15,7 @@ namespace FixMath.NET
 
         // Precision of this type is 2^-32, that is 2,3283064365386962890625E-10
         public static readonly decimal Precision = (decimal)(new Fix64(1L));//0.00000000023283064365386962890625m;
+        public static readonly Fix64 Epsilon = (Fix64)0.00001M;
         public static readonly Fix64 MaxValue = new Fix64(MAX_VALUE);
         public static readonly Fix64 MinValue = new Fix64(MIN_VALUE);
         public static readonly Fix64 One = new Fix64(ONE);
@@ -43,6 +45,85 @@ namespace FixMath.NET
         const long LOG2MAX = 0x1F00000000;
         const long LOG2MIN = -0x2000000000;
         const int LUT_SIZE = (int)(PI_OVER_2 >> 15);
+
+        public static Fix64 From(string number)
+        {
+            string[] groups = number.Split('.');
+            if (groups.Length > 1)
+                throw new ArgumentException("Cannot have more than 1 decimal point!");
+            if (!int.TryParse(groups[0], out int integerPortion))
+                throw new ArgumentException("Failed to parse the integer portion!");
+            uint decimalPortion = 0;
+            if (groups.Length == 2 && !uint.TryParse(groups[1], out decimalPortion))
+                throw new ArgumentException("Failed to parse the decimal portion!");
+            return From(integerPortion, decimalPortion);
+        }
+
+        public static Fix64 From(int integer, uint decimalNumber = 0)
+        {
+            // decimal is 128-bits (16 bytes)
+            long result = ((long)integer) << FRACTIONAL_PLACES;
+
+            // Converting the decimal number (as an int) into binary
+            // without floating point operations
+
+            // Calculating onesDigit
+
+            // Anything >= onesDigit means the decimal number has gone to the 1s place
+            // ie.
+            //   Ones = 1
+            //          0.56            
+            //     x2 = 1.12    Overflow: 1.12 > 1
+            //     
+            //   Ones = 100
+            //          56
+            //     x2 = 112     Overflow: 112 > 100
+            uint decimalNumberOnesPlace = 1;
+            uint temp = decimalNumber;
+            do
+            {
+                temp /= 10;
+                decimalNumberOnesPlace *= 10;
+            } while (temp > 0);
+
+            long binaryDecimalNumber = 0;
+            int binaryPlaces = FRACTIONAL_PLACES;
+            while (decimalNumber != 0 && binaryPlaces > 0)
+            {
+                binaryPlaces--;
+                decimalNumber <<= 1;
+                if (decimalNumber >= decimalNumberOnesPlace)
+                    // Set the bit to 1
+                    binaryDecimalNumber |= 1L << binaryPlaces;
+                else
+                    // Set the bit to 0
+                    binaryDecimalNumber &= ~(1L << binaryPlaces);
+                // Remove the overflowing digit (which is either a 1 or a 0)
+                decimalNumber %= decimalNumberOnesPlace;
+            }
+
+            // Merge the two numbers together
+            //  ie.
+            //      101011.000000
+            //      000000.100101
+            //  Bitwise OR:
+            //      101011.100101
+            return FromRaw(result | binaryDecimalNumber);
+        }
+
+        public Fix64 Sign()
+        {
+            if (this >= Fix64.Zero)
+                return Fix64.One;
+            return -Fix64.One;
+        }
+
+        public static bool Approx(Fix64 a, Fix64 b) => Approx(a, b, Epsilon);
+
+        public static bool Approx(Fix64 a, Fix64 b, Fix64 error)
+        {
+            return Abs(a - b) < error;
+        }
 
         /// <summary>
         /// Returns a number indicating the sign of a Fix64 number.
