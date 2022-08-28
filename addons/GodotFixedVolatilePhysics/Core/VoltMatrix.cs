@@ -2,8 +2,10 @@
 using System;
 using Fractural.Utils;
 using System.Text;
+using Volatile;
+using Volatile.GodotEngine;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile
 {
     public struct VoltMatrix
     {
@@ -150,6 +152,7 @@ namespace GodotFixedVolatilePhysics
             return inverse;
         }
 
+        public static bool Approx(VoltMatrix a, VoltMatrix b) => Approx(a, b, Fix64.Epsilon);
         public static bool Approx(VoltMatrix a, VoltMatrix b, Fix64 error)
         {
             if (a.Rows != b.Rows || a.Columns != b.Columns) return false;
@@ -182,6 +185,15 @@ namespace GodotFixedVolatilePhysics
             return false;
         }
 
+        public override int GetHashCode()
+        {
+            int hashCode = 17;
+            for (int row = 0; row < Rows; row++)
+                for (int col = 0; col < Columns; col++)
+                    hashCode = hashCode * 31 + Cells[row, col].GetHashCode();
+            return hashCode;
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -210,6 +222,16 @@ namespace GodotFixedVolatilePhysics
                     sb.Append("\n");
             }
             return sb.ToString();
+        }
+
+        public VoltTransform2D ToVoltTransform2D()
+        {
+            return new VoltTransform2D(new VoltVector2(Cells[0, 0], Cells[0, 1]), new VoltVector2(Cells[1, 0], Cells[1, 1]), new VoltVector2(Cells[2, 1], Cells[2, 1]));
+        }
+
+        public VoltVector2 ToVoltVector2()
+        {
+            return new VoltVector2(Cells[0, 0], Cells[0, 1]);
         }
     }
 }

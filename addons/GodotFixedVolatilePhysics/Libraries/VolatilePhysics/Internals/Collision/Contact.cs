@@ -154,14 +154,14 @@ namespace Volatile
     #region Internals
     private void Reset()
     {
-      this.position = VoltVector2.zero;
-      this.normal = VoltVector2.zero;
+      this.position = VoltVector2.Zero;
+      this.normal = VoltVector2.Zero;
       this.penetration = Fix64.Zero;
 
-      this.toA = VoltVector2.zero;
-      this.toB = VoltVector2.zero;
-      this.toALeft = VoltVector2.zero;
-      this.toBLeft = VoltVector2.zero;
+      this.toA = VoltVector2.Zero;
+      this.toB = VoltVector2.Zero;
+      this.toALeft = VoltVector2.Zero;
+      this.toBLeft = VoltVector2.Zero;
 
       this.nMass = Fix64.Zero;
       this.tMass = Fix64.Zero;

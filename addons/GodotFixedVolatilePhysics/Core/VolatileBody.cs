@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     public class VolatileBody : Node2D
     {

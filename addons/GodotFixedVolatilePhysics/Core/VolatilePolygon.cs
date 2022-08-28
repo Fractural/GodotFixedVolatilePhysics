@@ -7,7 +7,7 @@ using Fractural;
 using FixMath.NET;
 using System.Linq;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     [Tool]
     public class VolatilePolygon : VolatileShape

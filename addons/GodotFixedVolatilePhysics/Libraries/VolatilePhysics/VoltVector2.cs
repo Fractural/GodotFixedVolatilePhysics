@@ -27,15 +27,15 @@ namespace Volatile
         public readonly Fix64 x;
         public readonly Fix64 y;
 
-        public static VoltVector2 zero => new VoltVector2();
-        public static VoltVector2 one => new VoltVector2(Fix64.One, Fix64.One);
+        public static VoltVector2 Zero => new VoltVector2();
+        public static VoltVector2 One => new VoltVector2(Fix64.One, Fix64.One);
 
         public static Fix64 Dot(VoltVector2 a, VoltVector2 b)
         {
             return (a.x * b.x) + (a.y * b.y);
         }
 
-        public Fix64 sqrMagnitude
+        public Fix64 SqrMagnitude
         {
             get
             {
@@ -43,19 +43,19 @@ namespace Volatile
             }
         }
 
-        public Fix64 magnitude
+        public Fix64 Magnitude
         {
             get
             {
-                return VoltMath.Sqrt(this.sqrMagnitude);
+                return VoltMath.Sqrt(this.SqrMagnitude);
             }
         }
 
-        public VoltVector2 normalized
+        public VoltVector2 Normalized
         {
             get
             {
-                Fix64 magnitude = this.magnitude;
+                Fix64 magnitude = this.Magnitude;
                 return new VoltVector2(this.x / magnitude, this.y / magnitude);
             }
         }
@@ -64,6 +64,12 @@ namespace Volatile
         {
             this.x = x;
             this.y = y;
+        }
+
+        public static bool Approx(VoltVector2 a, VoltVector2 b) => Approx(a, b, Fix64.Epsilon);
+        public static bool Approx(VoltVector2 a, VoltVector2 b, Fix64 error)
+        {
+            return Fix64.Approx(a.x, b.x, error) && Fix64.Approx(a.y, b.y, error);
         }
 
         public static VoltVector2 operator *(VoltVector2 a, Fix64 b)
@@ -89,6 +95,61 @@ namespace Volatile
         public static VoltVector2 operator -(VoltVector2 a)
         {
             return new VoltVector2(-a.x, -a.y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VoltVector2 v)
+                return v == this;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 17;
+            hashCode = hashCode * 31 + x.GetHashCode();
+            hashCode = hashCode * 31 + y.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(VoltVector2 a, VoltVector2 b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+
+        public static bool operator !=(VoltVector2 a, VoltVector2 b)
+        {
+            return !(a == b);
+        }
+
+        public VoltMatrix ToVoltMatrix()
+        {
+
+            return new VoltMatrix(new Fix64[,] {
+                { x },
+                { y },
+                { Fix64.One }
+            });
+        }
+
+        /// <summary>
+        /// Calculates the dot product of "this" with <paramref name="v"/>.
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <returns>Dot product</returns>
+        public Fix64 Dot(VoltVector2 v)
+        {
+            return x * v.x + y * v.y;
+        }
+
+        /// <summary>
+        /// Calculates the signed magnitude of the cross product of two 2D vectors. Note that cross product really only exists for 3D vectors, so we temporarily treat the two 2D vectors as 3D on the same plane.
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <returns>Signed magnitude of cross product<paramref name="v"/></returns>
+        public Fix64 Cross(VoltVector2 v)
+        {
+            return x * v.y - y * v.x;
         }
     }
 }

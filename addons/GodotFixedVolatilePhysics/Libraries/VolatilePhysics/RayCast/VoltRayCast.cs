@@ -45,8 +45,8 @@ namespace Volatile
       VoltVector2 delta = destination - origin;
 
       this.origin = origin;
-      this.direction = delta.normalized;
-      this.distance = delta.magnitude;
+      this.direction = delta.Normalized;
+      this.distance = delta.Magnitude;
       this.signX = direction.x < Fix64.Zero;
       this.signY = direction.y < Fix64.Zero;
       this.invDirection = 

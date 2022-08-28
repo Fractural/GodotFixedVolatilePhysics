@@ -2,7 +2,7 @@
 using Godot;
 
 #if TOOLS
-namespace GodotFixedVolatilePhysics.Plugin
+namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
     public class VolatilePolygonPlugin : SubPlugin

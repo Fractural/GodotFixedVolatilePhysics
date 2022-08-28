@@ -170,7 +170,7 @@ namespace Volatile
       Fix64 radius)
     {
       VoltVector2 delta = origin - point;
-      return delta.sqrMagnitude <= (radius * radius);
+      return delta.SqrMagnitude <= (radius * radius);
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ namespace Volatile
       Fix64 radiusB)
     {
       Fix64 radiusTotal = radiusA + radiusB;
-      return (originA - originB).sqrMagnitude <= (radiusTotal * radiusTotal);
+      return (originA - originB).SqrMagnitude <= (radiusTotal * radiusTotal);
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ namespace Volatile
     {
       VoltVector2 toOrigin = shapeOrigin - ray.origin;
 
-      if (toOrigin.sqrMagnitude < sqrRadius)
+      if (toOrigin.SqrMagnitude < sqrRadius)
       {
         result.SetContained(shape);
         return true;
@@ -219,7 +219,7 @@ namespace Volatile
 
       // N.B.: For historical raycasts this normal will be wrong!
       // Must be either transformed back to world or invalidated later.
-      VoltVector2 normal = (dist * ray.direction - toOrigin).normalized;
+      VoltVector2 normal = (dist * ray.direction - toOrigin).Normalized;
       result.Set(shape, dist, normal);
       return true;
     }
@@ -314,7 +314,7 @@ namespace Volatile
     {
       VoltVector2 r = overrideBCenter - shapeA.worldSpaceOrigin;
       Fix64 min = shapeA.radius + overrideBRadius;
-      Fix64 distSq = r.sqrMagnitude;
+      Fix64 distSq = r.SqrMagnitude;
 
       if (distSq >= min * min)
         return null;
@@ -340,7 +340,7 @@ namespace Volatile
       VoltPolygon poly2,
       out Axis axis)
     {
-      axis = new Axis(VoltVector2.zero, Fix64.MinValue);
+      axis = new Axis(VoltVector2.Zero, Fix64.MinValue);
 
       for (int i = 0; i < poly1.countWorld; i++)
       {

@@ -4,7 +4,7 @@ using Godot.Collections;
 using Fractural;
 using FixMath.NET;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     [Tool]
     public class VolatileCircle : VolatileShape

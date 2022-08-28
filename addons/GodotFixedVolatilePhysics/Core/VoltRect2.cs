@@ -1,6 +1,6 @@
 ﻿using Volatile;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     public struct VoltRect2
     {

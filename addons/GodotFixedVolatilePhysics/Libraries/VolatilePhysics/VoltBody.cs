@@ -467,13 +467,13 @@ namespace Volatile
       this.history = null;
       this.currentState = default(HistoryRecord);
 
-      this.LinearVelocity = VoltVector2.zero;
+      this.LinearVelocity = VoltVector2.Zero;
       this.AngularVelocity = Fix64.Zero;
 
-      this.Force = VoltVector2.zero;
+      this.Force = VoltVector2.Zero;
       this.Torque = Fix64.Zero;
 
-      this.BiasVelocity = VoltVector2.zero;
+      this.BiasVelocity = VoltVector2.Zero;
       this.BiasRotation = Fix64.Zero;
     }
 
@@ -494,10 +494,10 @@ namespace Volatile
       this.CollisionFilter = null;
 
       this.Angle = Fix64.Zero;
-      this.LinearVelocity = VoltVector2.zero;
+      this.LinearVelocity = VoltVector2.Zero;
       this.AngularVelocity = Fix64.Zero;
 
-      this.Force = VoltVector2.zero;
+      this.Force = VoltVector2.Zero;
       this.Torque = Fix64.Zero;
 
       this.Mass = Fix64.Zero;
@@ -505,7 +505,7 @@ namespace Volatile
       this.InvMass = Fix64.Zero;
       this.InvInertia = Fix64.Zero;
 
-      this.BiasVelocity = VoltVector2.zero;
+      this.BiasVelocity = VoltVector2.Zero;
       this.BiasRotation = Fix64.Zero;
 
       this.history = null;
@@ -629,9 +629,9 @@ namespace Volatile
 
     private void ClearForces()
     {
-      this.Force = VoltVector2.zero;
+      this.Force = VoltVector2.Zero;
       this.Torque = Fix64.Zero;
-      this.BiasVelocity = VoltVector2.zero;
+      this.BiasVelocity = VoltVector2.Zero;
       this.BiasRotation = Fix64.Zero;
     }
 

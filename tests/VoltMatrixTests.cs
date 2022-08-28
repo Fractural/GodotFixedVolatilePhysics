@@ -1,10 +1,10 @@
 using FixMath.NET;
 using Godot;
-using GodotFixedVolatilePhysics;
+using Volatile;
 
 namespace Tests
 {
-    public class VolatileMatrixTests : WAT.Test
+    public class VoltMatrixTests : WAT.Test
     {
         [Test]
         public void WhenAddMatrices_OfDifferentSize_ShouldFail()
@@ -134,7 +134,6 @@ namespace Tests
                 var result = a.Inverse();
             }, "Expected 'not square matrix' error");
         }
-
 
         [Test]
         public void WhenTakeInverseMatrix_OfLinearlyDependentColumns_ShouldFail()

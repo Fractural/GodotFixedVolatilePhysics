@@ -77,7 +77,7 @@ namespace Volatile
     {
       this.shape = shape;
       this.distance = Fix64.Zero;
-      this.normal = VoltVector2.zero;
+      this.normal = VoltVector2.Zero;
     }
   }
 }

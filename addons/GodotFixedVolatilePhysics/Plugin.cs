@@ -3,7 +3,7 @@ using Godot;
 using Godot.Attributes;
 
 #if TOOLS
-namespace GodotFixedVolatilePhysics.Plugin
+namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
     public class Plugin : ExtendedPlugin

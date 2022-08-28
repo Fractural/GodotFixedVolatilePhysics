@@ -2,7 +2,7 @@
 using Volatile;
 using FixMath.NET;
 
-namespace GodotFixedVolatilePhysics
+namespace Volatile.GodotEngine
 {
     public static class VolatileExtensions
     {

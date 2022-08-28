@@ -93,7 +93,7 @@ namespace Volatile
       {
         VoltVector2 u = vertices[i];
         VoltVector2 v = vertices[(i + 1) % count];
-        VoltVector2 normal = (v - u).Left().normalized;
+        VoltVector2 normal = (v - u).Left().Normalized;
         destination[i] = new Axis(normal, VoltVector2.Dot(normal, u));
       }
     }
@@ -419,7 +419,7 @@ namespace Volatile
         VoltVector2 u = this.bodyVertices[(i + 1) % this.countBody];
 
         Fix64 a = VoltMath.Cross(u, v);
-        Fix64 b = v.sqrMagnitude + u.sqrMagnitude + VoltVector2.Dot(v, u);
+        Fix64 b = v.SqrMagnitude + u.SqrMagnitude + VoltVector2.Dot(v, u);
         s1 += a * b;
         s2 += a;
       }
