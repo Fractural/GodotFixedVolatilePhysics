@@ -30,6 +30,24 @@ namespace Tests
         [Test]
         public void WhenTakeInverseOfTransform_ShouldBeCorrect()
         {
+            var theta = Fix64.Pi * (Fix64)0.35;
+            VoltTransform2D a = new VoltTransform2D(
+               new VoltVector2(Fix64.Cos(theta), -Fix64.Sin(theta)),
+               new VoltVector2(Fix64.Sin(theta), Fix64.Cos(theta)),
+               new VoltVector2((Fix64)0, (Fix64)0)
+            );
+            VoltTransform2D expected = new VoltTransform2D(
+               new VoltVector2(Fix64.Cos(theta), Fix64.Sin(theta)),
+               new VoltVector2(-Fix64.Sin(theta), Fix64.Cos(theta)),
+               new VoltVector2((Fix64)0, (Fix64)0)
+            );
+            var result = a.Inverse();
+            Assert.IsTrue(VoltTransform2D.Approx(result, expected, (Fix64)0.00001f), "Expected result approx == expected.");
+        }
+
+        [Test]
+        public void WhenTakeAffineInverseOfTransform_ShouldBeCorrect()
+        {
             VoltTransform2D a = new VoltTransform2D(
                new VoltVector2((Fix64)1.1f, (Fix64)3),
                new VoltVector2((Fix64)3, (Fix64)4.5f),
@@ -40,7 +58,7 @@ namespace Tests
                 new VoltVector2((Fix64)(20f / 27f), (Fix64)(-22f / 81f)),
                 new VoltVector2((Fix64)(5f / 9f), (Fix64)(-28f / 27f))
             );
-            var result = a.Inverse();
+            var result = a.AffineInverse();
             Assert.IsTrue(VoltTransform2D.Approx(result, expected, (Fix64)0.00001f), "Expected result approx == expected.");
         }
 

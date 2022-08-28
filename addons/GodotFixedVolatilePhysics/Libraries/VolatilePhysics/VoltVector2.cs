@@ -156,5 +156,10 @@ namespace Volatile
         {
             return new VoltVector2(Fix64.Lerp(a.x, b.x, t), Fix64.Lerp(a.y, b.y, t));
         }
+
+        public override string ToString()
+        {
+            return $"({x}, {y})";
+        }
     }
 }
