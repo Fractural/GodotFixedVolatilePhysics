@@ -7,24 +7,22 @@ using FixMath.NET;
 namespace Volatile.GodotEngine
 {
     [Tool]
-    public abstract class VolatileShape : Node2D
+    public abstract class VolatileShape : VoltNode2D
     {
         public abstract VoltShape PrepareShape(VoltWorld world);
         public abstract Vector2 ComputeTrueCenterOfMass();
 
         public override void _Ready()
         {
-            if (Engine.EditorHint)
-            {
-                Update();
-                return;
-            }
+            base._Ready();
             InitValues();
         }
 
         protected virtual void InitValues()
         {
             Density = GetDensityFromData();
+            Restitution = GetRestitutionFromData();
+            Friction = GetFrictionFromData();
         }
 
         #region Density
@@ -49,16 +47,19 @@ namespace Volatile.GodotEngine
         public byte[] densityData = new byte[0];
         public Fix64 GetDensityFromData()
         {
+            if (densityData.Length == 0)
+                SetDensityData(VoltConfig.DEFAULT_DENSITY);
             var buffer = new StreamPeerBuffer();
             buffer.PutData(densityData);
             buffer.Seek(0);
-            return Fix64.FromRaw(buffer.Get64());
+            return buffer.GetFix64();
         }
-        public void SetDensityData(float density) => SetDensityData(density);
+        public void SetDensityData(float density) => SetDensityData((Fix64)density);
         public void SetDensityData(Fix64 density)
         {
             var buffer = new StreamPeerBuffer();
-            buffer.Put64(density.RawValue);
+            buffer.PutFix64(density);
+            densityData = buffer.DataArray;
         }
         public float _Density
         {
@@ -89,16 +90,19 @@ namespace Volatile.GodotEngine
         public byte[] restitutionData = new byte[0];
         public Fix64 GetRestitutionFromData()
         {
+            if (restitutionData.Length == 0)
+                SetDensityData(VoltConfig.DEFAULT_RESTITUTION);
             var buffer = new StreamPeerBuffer();
             buffer.PutData(restitutionData);
             buffer.Seek(0);
-            return Fix64.FromRaw(buffer.Get64());
+            return buffer.GetFix64();
         }
-        public void SetRestitutionData(float restitution) => SetRestitutionData(restitution);
+        public void SetRestitutionData(float restitution) => SetRestitutionData((Fix64)restitution);
         public void SetRestitutionData(Fix64 restitution)
         {
             var buffer = new StreamPeerBuffer();
-            buffer.Put64(restitution.RawValue);
+            buffer.PutFix64(restitution);
+            restitutionData = buffer.DataArray;
         }
         public float _Restitution
         {
@@ -129,16 +133,19 @@ namespace Volatile.GodotEngine
         public byte[] frictionData = new byte[0];
         public Fix64 GetFrictionFromData()
         {
+            if (frictionData.Length == 0)
+                SetFrictionData(VoltConfig.DEFAULT_FRICTION);
             var buffer = new StreamPeerBuffer();
             buffer.PutData(frictionData);
             buffer.Seek(0);
-            return Fix64.FromRaw(buffer.Get64());
+            return buffer.GetFix64();
         }
-        public void SetFrictionData(float friction) => SetFrictionData(friction);
+        public void SetFrictionData(float friction) => SetFrictionData((Fix64)friction);
         public void SetFrictionData(Fix64 friction)
         {
             var buffer = new StreamPeerBuffer();
-            buffer.Put64(friction.RawValue);
+            buffer.PutFix64(friction);
+            frictionData = buffer.DataArray;
         }
         public float _Friction
         {

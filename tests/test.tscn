@@ -1,15 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShape.cs" type="Script" id=1]
-[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VoltNode2D.cs" type="Script" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VoltNode2D.cs" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShape.cs" type="Script" id=3]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/Test.cs" type="Script" id=4]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 5.34548, 3.38348 )
 script = ExtResource( 1 )
-densityData = PoolByteArray(  )
-restitutionData = PoolByteArray(  )
-frictionData = PoolByteArray(  )
+fixedTransformData = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 48, 113, 88, 5, 0, 0, 0, 0, 16, 44, 98, 3, 0, 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 141, -186 )
+texture = ExtResource( 2 )
 
 [node name="Node2D2" type="Node2D" parent="."]
-script = ExtResource( 2 )
+script = ExtResource( 3 )
+densityData = PoolByteArray( 0, 0, 0, 128, 0, 0, 0, 0 )
+restitutionData = PoolByteArray( 144, 157, 225, 207, 160, 2, 0, 0 )
+frictionData = PoolByteArray( 204, 204, 204, 204, 0, 0, 0, 0 )
+
+[node name="Node2D3" type="Node2D" parent="."]
+script = ExtResource( 4 )
+fix64Number = PoolByteArray( 203, 204, 204, 76, 242, 7, 0, 0 )
+oof = 1.0
+tests = "12340"
