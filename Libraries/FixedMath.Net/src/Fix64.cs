@@ -49,7 +49,7 @@ namespace FixMath.NET
         public static Fix64 From(string number)
         {
             string[] groups = number.Split('.');
-            if (groups.Length > 1)
+            if (groups.Length > 2)
                 throw new ArgumentException("Cannot have more than 1 decimal point!");
             if (!int.TryParse(groups[0], out int integerPortion))
                 throw new ArgumentException("Failed to parse the integer portion!");

@@ -8,6 +8,15 @@ namespace Volatile
 {
     public struct VoltTransform2D
     {
+        public static VoltTransform2D Default()
+        {
+            return new VoltTransform2D(
+                new VoltVector2(Fix64.One, Fix64.Zero),
+                new VoltVector2(Fix64.Zero, Fix64.One),
+                VoltVector2.Zero
+            );
+        }
+
         // Transform2D are known as an "affine matrix"
         // Affine matrix has 3 vectors of size 2.
         // Two vectors form a 2D transformation matrix, while the 3rd vector allows for translation.
@@ -63,8 +72,8 @@ namespace Volatile
             // (Only requires swapping bottom left with top right)
             //
             // Rotation matrix
-            // [  cos0, sin0 ] -> [ cos0, -sin0 ]
-            // [ -sin0, cos0 ]    [ sin0,  cos0 ]
+            // [ cos0, -sin0 ] -> [  cos0, sin0 ]
+            // [ sin0,  cos0 ]    [ -sin0, cos0 ]
             var x = new VoltVector2(X.x, Y.x);
             var y = new VoltVector2(X.y, Y.y);
 
@@ -96,8 +105,8 @@ namespace Volatile
             if (det == Fix64.Zero)
                 throw new InvalidOperationException("Cannot find inverse when det == 0!");
             // Calculate inversed basis matrix (Formula for 2x2 is very simple)
-            var x = new VoltVector2(Y.y / det, Y.x / -det);
-            var y = new VoltVector2(X.y / -det, X.x / det);
+            var x = new VoltVector2(Y.y / det, X.y / -det);
+            var y = new VoltVector2(Y.x / -det, X.x / det);
 
             X = x;
             Y = y;
@@ -452,6 +461,8 @@ namespace Volatile
         /// <returns>Determinant of the basis matrix</returns>
         public Fix64 BasisDeterminant() => X.Cross(Y);
 
+        private static readonly Fix64 FIXED_0_9995 = Fix64.From("0.9995");
+
         public VoltTransform2D InterpolateWith(VoltTransform2D transform, Fix64 time)
         {
             var pos1 = Origin;
@@ -470,7 +481,7 @@ namespace Volatile
             dot = VoltMath.Clamp(dot, -Fix64.One, Fix64.One);
 
             VoltVector2 rotVector;
-            if (dot > Fix64.One)
+            if (dot > FIXED_0_9995)
             {
                 // Lerping for acute angles
                 // The two rotations are parellel (the same)
