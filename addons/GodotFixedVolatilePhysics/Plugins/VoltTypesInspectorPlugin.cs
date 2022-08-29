@@ -7,6 +7,12 @@ namespace Volatile.GodotEngine.Plugin
     [Tool]
     public class VoltTypesInspectorPlugin : EditorInspectorPlugin
     {
+        public VoltTypeEditorPropertyParser[] Parsers { get; } =
+        {
+            new Fix64EditorPropertyParser(),
+            new VoltVector2EditorPropertyParser(),
+        };
+
         public override bool CanHandle(Object @object)
         {
             return true;
@@ -14,19 +20,10 @@ namespace Volatile.GodotEngine.Plugin
 
         public override bool ParseProperty(Object @object, int type, string path, int hint, string hintText, int usage)
         {
-            var propertyValue = @object.Get(path);
-            var args = hintText.Split(',');
-            if (args.Length > 0)
+            foreach (var parser in Parsers)
             {
-                if (args[0] == VoltPropertyHint.Fix64)
-                {
-                    Fix64 initialValue = Fix64.Zero;
-                    if (args.Length >= 2)
-                        initialValue = Fix64.From(args[1]);
-                    AddPropertyEditor(path, new Fix64EditorProperty(initialValue));
-                    GD.Print("Can handle fix64boxed at: " + path + ": " + propertyValue);
+                if (parser.ParseProperty(this, @object, type, path, hint, hintText, usage, hintText.Split(',')))
                     return true;
-                }
             }
             return base.ParseProperty(@object, type, path, hint, hintText, usage);
         }
@@ -35,6 +32,11 @@ namespace Volatile.GodotEngine.Plugin
     public static class VoltPropertyHint
     {
         public const string Fix64 = nameof(Fix64);
+        public const string Fix64Array = nameof(Fix64Array);
+        public const string VoltVector2 = nameof(VoltVector2);
+        public const string VoltVector2Array = nameof(VoltVector2Array);
+        public const string VoltTransform2D = nameof(VoltTransform2D);
+        public const string VoltTransform2DArray = nameof(VoltTransform2DArray);
     }
 }
 #endif

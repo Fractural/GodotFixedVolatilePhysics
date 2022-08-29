@@ -6,8 +6,8 @@ namespace Volatile.GodotEngine
 {
     public class Test : Node2D
     {
-        [Export(PropertyHint.None, VoltPropertyHint.Fix64 + ",403")]
-        public byte[] fix64Number = new byte[0];
+        [Export(PropertyHint.None, VoltPropertyHint.Fix64)]
+        public byte[] fix64Number = Fix64Serializer.Global.Serialize(Fix64.From("3384.4390"));
         [Export]
         public float oof;
         [Export]

@@ -24,6 +24,6 @@ frictionData = PoolByteArray( 204, 204, 204, 204, 0, 0, 0, 0 )
 
 [node name="Node2D3" type="Node2D" parent="."]
 script = ExtResource( 4 )
-fix64Number = PoolByteArray( 203, 204, 204, 76, 242, 7, 0, 0 )
+fix64Number = PoolByteArray( 22, 217, 206, 87, 147, 1, 0, 0 )
 oof = 1.0
 tests = "12340"
