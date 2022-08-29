@@ -402,10 +402,10 @@ namespace Volatile
         {
             X = new VoltVector2(
                 Fix64.Cos(rotation) * scale.x,
-                -Fix64.Sin(rotation) * scale.y
+                Fix64.Sin(rotation) * scale.x
             );
             Y = new VoltVector2(
-                Fix64.Sin(rotation) * scale.x,
+                -Fix64.Sin(rotation) * scale.y,
                 Fix64.Cos(rotation) * scale.y
             );
         }
@@ -413,18 +413,19 @@ namespace Volatile
         /// <summary>
         /// Transposes the basis
         /// </summary>
-        /// <returns>Transposed basis</returns>
         public void TransposeBasis()
         {
-            X = new VoltVector2(X.x, Y.x);
-            Y = new VoltVector2(X.y, Y.y);
+            var x = new VoltVector2(X.x, Y.x);
+            var y = new VoltVector2(X.y, Y.y);
+            X = x;
+            Y = y;
         }
 
         /// <summary>
         /// Returns the transposed basis
         /// </summary>
         /// <returns></returns>
-        public VoltTransform2D TranposedBasis()
+        public VoltTransform2D TransposedBasis()
         {
             var copy = this;
             copy.TransposeBasis();
