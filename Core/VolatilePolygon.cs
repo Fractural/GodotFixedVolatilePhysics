@@ -14,8 +14,9 @@ namespace Volatile.GodotEngine
     {
         public override VoltShape PrepareShape(VoltWorld world)
         {
+            var globalPosition = GlobalFixedPosition;
             return world.CreatePolygonWorldSpace(
-              Points,
+              Points.Select(x => x + globalPosition).ToArray(),
               Density,
               Friction,
               Restitution);
@@ -31,7 +32,24 @@ namespace Volatile.GodotEngine
         }
 
         #region Points
-        public VoltVector2[] Points { get; private set; }
+        private VoltVector2[] points;
+        public VoltVector2[] Points
+        {
+            get
+            {
+                if (Engine.EditorHint)
+                    return GetPointsFromData();
+                else
+                    return points;
+            }
+            set
+            {
+                if (Engine.EditorHint)
+                    SetPointsData(value);
+                else
+                    points = value;
+            }
+        }
         public byte[] pointsData = new byte[0];
         public VoltVector2[] GetPointsFromData()
         {
@@ -68,6 +86,7 @@ namespace Volatile.GodotEngine
 
         protected override void InitValues()
         {
+            base.InitValues();
             Points = GetPointsFromData();
         }
 

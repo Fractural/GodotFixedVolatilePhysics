@@ -35,5 +35,42 @@ namespace Volatile.GodotEngine
         {
             return new Transform2D(transform.X.ToGDVector2(), transform.Y.ToGDVector2(), transform.Origin.ToGDVector2());
         }
+
+        public static void PutFix64(this StreamPeerBuffer buffer, Fix64 fix64)
+        {
+            buffer.Put64(fix64.RawValue);
+        }
+
+        public static Fix64 GetFix64(this StreamPeerBuffer buffer)
+        {
+            return Fix64.FromRaw(buffer.Get64());
+        }
+
+        public static void PutVoltVector2(this StreamPeerBuffer buffer, VoltVector2 vector)
+        {
+            buffer.PutFix64(vector.x);
+            buffer.PutFix64(vector.y);
+        }
+
+        public static VoltVector2 GetVoltVector2(this StreamPeerBuffer buffer)
+        {
+            return new VoltVector2(buffer.GetFix64(), buffer.GetFix64());
+        }
+
+        public static void PutVoltTransform2D(this StreamPeerBuffer buffer, VoltTransform2D transform)
+        {
+            buffer.PutVoltVector2(transform.X);
+            buffer.PutVoltVector2(transform.Y);
+            buffer.PutVoltVector2(transform.Origin);
+        }
+
+        public static VoltTransform2D GetVoltTransform2D(this StreamPeerBuffer buffer)
+        {
+            return new VoltTransform2D(
+                buffer.GetVoltVector2(),
+                buffer.GetVoltVector2(),
+                buffer.GetVoltVector2()
+            );
+        }
     }
 }

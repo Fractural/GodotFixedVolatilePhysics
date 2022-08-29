@@ -3,88 +3,18 @@ using Volatile;
 using Godot.Collections;
 using Fractural;
 using FixMath.NET;
+using System.Linq;
 
 namespace Volatile.GodotEngine
 {
-    [Tool]
-    public class VolatileCircle : VolatileShape
-    {
-        public override VoltShape PrepareShape(VoltWorld world)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override Vector2 ComputeTrueCenterOfMass()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        #region Radius
-        protected Fix64 radius;
-        public Fix64 Radius
-        {
-            get
-            {
-                if (Engine.EditorHint)
-                    return GetRadiusFromData();
-                else
-                    return radius;
-            }
-            set
-            {
-                if (Engine.EditorHint)
-                    SetRadiusData(value);
-                else
-                    radius = value;
-            }
-        }
-        public byte[] radiusData = new byte[0];
-        public Fix64 GetRadiusFromData()
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutData(radiusData);
-            buffer.Seek(0);
-            return Fix64.FromRaw(buffer.Get64());
-        }
-        public void SetRadiusData(float radius) => SetRadiusData(radius);
-        public void SetRadiusData(Fix64 radius)
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.Put64(radius.RawValue);
-        }
-        public float _Radius
-        {
-            get => (float)GetRadiusFromData();
-            set => SetRadiusData(value);
-        }
-        #endregion
-
-        public override Array _GetPropertyList()
-        {
-            var builder = new PropertyListBuilder(base._GetPropertyList());
-            builder.AddItem(
-                name: nameof(radiusData),
-                type: Variant.Type.RawArray,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Storage
-            );
-            builder.AddItem(
-                name: nameof(_Radius),
-                type: Variant.Type.Real,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Editor
-            );
-            return builder.Build();
-        }
-    }
-
     [Tool]
     public class VolatileRect : VolatileShape
     {
         public override VoltShape PrepareShape(VoltWorld world)
         {
+            var globalPosition = GlobalFixedPosition;
             return world.CreatePolygonWorldSpace(
-              Rect.Points,
+              Rect.Points.Select(x => x + globalPosition).ToArray(),
               Density,
               Friction,
               Restitution);
@@ -95,8 +25,31 @@ namespace Volatile.GodotEngine
             return _Rect.GetCenter();
         }
 
+        protected override void InitValues()
+        {
+            base.InitValues();
+            Rect = GetRectFromData();
+        }
+
         #region Rect
-        public VoltRect2 Rect;
+        private VoltRect2 rect;
+        public VoltRect2 Rect
+        {
+            get
+            {
+                if (Engine.EditorHint)
+                    return GetRectFromData();
+                else
+                    return rect;
+            }
+            set
+            {
+                if (Engine.EditorHint)
+                    SetRectData(value);
+                else
+                    rect = value;
+            }
+        }
         private byte[] rectData;
         public VoltRect2 GetRectFromData()
         {
