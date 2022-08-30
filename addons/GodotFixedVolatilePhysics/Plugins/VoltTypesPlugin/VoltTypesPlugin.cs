@@ -12,8 +12,7 @@ namespace Volatile.GodotEngine.Plugin
 
         public override void Load()
         {
-            GD.Print("adding custom inspector plugin");
-            Plugin.AddManagedInspectorPlugin(new VoltTypesInspectorPlugin());
+            Plugin.AddManagedInspectorPlugin(new VoltTypesInspectorPlugin(Plugin));
         }
     }
 }

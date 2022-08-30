@@ -7,7 +7,7 @@ using System.Linq;
 namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
-    public class Fix64EditorProperty : VoltTypeEditorProperty<Fix64, Fix64Serializer>
+    public class Fix64EditorProperty : SerializedEditorProperty<Fix64, Fix64Serializer>
     {
         private EditorSpinSlider spin;
 
@@ -43,14 +43,26 @@ namespace Volatile.GodotEngine.Plugin
         }
     }
 
-    public class Fix64EditorPropertyParser : VoltTypeEditorPropertyParser
+    public class Fix64EditorPropertyParser : ExtendedEditorPropertyParser
     {
-        public override bool ParseProperty(EditorInspectorPlugin inspectorPlugin, Object @object, int type, string path, int hint, string hintText, int usage, string[] args)
+        public override ExtendedEditorProperty ParseProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.Fix64)
             {
-                double min = double.Parse(args.TryGet(1, "0"));
-                double max = double.Parse(args.TryGet(2, "0"));
+                bool hasRange = true;
+
+                double min = 0;
+                if (args.TryGet(1, out string minString))
+                    min = double.Parse(minString);
+                else
+                    hasRange = false;
+
+                double max = 0;
+                if (args.TryGet(2, out string maxString))
+                    max = double.Parse(maxString);
+                else
+                    hasRange = false;
+
                 double step = double.Parse(args.TryGet(3, "0.0001"));
 
                 bool orLesser = args.Any(x => x == "or_lesser");
@@ -58,13 +70,25 @@ namespace Volatile.GodotEngine.Plugin
                 bool slider = args.Any(x => x == "slider");
                 bool expRange = args.Any(x => x == "exp_range");
 
+                if (!hasRange)
+                {
+                    orLesser = true;
+                    orGreater = true;
+                }
+
                 var editorProperty = new Fix64EditorProperty();
                 editorProperty.Setup(min, max, step, !slider, expRange, orGreater, orLesser);
 
-                inspectorPlugin.AddPropertyEditor(path, editorProperty);
-                return true;
+                return editorProperty;
             }
-            return false;
+            return null;
+        }
+
+        public override byte[] GetDefaultBytes(string type)
+        {
+            if (type == VoltPropertyHint.Fix64)
+                return Fix64Serializer.Global.Serialize(Fix64.Zero);
+            return null;
         }
     }
 }

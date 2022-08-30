@@ -30,6 +30,11 @@ namespace Volatile
         public static VoltVector2 Zero => new VoltVector2();
         public static VoltVector2 One => new VoltVector2(Fix64.One, Fix64.One);
 
+        public static VoltVector2 From(string x, string y)
+        {
+            return new VoltVector2(Fix64.From(x), Fix64.From(y));
+        }
+
         public static Fix64 Dot(VoltVector2 a, VoltVector2 b)
         {
             return (a.x * b.x) + (a.y * b.y);
