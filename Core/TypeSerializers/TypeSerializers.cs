@@ -10,7 +10,7 @@ namespace Volatile.GodotEngine
         protected override void InternalSerialize(StreamPeerBuffer buffer, Fix64 value) => buffer.PutFix64(value);
         protected override Fix64 InternalDeserialize(StreamPeerBuffer buffer) => buffer.GetFix64();
 
-        public class ArraySerializer : ArraySerializer<Fix64Serializer>
+        public class ArraySerializer : Array<Fix64Serializer>
         {
             public static readonly ArraySerializer Global = new ArraySerializer();
         }
@@ -23,7 +23,7 @@ namespace Volatile.GodotEngine
         protected override void InternalSerialize(StreamPeerBuffer buffer, VoltVector2 value) => buffer.PutVoltVector2(value);
         protected override VoltVector2 InternalDeserialize(StreamPeerBuffer buffer) => buffer.GetVoltVector2();
 
-        public class ArraySerializer : ArraySerializer<VoltVector2Serializer>
+        public class ArraySerializer : Array<VoltVector2Serializer>
         {
             public static readonly ArraySerializer Global = new ArraySerializer();
         }
@@ -36,7 +36,7 @@ namespace Volatile.GodotEngine
         protected override void InternalSerialize(StreamPeerBuffer buffer, VoltTransform2D value) => buffer.PutVoltTransform2D(value);
         protected override VoltTransform2D InternalDeserialize(StreamPeerBuffer buffer) => buffer.GetVoltTransform2D();
 
-        public class ArraySerializer : ArraySerializer<VoltTransform2DSerializer>
+        public class ArraySerializer : Array<VoltTransform2DSerializer>
         {
             public static readonly ArraySerializer Global = new ArraySerializer();
         }
