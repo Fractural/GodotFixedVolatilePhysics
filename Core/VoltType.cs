@@ -19,7 +19,10 @@ namespace Volatile.GodotEngine
         public static void Serialize(System.Type type, StreamPeerBuffer buffer, object value)
         {
             if (type.IsArray)
-                ArraySerializer.Serialize(type, buffer, value);
+            {
+                ArraySerializer.Serialize(type.GetElementType(), buffer, value);
+                return;
+            }
             foreach (var serializer in TypeSerializers)
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
                     ((IBufferSerializer)serializer).Serialize(buffer, value);
@@ -27,6 +30,8 @@ namespace Volatile.GodotEngine
         }
         public static byte[] Serialize(System.Type type, object value)
         {
+            if (type.IsArray)
+                return ArraySerializer.Serialize(type.GetElementType(), value);
             foreach (var serializer in TypeSerializers)
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
                     return ((ITypeSerializer)serializer).Serialize(value);
