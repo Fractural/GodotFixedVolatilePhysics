@@ -23,6 +23,7 @@ namespace Volatile.GodotEngine.Plugin
                 this,
                 settings.Get<int>("interface/inspector/max_array_dictionary_items_per_page"))
             );
+            Parsers.Add(new VoltRect2EditorPropertyParser());
         }
 
         public ExtendedEditorProperty GetEditorProperty(params string[] hintArgs)

@@ -1,4 +1,5 @@
 ﻿using FixMath.NET;
+using System.Text;
 using Volatile;
 
 namespace Volatile.GodotEngine
@@ -32,6 +33,11 @@ namespace Volatile.GodotEngine
         public VoltVector2 GetCenter()
         {
             return Position + Size / FIX_2;
+        }
+
+        public override string ToString()
+        {
+            return $"[Position: {Position}, Size: {Size}]";
         }
     }
 }

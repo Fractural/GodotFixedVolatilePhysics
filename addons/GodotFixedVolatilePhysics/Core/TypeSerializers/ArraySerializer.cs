@@ -22,11 +22,6 @@ namespace Volatile.GodotEngine
             return buffer.DataArray;
         }
 
-        public byte[] Serialize(object value)
-        {
-            throw new NotImplementedException();
-        }
-
         public object[] Deserialize(Type elementType, StreamPeerBuffer buffer)
         {
             var length = buffer.GetU32();

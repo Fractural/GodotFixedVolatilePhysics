@@ -7,107 +7,6 @@ using GDC = Godot.Collections;
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
 {
-    [Tool]
-    /// <summary>
-    /// Dummy class that's passed into EditorProperties in order to let them access elements from an array.
-    /// </summary>
-    public class VoltArrayPartitionedDataObject : Godot.Reference
-    {
-        [Signal]
-        public delegate void ArrayChanged(object[] newArray);
-
-        // All VoltTypes will be stored in bytes[]
-        public byte[][] PartitionedData { get; set; } = new byte[0][];
-
-
-        public VoltArrayPartitionedDataObject() { }
-
-        public override object _Get(string property)
-        {
-            if (property.BeginsWith("indices"))
-            {
-                var index = int.Parse(property.Split('/')[1]);
-
-                return PartitionedData[index];
-            }
-            return base._Get(property);
-        }
-
-        public override bool _Set(string property, object value)
-        {
-            if (property.BeginsWith("indices"))
-            {
-                var index = int.Parse(property.Split('/')[1]);
-                PartitionedData[index] = (byte[])value;
-
-                return true;
-            }
-            return base._Set(property, value);
-        }
-
-        public byte[] GetConsolidatedData()
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutU32((uint)PartitionedData.Length);
-            for (int i = 0; i < PartitionedData.Length; i++)
-            {
-                buffer.PutU8((byte)PartitionedData[i].Length);
-                buffer.PutData(PartitionedData[i]);
-            }
-            return buffer.DataArray;
-        }
-
-        public void RemoveAndInsert(int from, int to)
-        {
-            if (from == to) return;
-
-            var previous = PartitionedData[from];
-            if (from > to)
-            {
-                // to ---- from
-                for (int i = to; i <= from; i++)
-                {
-                    var temp = PartitionedData[i];
-                    PartitionedData[i] = previous;
-                    previous = temp;
-                }
-            }
-            else
-            {
-                // from ---- to
-                for (int i = to; i >= from; i--)
-                {
-                    var temp = PartitionedData[i];
-                    PartitionedData[i] = previous;
-                    previous = temp;
-                }
-            }
-        }
-
-        public void RemoveAt(int index)
-        {
-            if (index < 0 || index >= PartitionedData.Length) return;
-            var copy = new byte[PartitionedData.Length - 1][];
-            int j = 0;
-            for (int i = 0; i < PartitionedData.Length; i++)
-                if (index != i)
-                    copy[j++] = PartitionedData[i];
-            PartitionedData = copy;
-        }
-
-        public void InsertAt(int index, byte[] partition)
-        {
-            var copy = new byte[PartitionedData.Length + 1][];
-            int j = 0;
-            for (int i = 0; i < index; i++)
-                copy[j++] = PartitionedData[i];
-            copy[j++] = partition;
-            for (int i = index; i < PartitionedData.Length; i++)
-                copy[j++] = PartitionedData[i];
-            PartitionedData = copy;
-        }
-    }
-
     /// <summary>
     /// Custom EditorProperty for an array of Volt types. This only supports
     /// Arrays of the same type.
@@ -115,6 +14,106 @@ namespace Volatile.GodotEngine.Plugin
     [Tool]
     public class VoltArrayEditorProperty : ExtendedEditorProperty
     {
+        [Tool]
+        /// <summary>
+        /// Dummy class that's passed into EditorProperties in order to let them access elements from an array.
+        /// </summary>
+        public class VoltArrayPartitionedDataObject : Godot.Reference
+        {
+            [Signal]
+            public delegate void ArrayChanged(object[] newArray);
+
+            // All VoltTypes will be stored in bytes[]
+            public byte[][] PartitionedData { get; set; } = new byte[0][];
+
+
+            public VoltArrayPartitionedDataObject() { }
+
+            public override object _Get(string property)
+            {
+                if (property.BeginsWith("indices"))
+                {
+                    var index = int.Parse(property.Split('/')[1]);
+
+                    return PartitionedData[index];
+                }
+                return base._Get(property);
+            }
+
+            public override bool _Set(string property, object value)
+            {
+                if (property.BeginsWith("indices"))
+                {
+                    var index = int.Parse(property.Split('/')[1]);
+                    PartitionedData[index] = (byte[])value;
+
+                    return true;
+                }
+                return base._Set(property, value);
+            }
+
+            public byte[] GetConsolidatedData()
+            {
+                var buffer = new StreamPeerBuffer();
+                buffer.PutU32((uint)PartitionedData.Length);
+                for (int i = 0; i < PartitionedData.Length; i++)
+                {
+                    buffer.PutU8((byte)PartitionedData[i].Length);
+                    buffer.PutData(PartitionedData[i]);
+                }
+                return buffer.DataArray;
+            }
+
+            public void RemoveAndInsert(int from, int to)
+            {
+                if (from == to) return;
+
+                var previous = PartitionedData[from];
+                if (from > to)
+                {
+                    // to ---- from
+                    for (int i = to; i <= from; i++)
+                    {
+                        var temp = PartitionedData[i];
+                        PartitionedData[i] = previous;
+                        previous = temp;
+                    }
+                }
+                else
+                {
+                    // from ---- to
+                    for (int i = to; i >= from; i--)
+                    {
+                        var temp = PartitionedData[i];
+                        PartitionedData[i] = previous;
+                        previous = temp;
+                    }
+                }
+            }
+
+            public void RemoveAt(int index)
+            {
+                if (index < 0 || index >= PartitionedData.Length) return;
+                var copy = new byte[PartitionedData.Length - 1][];
+                int j = 0;
+                for (int i = 0; i < PartitionedData.Length; i++)
+                    if (index != i)
+                        copy[j++] = PartitionedData[i];
+                PartitionedData = copy;
+            }
+
+            public void InsertAt(int index, byte[] partition)
+            {
+                var copy = new byte[PartitionedData.Length + 1][];
+                int j = 0;
+                for (int i = 0; i < index; i++)
+                    copy[j++] = PartitionedData[i];
+                copy[j++] = partition;
+                for (int i = index; i < PartitionedData.Length; i++)
+                    copy[j++] = PartitionedData[i];
+                PartitionedData = copy;
+            }
+        }
 
         private string[] elementTypeArgs;
         private string ElementType => elementTypeArgs[0];
@@ -295,6 +294,7 @@ namespace Volatile.GodotEngine.Plugin
 
                         // Add editor properties
                         var prop = inspectorPlugin.GetEditorProperty(elementTypeArgs);
+                        prop.SupressFocusable = true;
                         prop.ManualEditedObject = DataObject;
                         prop.ManualEditedProperty = $"indices/{i}";
                         prop.Connect("property_changed", this, nameof(OnPropertyChanged));
@@ -322,10 +322,13 @@ namespace Volatile.GodotEngine.Plugin
                         deleteButton.Icon = theme.GetIcon("Remove", "EditorIcons");
                         deleteButton.Connect("pressed", this, nameof(OnDeleteButtonPressed), new GDC.Array(i));
 
+                        var hFlow = new VFlowContainer();
+                        hFlow.AddChild(addButton);
+                        hFlow.AddChild(deleteButton);
+
                         propHBox.AddChild(reorderButton);
                         propHBox.AddChild(prop);
-                        propHBox.AddChild(addButton);
-                        propHBox.AddChild(deleteButton);
+                        propHBox.AddChild(hFlow);
 
                         elementControlsContainer.AddChild(propHBox);
                     }
@@ -482,7 +485,7 @@ namespace Volatile.GodotEngine.Plugin
 
         public override byte[] GetDefaultBytes(string type)
         {
-            return null;
+            return ArraySerializer.Global.Serialize(typeof(object), new object[0]);
         }
     }
 }

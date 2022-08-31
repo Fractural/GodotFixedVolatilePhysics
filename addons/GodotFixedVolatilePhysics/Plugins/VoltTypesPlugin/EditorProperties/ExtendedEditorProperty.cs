@@ -6,6 +6,7 @@ namespace Volatile.GodotEngine.Plugin
     [Tool]
     public abstract class ExtendedEditorProperty : EditorProperty
     {
+        public bool SupressFocusable { get; set; } = false;
         public string ManualEditedProperty { get; set; } = "";
         public Godot.Object ManualEditedObject { get; set; }
         public new string GetEditedProperty()
@@ -29,7 +30,7 @@ namespace Volatile.GodotEngine.Plugin
             // inside the inspector. (ie. being
             // using inside of an array editor
             // property)
-            if (ManualEditedObject != null)
+            if (SupressFocusable)
                 base.AddFocusable(control);
         }
 
