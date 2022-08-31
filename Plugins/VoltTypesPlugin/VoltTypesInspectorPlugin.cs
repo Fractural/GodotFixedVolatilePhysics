@@ -68,21 +68,5 @@ namespace Volatile.GodotEngine.Plugin
             return base.ParseProperty(@object, type, path, hint, hintText, usage);
         }
     }
-
-    public static class VoltPropertyHint
-    {
-        public const string Array = nameof(Array);
-        public const string Fix64 = nameof(Fix64);
-        public const string VoltVector2 = nameof(VoltVector2);
-        public const string VoltTransform2D = nameof(VoltTransform2D);
-
-        public static readonly string[] Values =
-        {
-            Array,
-            Fix64,
-            VoltVector2,
-            VoltTransform2D
-        };
-    }
 }
 #endif
