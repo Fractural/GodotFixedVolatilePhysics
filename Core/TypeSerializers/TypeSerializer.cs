@@ -41,7 +41,6 @@ namespace Volatile.GodotEngine
 
             protected override void InternalSerialize(StreamPeerBuffer buffer, T[] value)
             {
-                GD.Print("global array serialized: " + string.Join(", ", value));
                 buffer.PutU32((uint)value.Length);
                 for (int i = 0; i < value.Length; i++)
                 {

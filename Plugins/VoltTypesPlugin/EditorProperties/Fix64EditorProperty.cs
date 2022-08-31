@@ -43,8 +43,10 @@ namespace Volatile.GodotEngine.Plugin
         }
     }
 
+    [Tool]
     public class Fix64EditorPropertyParser : ExtendedEditorPropertyParser
     {
+        public Fix64EditorPropertyParser() { }
         public override ExtendedEditorProperty ParseProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.Fix64)

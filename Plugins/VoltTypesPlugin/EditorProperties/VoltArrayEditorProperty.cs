@@ -2,6 +2,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using GDC = Godot.Collections;
 
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
@@ -17,7 +18,7 @@ namespace Volatile.GodotEngine.Plugin
 
         // All VoltTypes will be stored in bytes[]
         public byte[][] PartitionedData { get; set; } = new byte[0][];
-        public int IndexOffset { get; set; } = 0;
+
 
         public VoltArrayPartitionedDataObject() { }
 
@@ -25,10 +26,8 @@ namespace Volatile.GodotEngine.Plugin
         {
             if (property.BeginsWith("indices"))
             {
-                //GD.Print("getting proc");
-                var index = int.Parse(property.Split('/')[1]) - IndexOffset;
+                var index = int.Parse(property.Split('/')[1]);
 
-                //GD.Print("getting index[" + index + "]");
                 return PartitionedData[index];
             }
             return base._Get(property);
@@ -38,11 +37,9 @@ namespace Volatile.GodotEngine.Plugin
         {
             if (property.BeginsWith("indices"))
             {
-                GD.Print("setting proc");
-                var index = int.Parse(property.Split('/')[1]) - IndexOffset;
+                var index = int.Parse(property.Split('/')[1]);
                 PartitionedData[index] = (byte[])value;
 
-                GD.Print("setting index[" + index + "]");
                 return true;
             }
             return base._Set(property, value);
@@ -58,6 +55,56 @@ namespace Volatile.GodotEngine.Plugin
                 buffer.PutData(PartitionedData[i]);
             }
             return buffer.DataArray;
+        }
+
+        public void RemoveAndInsert(int from, int to)
+        {
+            if (from == to) return;
+
+            var previous = PartitionedData[from];
+            if (from > to)
+            {
+                // to ---- from
+                for (int i = to; i <= from; i++)
+                {
+                    var temp = PartitionedData[i];
+                    PartitionedData[i] = previous;
+                    previous = temp;
+                }
+            }
+            else
+            {
+                // from ---- to
+                for (int i = to; i >= from; i--)
+                {
+                    var temp = PartitionedData[i];
+                    PartitionedData[i] = previous;
+                    previous = temp;
+                }
+            }
+        }
+
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= PartitionedData.Length) return;
+            var copy = new byte[PartitionedData.Length - 1][];
+            int j = 0;
+            for (int i = 0; i < PartitionedData.Length; i++)
+                if (index != i)
+                    copy[j++] = PartitionedData[i];
+            PartitionedData = copy;
+        }
+
+        public void InsertAt(int index, byte[] partition)
+        {
+            var copy = new byte[PartitionedData.Length + 1][];
+            int j = 0;
+            for (int i = 0; i < index; i++)
+                copy[j++] = PartitionedData[i];
+            copy[j++] = partition;
+            for (int i = index; i < PartitionedData.Length; i++)
+                copy[j++] = PartitionedData[i];
+            PartitionedData = copy;
         }
     }
 
@@ -81,16 +128,18 @@ namespace Volatile.GodotEngine.Plugin
         private Button editButton;
         private VBoxContainer bottomVBox;
 
-        private int itemsPerPage;
+        private int pageLength;
         private int pageIndex = 0;
 
-        private VoltTypesInspectorPlugin plugin;
+        private VoltTypesInspectorPlugin inspectorPlugin;
+        private EditorInterface editorInterface;
 
         public VoltArrayEditorProperty() { }
-        public VoltArrayEditorProperty(string[] elementTypeArgs, VoltTypesInspectorPlugin plugin, int itemsPerPage)
+        public VoltArrayEditorProperty(string[] elementTypeArgs, EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int itemsPerPage)
         {
-            this.plugin = plugin;
-            this.itemsPerPage = itemsPerPage;
+            this.editorInterface = editorInterface;
+            this.inspectorPlugin = inspectorPlugin;
+            this.pageLength = itemsPerPage;
             this.elementTypeArgs = elementTypeArgs;
 
             editButton = new Button();
@@ -121,17 +170,18 @@ namespace Volatile.GodotEngine.Plugin
                 if (i < DataObject.PartitionedData.Length)
                     newPartition[i] = DataObject.PartitionedData[i];
                 else
-                    newPartition[i] = plugin.GetDefaultBytesForType(ElementType);
+                    newPartition[i] = inspectorPlugin.GetDefaultBytesForType(ElementType);
             }
             DataObject.PartitionedData = newPartition;
 
-            EmitChanged(GetEditedProperty(), DataObject.GetConsolidatedData());
+            EmitChanged();
         }
 
-        private void OnPageChanged(double value)
+        private void OnPageChanged(int value)
         {
-            pageIndex = (int)value;
-            DataObject.IndexOffset = pageIndex * itemsPerPage;
+            if (updating || pageIndex == value) return;
+
+            pageIndex = value;
 
             UpdateProperty();
         }
@@ -142,7 +192,7 @@ namespace Volatile.GodotEngine.Plugin
             if (property.BeginsWith("indices"))
             {
                 DataObject._Set(property, value);
-                EmitChanged(GetEditedProperty(), DataObject.GetConsolidatedData());
+                EmitChanged();
             }
         }
 
@@ -202,16 +252,20 @@ namespace Volatile.GodotEngine.Plugin
                 }
 
                 sizeSpin.Value = length;
-                pageSpin.MaxValue = length / itemsPerPage;
+                pageSpin.MaxValue = length / pageLength;
                 var partitionedData = new byte[length][];
 
-                var start = pageIndex * itemsPerPage;
-                var end = start + itemsPerPage;
+                var start = pageIndex * pageLength;
+                var end = start + pageLength;
                 if (end > length)
                     end = (int)length;
 
                 foreach (Node prop in elementControlsContainer.GetChildren())
+                {
+                    if (prop == reorderSelectedElementHBox) continue;
                     prop.Free();
+                }
+
                 var props = new List<ExtendedEditorProperty>();
                 for (int i = 0; i < length; i++)
                 {
@@ -224,34 +278,64 @@ namespace Volatile.GodotEngine.Plugin
                     if (i >= start && i < end)
                     {
                         // Only add children for the page
+                        if (Reordering)
+                        {
+                            bool reorderIsFromCurrentPage = reorderFromIndex / pageLength == pageIndex;
+                            if (reorderIsFromCurrentPage && i == reorderFromIndex)
+                            {
+                                // Don't duplicate the property that the user is moving.
+                                continue;
+                            }
+                            else if (!reorderIsFromCurrentPage && i == reorderToIndex)
+                            {
+                                // Don't create the property the moving property will take the place of
+                                continue;
+                            }
+                        }
 
                         // Add editor properties
-                        var prop = plugin.GetEditorProperty(elementTypeArgs);
+                        var prop = inspectorPlugin.GetEditorProperty(elementTypeArgs);
                         prop.ManualEditedObject = DataObject;
                         prop.ManualEditedProperty = $"indices/{i}";
                         prop.Connect("property_changed", this, nameof(OnPropertyChanged));
                         prop.Label = i.ToString();
                         props.Add(prop);
 
-
                         prop.SizeFlagsHorizontal = (int)SizeFlags.ExpandFill;
-
 
                         var theme = this.GetThemeFromParents();
 
                         var propHBox = new HBoxContainer();
+
                         var reorderButton = new Button();
                         reorderButton.Icon = theme.GetIcon("TripleBar", "EditorIcons");
+                        reorderButton.MouseDefaultCursorShape = CursorShape.Move;
+                        reorderButton.Connect("gui_input", this, nameof(OnReorderButtonGUIInput));
+                        reorderButton.Connect("button_down", this, nameof(OnReorderButtonDown), new GDC.Array(i));
+                        reorderButton.Connect("button_up", this, nameof(OnReorderButtonUp));
+
+                        var addButton = new Button();
+                        addButton.Icon = theme.GetIcon("Add", "EditorIcons");
+                        addButton.Connect("pressed", this, nameof(OnAddButtonPressed), new GDC.Array(i));
+
                         var deleteButton = new Button();
                         deleteButton.Icon = theme.GetIcon("Remove", "EditorIcons");
+                        deleteButton.Connect("pressed", this, nameof(OnDeleteButtonPressed), new GDC.Array(i));
 
                         propHBox.AddChild(reorderButton);
                         propHBox.AddChild(prop);
+                        propHBox.AddChild(addButton);
                         propHBox.AddChild(deleteButton);
 
                         elementControlsContainer.AddChild(propHBox);
                     }
                 }
+
+                if (pageSpin.Value != pageIndex)
+                    pageSpin.Value = pageIndex;
+                // Position our moved element to the correct place.
+                if (Reordering && reorderToIndex % pageLength > 0)
+                    elementControlsContainer.MoveChild(elementControlsContainer.GetChild(0), reorderToIndex % pageLength);
 
                 DataObject.PartitionedData = partitionedData;
 
@@ -263,29 +347,117 @@ namespace Volatile.GodotEngine.Plugin
             {
                 if (bottomVBox != null)
                 {
-
-                    GD.Print("out 1");
                     bottomVBox.Free();
                     SetBottomEditor(null);
                     bottomVBox = null;
                     elementControlsContainer = null;
                     sizeSpin = null;
-                    GD.Print("out 2");
+                }
+            }
+        }
+
+        private bool Reordering => reorderFromIndex >= 0;
+        private int reorderFromIndex = -1;
+        private int reorderToIndex = -1;
+        private float reorderMouseYDelta = 0;
+        private Control reorderSelectedElementHBox;
+        private Button reorderSelectedButton;
+
+        private void OnReorderButtonGUIInput(InputEvent inputEvent)
+        {
+            if (!Reordering) return;
+            if (inputEvent is InputEventMouseMotion mouseMotionEvent)
+            {
+                var size = DataObject.PartitionedData.Length;
+
+                // Cumulative mouse delta
+                reorderMouseYDelta += mouseMotionEvent.Relative.y;
+
+                // If you are out of array bounds, reset the cumulated mouse delta
+                if ((reorderToIndex == 0 && reorderMouseYDelta < 0) || (reorderToIndex == size - 1 && reorderMouseYDelta > 0))
+                {
+                    reorderMouseYDelta = 0;
+                    return;
                 }
 
+                var requiredYDistance = 20.0f * editorInterface.GetEditorScale();
+                if (Mathf.Abs(reorderMouseYDelta) > requiredYDistance)
+                {
+                    int direction = reorderMouseYDelta > 0 ? 1 : -1;
+                    reorderMouseYDelta -= requiredYDistance * direction;
+
+                    reorderToIndex += direction;
+                    if ((direction < 0 && reorderToIndex % pageLength == pageLength - 1)
+                        || (direction > 0 && reorderToIndex % pageLength == 0))
+                    {
+                        // Automatically move to the next/previous page
+                        OnPageChanged(pageIndex + direction);
+                    }
+                    elementControlsContainer.MoveChild(reorderSelectedElementHBox, reorderToIndex % pageLength);
+                    editorInterface.GetInspector().EnsureControlVisible(reorderSelectedElementHBox);
+                }
             }
+        }
+
+        private void OnReorderButtonDown(int index)
+        {
+            reorderFromIndex = index;
+            reorderToIndex = index;
+            reorderSelectedElementHBox = elementControlsContainer.GetChild<Control>(index % pageLength);
+            reorderSelectedButton = reorderSelectedElementHBox.GetChild<Button>(0);
+            // Might have to set to invisible if this doesn't work
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
+
+        private void OnReorderButtonUp()
+        {
+            if (reorderFromIndex != reorderToIndex)
+            {
+                DataObject.RemoveAndInsert(reorderFromIndex, reorderToIndex);
+                EmitChanged();
+            }
+
+            reorderFromIndex = -1;
+            reorderToIndex = -1;
+            reorderMouseYDelta = 0;
+
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+            reorderSelectedButton.WarpMouse(reorderSelectedButton.RectSize / 2f);
+
+            reorderSelectedElementHBox = null;
+            reorderSelectedButton = null;
+        }
+
+        private void OnAddButtonPressed(int index)
+        {
+            DataObject.InsertAt(index, inspectorPlugin.GetDefaultBytesForType(ElementType));
+            EmitChanged();
+        }
+
+        private void OnDeleteButtonPressed(int index)
+        {
+            DataObject.RemoveAt(index);
+            EmitChanged();
+        }
+
+        private void EmitChanged()
+        {
+            EmitChanged(GetEditedProperty(), DataObject.GetConsolidatedData());
         }
     }
 
+    [Tool]
     public class VoltArrayEditorPropertyParser : ExtendedEditorPropertyParser
     {
-        public int itemsPerPage;
-        public VoltTypesInspectorPlugin plugin;
+        private int itemsPerPage;
+        private VoltTypesInspectorPlugin inspectorPlugin;
+        private EditorInterface editorInterface;
 
         public VoltArrayEditorPropertyParser() { }
-        public VoltArrayEditorPropertyParser(VoltTypesInspectorPlugin plugin, int itemsPerPage)
+        public VoltArrayEditorPropertyParser(EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int itemsPerPage)
         {
-            this.plugin = plugin;
+            this.editorInterface = editorInterface;
+            this.inspectorPlugin = inspectorPlugin;
             this.itemsPerPage = itemsPerPage;
         }
 
@@ -304,7 +476,7 @@ namespace Volatile.GodotEngine.Plugin
         public override ExtendedEditorProperty ParseProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.Array && args.Length >= 2)
-                return new VoltArrayEditorProperty(args.Skip(1).ToArray(), plugin, itemsPerPage);
+                return new VoltArrayEditorProperty(args.Skip(1).ToArray(), editorInterface, inspectorPlugin, itemsPerPage);
             return null;
         }
 

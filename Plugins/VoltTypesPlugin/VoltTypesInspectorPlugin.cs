@@ -1,6 +1,7 @@
 ﻿using FixMath.NET;
 using Godot;
 using Fractural.Utils;
+using GDC = Godot.Collections;
 
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
@@ -8,18 +9,20 @@ namespace Volatile.GodotEngine.Plugin
     [Tool]
     public class VoltTypesInspectorPlugin : EditorInspectorPlugin
     {
-        public ExtendedEditorPropertyParser[] Parsers { get; private set; }
+        public GDC.Array<ExtendedEditorPropertyParser> Parsers { get; private set; } = new GDC.Array<ExtendedEditorPropertyParser>();
 
         public VoltTypesInspectorPlugin() { }
         public VoltTypesInspectorPlugin(EditorPlugin plugin)
         {
             var settings = plugin.GetEditorInterface().GetEditorSettings();
 
-            Parsers = new ExtendedEditorPropertyParser[]{
-                new Fix64EditorPropertyParser(),
-                new VoltVector2EditorPropertyParser(),
-                new VoltArrayEditorPropertyParser(this, settings.Get<int>("interface/inspector/max_array_dictionary_items_per_page")),
-            };
+            Parsers.Add(new Fix64EditorPropertyParser());
+            Parsers.Add(new VoltVector2EditorPropertyParser());
+            Parsers.Add(new VoltArrayEditorPropertyParser(
+                plugin.GetEditorInterface(),
+                this,
+                settings.Get<int>("interface/inspector/max_array_dictionary_items_per_page"))
+            );
         }
 
         public ExtendedEditorProperty GetEditorProperty(params string[] hintArgs)
