@@ -7,11 +7,11 @@ namespace Volatile.GodotEngine
     public class Test : Node2D
     {
         [Export(PropertyHint.None, VoltPropertyHint.Fix64)]
-        public byte[] fix64Number = Fix64Serializer.Global.Serialize(Fix64.From("3384.4390"));
+        public byte[] fix64Number = VoltType.Serialize(Fix64.From("3384.4390"));
         [Export(PropertyHint.None, VoltPropertyHint.VoltVector2)]
-        public byte[] fixedVector = VoltVector2Serializer.Global.Serialize(VoltVector2.From("3.430", "-234.03999"));
+        public byte[] fixedVector = VoltType.Serialize(VoltVector2.From("3.430", "-234.03999"));
         [Export(PropertyHint.None, VoltPropertyHint.Array + "," + VoltPropertyHint.Fix64)]
-        public byte[] fixed64Array = Fix64Serializer.ArraySerializer.Global.Serialize(new[]
+        public byte[] fixed64Array = VoltType.Serialize(new[]
         {
             Fix64.From("303.43003"),
             Fix64.From("40.34939"),
@@ -19,7 +19,7 @@ namespace Volatile.GodotEngine
             Fix64.From("23.34029"),
         });
         [Export(PropertyHint.None, VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2)]
-        public byte[] fixedVectorArray = VoltVector2Serializer.ArraySerializer.Global.Serialize(new[]
+        public byte[] fixedVectorArray = VoltType.Serialize(new[]
         {
             VoltVector2.From("303.43003", "230.3409"),
             VoltVector2.From("40.34939", "9348.2340"),

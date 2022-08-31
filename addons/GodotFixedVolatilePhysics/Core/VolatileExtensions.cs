@@ -72,5 +72,34 @@ namespace Volatile.GodotEngine
                 buffer.GetVoltVector2()
             );
         }
+
+        public static void PutVoltRect2(this StreamPeerBuffer buffer, VoltRect2 rect)
+        {
+            buffer.PutVoltVector2(rect.Position);
+            buffer.PutVoltVector2(rect.Size);
+        }
+
+        public static VoltRect2 GetVoltRect2(this StreamPeerBuffer buffer)
+        {
+            return new VoltRect2(buffer.GetVoltVector2(), buffer.GetVoltVector2());
+        }
+
+        public static void PutVoltMatrix(this StreamPeerBuffer buffer, VoltMatrix matrix)
+        {
+            buffer.Put32(matrix.Rows);
+            buffer.Put32(matrix.Columns);
+            for (int row = 0; row < matrix.Rows; row++)
+                for (int col = 0; col < matrix.Columns; col++)
+                    buffer.PutFix64(matrix[row, col]);
+        }
+
+        public static VoltMatrix GetVoltMatrix(this StreamPeerBuffer buffer)
+        {
+            var matrix = new VoltMatrix(buffer.Get32(), buffer.Get32());
+            for (int row = 0; row < matrix.Rows; row++)
+                for (int col = 0; col < matrix.Columns; col++)
+                    matrix[row, col] = buffer.GetFix64();
+            return matrix;
+        }
     }
 }

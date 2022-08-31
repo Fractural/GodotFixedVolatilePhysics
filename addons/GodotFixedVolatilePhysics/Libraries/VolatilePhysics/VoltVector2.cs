@@ -87,6 +87,16 @@ namespace Volatile
             return new VoltVector2(b.x * a, b.y * a);
         }
 
+        public static VoltVector2 operator /(VoltVector2 a, Fix64 b)
+        {
+            return new VoltVector2(a.x / b, a.y / b);
+        }
+
+        public static VoltVector2 operator /(Fix64 a, VoltVector2 b)
+        {
+            return new VoltVector2(b.x / a, b.y / a);
+        }
+
         public static VoltVector2 operator +(VoltVector2 a, VoltVector2 b)
         {
             return new VoltVector2(a.x + b.x, a.y + b.y);

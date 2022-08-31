@@ -1,4 +1,5 @@
-﻿using Volatile;
+﻿using FixMath.NET;
+using Volatile;
 
 namespace Volatile.GodotEngine
 {
@@ -25,5 +26,12 @@ namespace Volatile.GodotEngine
             BottomRight,
             BottomLeft
         };
+
+        private static readonly Fix64 FIX_2 = Fix64.From(2);
+
+        public VoltVector2 GetCenter()
+        {
+            return Position + Size / FIX_2;
+        }
     }
 }
