@@ -64,8 +64,10 @@ namespace Volatile.GodotEngine.Plugin
         }
     }
 
+    [Tool]
     public class VoltVector2EditorPropertyParser : ExtendedEditorPropertyParser
     {
+        public VoltVector2EditorPropertyParser() { }
         public override ExtendedEditorProperty ParseProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltVector2)
