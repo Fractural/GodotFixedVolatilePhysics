@@ -47,28 +47,21 @@ namespace Volatile.GodotEngine.Plugin
         private void OnPropertyChanged(string property, object value, string field, bool changing)
         {
             if (updating) return;
-            GD.Print("updating " + valueCopy);
             switch (property)
             {
                 case "position":
-                    GD.Print("Real update position");
                     valueCopy.Position = positionProperty.ManualValue;
                     break;
                 case "size":
-                    GD.Print("real update size");
                     valueCopy.Size = sizeProperty.ManualValue;
                     break;
             }
-            GD.Print("done prop change -> prep to emit" + valueCopy);
             EmitChanged();
         }
 
         private void EmitChanged()
         {
-            GD.Print("emitting");
             EmitChanged(GetEditedProperty(), VoltRect2Serializer.Global.Serialize(valueCopy));
-
-            GD.Print("emitting done");
         }
     }
 
