@@ -3,14 +3,21 @@ using Volatile;
 using Godot.Collections;
 using Fractural;
 using FixMath.NET;
+using System;
 
 namespace Volatile.GodotEngine
 {
     [Tool]
-    public abstract class VolatileShape : VoltNode2D
+    public class VolatileShape : VoltNode2D
     {
-        public abstract VoltShape PrepareShape(VoltWorld world);
-        public abstract Vector2 ComputeGlobalCenterOfMass();
+        public virtual VoltShape PrepareShape(VoltWorld world)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual Vector2 ComputeGlobalCenterOfMass()
+        {
+            throw new NotImplementedException();
+        }
 
         public override void _Ready()
         {
@@ -106,5 +113,22 @@ namespace Volatile.GodotEngine
         [Export(hintString: VoltPropertyHint.Fix64)]
         public byte[] _friction = VoltType.Serialize(VoltConfig.DEFAULT_FRICTION);
         #endregion
+
+#if TOOLS
+        [Signal]
+        public delegate void EditingChanged(bool editing);
+
+        private bool editing;
+        [Export]
+        public bool Editing
+        {
+            get => editing;
+            set
+            {
+                editing = value;
+                EmitSignal(nameof(EditingChanged), value);
+            }
+        }
+#endif
     }
 }

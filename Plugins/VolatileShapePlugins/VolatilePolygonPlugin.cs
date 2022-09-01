@@ -31,29 +31,44 @@ namespace Volatile.GodotEngine.Plugin
         public override void Edit(Godot.Object @object)
         {
             if (@object is VolatilePolygon shape)
+            {
                 editedVolatilePolygon = shape;
+                editedVolatilePolygon.Connect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
+            }
+        }
+
+        private void OnEditingChanged(bool editing)
+        {
+            Plugin.UpdateOverlays();
         }
 
         public override void MakeVisible(bool visible)
         {
             if (editedVolatilePolygon == null) return;
-            if (!visible) editedVolatilePolygon = null;
+            if (!visible && editedVolatilePolygon != null)
+            {
+                // Clean up
+                editedVolatilePolygon.Disconnect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
+                editedVolatilePolygon = null;
+            }
             Plugin.UpdateOverlays();
         }
 
         public override bool Handles(Object @object)
         {
-            return @object is VolatilePolygon polygon && polygon.Editing;
+            return @object is VolatilePolygon polygon;
         }
 
         const float CIRCLE_RADIUS = 6;
         const float STROKE_RADIUS = 2;
-        readonly Color STROKE_COLOR = Colors.DeepPink;
-        readonly Color FILL_COLOR = Colors.White;
+        readonly Color STROKE_COLOR = Palette.Main;
+        readonly Color FILL_COLOR = Palette.Blank;
+
+        private bool HasEditableVolatilePolygon => editedVolatilePolygon != null && editedVolatilePolygon.Editing && editedVolatilePolygon.Visible;
 
         public override void ForwardCanvasDrawOverViewport(Control overlay)
         {
-            if (editedVolatilePolygon == null || !editedVolatilePolygon.IsInsideTree()) return;
+            if (!HasEditableVolatilePolygon) return;
 
             var transformViewport = editedVolatilePolygon.GetViewportTransform();
             var transformGlobal = editedVolatilePolygon.GetCanvasTransform();
@@ -78,7 +93,7 @@ namespace Volatile.GodotEngine.Plugin
 
         public override bool ForwardCanvasGuiInput(InputEvent @event)
         {
-            if (editedVolatilePolygon == null || !editedVolatilePolygon.Visible) return false;
+            if (!HasEditableVolatilePolygon) return false;
 
             if (@event is InputEventMouseButton mouseButtonEvent && mouseButtonEvent.ButtonIndex == (int)ButtonList.Left)
             {
