@@ -7,6 +7,7 @@ using Fractural;
 using FixMath.NET;
 using System.Linq;
 using System.Collections.ObjectModel;
+using Volatile.GodotEngine.Plugin;
 
 namespace Volatile.GodotEngine
 {
@@ -62,8 +63,6 @@ namespace Volatile.GodotEngine
         // Note that >tempPoints fowards the unserialized value to a property named tempPoints;
         [Export(hintString: VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2 + ",>" + nameof(_PointsForward))]
         public byte[] _points;
-        [Export]
-        public bool Editing { get; set; }
 
         public Vector2[] EditorGDPoints { get; set; }
         private VoltVector2[] _PointsForward
@@ -86,13 +85,14 @@ namespace Volatile.GodotEngine
                 Points = VoltType.Deserialize<VoltVector2[]>(_points);
         }
 
+#if TOOLS
         public override void _Draw()
         {
             if (!Engine.EditorHint || EditorGDPoints == null) return;
             var points = EditorGDPoints;
             if (points.Length > 0)
             {
-                var color = Colors.DeepPink;
+                var color = Palette.Main;
                 var fill = color;
                 fill.a = 0.075f;
 
@@ -107,5 +107,6 @@ namespace Volatile.GodotEngine
                 DrawPolygon(points.ToArray(), polygonColors);
             }
         }
+#endif
     }
 }
