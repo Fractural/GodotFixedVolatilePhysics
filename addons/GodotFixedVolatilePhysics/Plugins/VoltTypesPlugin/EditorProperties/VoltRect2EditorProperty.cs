@@ -10,7 +10,7 @@ namespace Volatile.GodotEngine.Plugin
         private VoltVector2EditorProperty positionProperty;
         private VoltVector2EditorProperty sizeProperty;
 
-        protected VoltRect2 valueCopy;
+        protected VoltRect2 workingValue;
 
         public VoltRect2EditorProperty()
         {
@@ -39,9 +39,9 @@ namespace Volatile.GodotEngine.Plugin
 
         protected override void InternalUpdateProperty()
         {
-            valueCopy = Value;
-            positionProperty.UpdateProperty(valueCopy.Position);
-            sizeProperty.UpdateProperty(valueCopy.Size);
+            workingValue = Value;
+            positionProperty.UpdateProperty(workingValue.Position);
+            sizeProperty.UpdateProperty(workingValue.Size);
         }
 
         private void OnPropertyChanged(string property, object value, string field, bool changing)
@@ -50,36 +50,31 @@ namespace Volatile.GodotEngine.Plugin
             switch (property)
             {
                 case "position":
-                    valueCopy.Position = positionProperty.ManualValue;
+                    workingValue.Position = positionProperty.ManualValue;
                     break;
                 case "size":
-                    valueCopy.Size = sizeProperty.ManualValue;
+                    workingValue.Size = sizeProperty.ManualValue;
                     break;
             }
-            EmitChanged();
-        }
-
-        private void EmitChanged()
-        {
-            EmitChanged(GetEditedProperty(), VoltRect2Serializer.Global.Serialize(valueCopy));
+            Value = workingValue;
         }
     }
 
     [Tool]
-    public class VoltRect2EditorPropertyParser : ExtendedEditorPropertyParser
+    public class VoltRect2EditorPropertyParser : SerializedEditorPropertyParser
     {
         public VoltRect2EditorPropertyParser() { }
-        public override ExtendedEditorProperty ParseProperty(string[] args)
+        public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltRect2)
                 return new VoltRect2EditorProperty();
             return null;
         }
 
-        public override byte[] GetDefaultBytes(string type)
+        public override object GetDefaultObject(string[] args)
         {
-            if (type == VoltPropertyHint.VoltRect2)
-                return VoltRect2Serializer.Global.Serialize(new VoltRect2());
+            if (args.TryGet(0) == VoltPropertyHint.VoltRect2)
+                return new VoltRect2();
             return null;
         }
     }

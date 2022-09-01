@@ -1,5 +1,6 @@
 ﻿using Fractural.Plugin;
 using Godot;
+using System.Linq;
 
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
@@ -42,7 +43,7 @@ namespace Volatile.GodotEngine.Plugin
 
         public override bool Handles(Object @object)
         {
-            return @object is VolatilePolygon;
+            return @object is VolatilePolygon polygon && polygon.Editing;
         }
 
         const float CIRCLE_RADIUS = 6;
@@ -56,7 +57,7 @@ namespace Volatile.GodotEngine.Plugin
 
             var transformViewport = editedVolatilePolygon.GetViewportTransform();
             var transformGlobal = editedVolatilePolygon.GetCanvasTransform();
-            var points = editedVolatilePolygon._Points;
+            var points = editedVolatilePolygon.EditorGDPoints;
             anchors = new Anchor[points.Length];
             for (int i = 0; i < points.Length; i++)
             {
@@ -89,7 +90,7 @@ namespace Volatile.GodotEngine.Plugin
                         if (!anchor.rect.HasPoint(mouseButtonEvent.Position)) continue;
                         var undo = Plugin.GetUndoRedo();
                         undo.CreateAction("Move anchor");
-                        undo.AddUndoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._Points), editedVolatilePolygon._Points);
+                        undo.AddUndoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._points), editedVolatilePolygon._points);
                         draggedAnchor = anchor;
                         return true;
                     }
@@ -97,10 +98,10 @@ namespace Volatile.GodotEngine.Plugin
                 else if (draggedAnchor != null && !mouseButtonEvent.Pressed)
                 {
                     // End Drag
-                    DragTo(mouseButtonEvent.Position);
+                    DragTo(mouseButtonEvent.Position, true);
                     draggedAnchor = null;
                     var undo = Plugin.GetUndoRedo();
-                    undo.AddDoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._Points), editedVolatilePolygon._Points);
+                    undo.AddDoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._points), editedVolatilePolygon._points);
                     undo.CommitAction();
                     return true;
                 }
@@ -111,7 +112,6 @@ namespace Volatile.GodotEngine.Plugin
             {
                 // Dragging
                 DragTo(mouseMotionEvent.Position);
-                Plugin.UpdateOverlays();
                 return true;
             }
             if (@event.IsActionPressed("ui_cancel"))
@@ -127,14 +127,25 @@ namespace Volatile.GodotEngine.Plugin
             return false;
         }
 
-        public void DragTo(Vector2 eventPosition)
+        public void DragTo(Vector2 eventPosition, bool commit = false)
         {
             var inverseTransformViewport = editedVolatilePolygon.GetViewportTransform().AffineInverse();
             var inverseTransformGlobal = editedVolatilePolygon.GetCanvasTransform().AffineInverse();
-            var points = (Vector2[])editedVolatilePolygon._Points.Clone();
-            points[draggedAnchor.index] = inverseTransformViewport * (inverseTransformGlobal * (eventPosition - editedVolatilePolygon.GlobalPosition));
-            editedVolatilePolygon._Points = points;
-            editedVolatilePolygon.PropertyListChangedNotify();
+
+            if (commit)
+            {
+                // Commiting is only done when the drag stops, because it's really costly
+                var points = (VoltVector2[])editedVolatilePolygon.Points.Clone();
+                points[draggedAnchor.index] = ((inverseTransformViewport * (inverseTransformGlobal * eventPosition)) - editedVolatilePolygon.GlobalPosition).ToVoltVector2();
+                editedVolatilePolygon.Points = points;
+                editedVolatilePolygon.PropertyListChangedNotify();
+            }
+            else
+            {
+                editedVolatilePolygon.EditorGDPoints[draggedAnchor.index] = (inverseTransformViewport * (inverseTransformGlobal * eventPosition) - editedVolatilePolygon.GlobalPosition);
+                editedVolatilePolygon.Update();
+            }
+
             draggedAnchor.position = eventPosition;
             Plugin.UpdateOverlays();
         }

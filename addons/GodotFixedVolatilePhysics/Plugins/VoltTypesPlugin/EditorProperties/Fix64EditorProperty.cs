@@ -39,15 +39,15 @@ namespace Volatile.GodotEngine.Plugin
 
         protected override void InternalUpdateProperty()
         {
-            spin.Value = (double)TypeSerializer.Deserialize(Data);
+            spin.Value = (double)Value;
         }
     }
 
     [Tool]
-    public class Fix64EditorPropertyParser : ExtendedEditorPropertyParser
+    public class Fix64EditorPropertyParser : SerializedEditorPropertyParser
     {
         public Fix64EditorPropertyParser() { }
-        public override ExtendedEditorProperty ParseProperty(string[] args)
+        public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.Fix64)
             {
@@ -86,10 +86,10 @@ namespace Volatile.GodotEngine.Plugin
             return null;
         }
 
-        public override byte[] GetDefaultBytes(string type)
+        public override object GetDefaultObject(string[] args)
         {
-            if (type == VoltPropertyHint.Fix64)
-                return Fix64Serializer.Global.Serialize(Fix64.Zero);
+            if (args.TryGet(0) == VoltPropertyHint.Fix64)
+                return Fix64.Zero;
             return null;
         }
     }

@@ -13,49 +13,56 @@ namespace Volatile.GodotEngine
         public override VoltShape PrepareShape(VoltWorld world)
         {
             var globalPosition = GlobalFixedPosition;
+            var points = new VoltVector2[]
+            {
+                new VoltVector2(globalPosition.x + Extents.x, globalPosition.y + Extents.y),
+                new VoltVector2(globalPosition.x - Extents.x, globalPosition.y + Extents.y),
+                new VoltVector2(globalPosition.x - Extents.x, globalPosition.y - Extents.y),
+                new VoltVector2(globalPosition.x + Extents.x, globalPosition.y - Extents.y),
+            };
             return world.CreatePolygonWorldSpace(
-              Rect.Points.Select(x => x + globalPosition).ToArray(),
+              points,
               Density,
               Friction,
               Restitution);
         }
 
-        public override Vector2 ComputeTrueCenterOfMass()
+        public override Vector2 ComputeGlobalCenterOfMass()
         {
-            return Rect.GetCenter().ToGDVector2();
+            return GlobalPosition;
         }
 
         protected override void InitValues()
         {
             base.InitValues();
-            Rect = VoltType.Deserialize<VoltRect2>(_rect);
+            Extents = VoltType.Deserialize<VoltVector2>(_size);
         }
 
         #region Rect
-        private VoltRect2 rect;
-        public VoltRect2 Rect
+        private VoltVector2 size;
+        public VoltVector2 Extents
         {
             get
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<VoltRect2>(_rect);
+                    return VoltType.Deserialize<VoltVector2>(_size);
                 else
 #endif
-                    return rect;
+                    return size;
             }
             set
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    _rect = VoltType.Serialize(value);
+                    _size = VoltType.Serialize(value);
                 else
 #endif
-                    rect = value;
+                    size = value;
             }
         }
-        [Export(PropertyHint.None, VoltPropertyHint.VoltRect2)]
-        private byte[] _rect;
+        [Export(PropertyHint.None, VoltPropertyHint.VoltVector2)]
+        private byte[] _size = VoltType.Serialize(VoltVector2.One);
         #endregion
     }
 }

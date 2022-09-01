@@ -45,7 +45,7 @@ namespace Volatile.GodotEngine
         public static object Deserialize(System.Type type, byte[] data)
         {
             if (type.IsArray)
-                return ArraySerializer.Deserialize(type, data);
+                return ArraySerializer.Deserialize(type.GetElementType(), data);
             foreach (var serializer in TypeSerializers)
             {
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
@@ -57,7 +57,7 @@ namespace Volatile.GodotEngine
         public static object Deserialize(System.Type type, StreamPeerBuffer buffer)
         {
             if (type.IsArray)
-                return ArraySerializer.Deserialize(type, buffer);
+                return ArraySerializer.Deserialize(type.GetElementType(), buffer);
             foreach (var serializer in TypeSerializers)
             {
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
@@ -67,7 +67,16 @@ namespace Volatile.GodotEngine
             return null;
         }
 
-        public static T Deserialize<T>(byte[] data) => (T)Deserialize(typeof(T), data);
+        public static T Deserialize<T>(byte[] data)
+        {
+            var result = Deserialize(typeof(T), data);
+            if (result.GetType() != typeof(T))
+            {
+                GD.PrintErr("VoltType: Deserialize got " + result.GetType() + " but expected " + typeof(T));
+            }
+            return (T)result;
+        }
+
         public static T Deserialize<T>(StreamPeerBuffer buffer) => (T)Deserialize(typeof(T), buffer);
     }
 }

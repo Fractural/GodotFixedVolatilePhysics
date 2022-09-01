@@ -5,11 +5,11 @@ using Godot.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Volatile;
+using Thread = System.Threading.Thread;
 
 namespace Volatile.GodotEngine
 {
     [Tool]
-    // TODO: Finis hthis
     public class VoltNode2D : Node2D
     {
         #region FixedTransform
@@ -18,39 +18,24 @@ namespace Volatile.GodotEngine
         {
             get
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    return GetFixedTransformFromData();
+                    return VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
                 else
+#endif
                     return fixedTransform;
             }
             set
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    SetFixedTransformData(value);
+                    _fixedTransform = VoltType.Serialize(value);
                 else
+#endif
                     fixedTransform = value;
             }
         }
-        public byte[] fixedTransformData = new byte[0];
-        public VoltTransform2D GetFixedTransformFromData()
-        {
-            // Initialize the data if it's empty
-            if (fixedTransformData.Length == 0)
-            {
-                SetFixedTransformData(VoltTransform2D.Default());
-                PropertyListChangedNotify();
-            }
-            var buffer = new StreamPeerBuffer();
-            buffer.PutData(this.fixedTransformData);
-            buffer.Seek(0);
-            return buffer.GetVoltTransform2D();
-        }
-        public void SetFixedTransformData(VoltTransform2D transform)
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutVoltTransform2D(transform);
-            fixedTransformData = buffer.DataArray;
-        }
+        public byte[] _fixedTransform = VoltType.Serialize(VoltTransform2D.Default());
         #endregion
 
         public VoltVector2 FixedPosition
@@ -67,11 +52,16 @@ namespace Volatile.GodotEngine
 #if TOOLS
                 if (Engine.EditorHint)
                 {
-                    Position = FixedTransform.Origin.ToGDVector2();
-                    SetFixedTransformData(FixedTransform);
+                    Position = copy.Origin.ToGDVector2();
+                    FixedTransform = copy;
                 }
 #endif
             }
+        }
+        private Vector2 _fixedPosition
+        {
+            get => FixedPosition.ToGDVector2();
+            set => FixedPosition = value.ToVoltVector2();
         }
 
         private VoltVector2 fixedScale = VoltVector2.One;
@@ -89,6 +79,11 @@ namespace Volatile.GodotEngine
 #endif
             }
         }
+        private Vector2 _fixedScale
+        {
+            get => FixedScale.ToGDVector2();
+            set => FixedScale = value.ToVoltVector2();
+        }
 
         private Fix64 fixedRotation = Fix64.Zero;
         public Fix64 FixedRotation
@@ -104,6 +99,11 @@ namespace Volatile.GodotEngine
                     Rotation = (float)FixedRotation;
 #endif
             }
+        }
+        private float _fixedRotation
+        {
+            get => (float)FixedRotation;
+            set => FixedRotation = (Fix64)value;
         }
 
         public VoltTransform2D GlobalFixedTransform
@@ -157,13 +157,15 @@ namespace Volatile.GodotEngine
 
         public override void _Ready()
         {
-            FixedTransform = GetFixedTransformFromData();
-            fixedTransformDirty = true;
+            if (!Engine.EditorHint)
+            {
+                FixedTransform = VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
+                fixedTransformDirty = true;
 
-            UpdateFloatTransform();
+                UpdateFloatTransform();
+            }
 
             previousTransform = Transform;
-
             SetNotifyTransform(true);
         }
 
@@ -173,9 +175,6 @@ namespace Volatile.GodotEngine
             {
                 case NotificationTransformChanged:
                     UpdateFloatTransform();
-                    break;
-                case NotificationEnterTree:
-                    GetGlobalTransform();
                     break;
             }
         }
@@ -191,16 +190,36 @@ namespace Volatile.GodotEngine
             }
         }
 
+#if TOOLS
         private Transform2D previousTransform;
-
+        private const float updateDelay = 0.5f;
+        private float updateDelayTime = 0;
+        private bool updateDelaying = false;
+#endif
         public override void _Process(float delta)
         {
+#if TOOLS
             if (Engine.EditorHint && !Transform.IsEqualApprox(previousTransform))
             {
-                UpdateFixedTransform(Transform.ToVoltTransform2D());
-                UpdateFloatTransform();
+                updateDelayTime = updateDelay;
                 previousTransform = Transform;
+                updateDelaying = true;
             }
+            else
+            {
+                if (updateDelaying)
+                {
+                    if (updateDelayTime > 0)
+                        updateDelayTime -= delta;
+                    else if (updateDelayTime < 0)
+                    {
+                        UpdateFixedTransform(Transform.ToVoltTransform2D());
+                        UpdateFloatTransform();
+                        updateDelaying = false;
+                    }
+                }
+            }
+#endif
         }
 
         private void UpdateFixedTransformRotationAndScale()
@@ -231,10 +250,41 @@ namespace Volatile.GodotEngine
         {
             var builder = new PropertyListBuilder(base._GetPropertyList());
             builder.AddItem(
-                name: nameof(fixedTransformData),
+                name: "VoltNode2D",
+                type: Variant.Type.Nil,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Category
+            );
+            builder.AddItem(
+                name: "Fixed Transform",
+                type: Variant.Type.Nil,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Group
+            );
+            builder.AddItem(
+                name: nameof(_fixedTransform),
                 type: Variant.Type.RawArray,
                 hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Storage
+                hintString: VoltPropertyHint.VoltTransform2D,
+                usage: PropertyUsageFlags.Default
+            );
+            builder.AddItem(
+                name: nameof(_fixedPosition),
+                type: Variant.Type.Vector2,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Editor
+            );
+            builder.AddItem(
+                name: nameof(_fixedScale),
+                type: Variant.Type.Vector2,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Editor
+            );
+            builder.AddItem(
+                name: nameof(_fixedRotation),
+                type: Variant.Type.Real,
+                hint: PropertyHint.None,
+                usage: PropertyUsageFlags.Editor
             );
             return builder.Build();
         }

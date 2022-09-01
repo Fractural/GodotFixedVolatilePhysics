@@ -1,14 +1,25 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=1]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/Test.cs" type="Script" id=4]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Test" type="Node2D" parent="."]
-position = Vector2( 39, 96 )
+position = Vector2( 46.6128, 100.26 )
 script = ExtResource( 4 )
-fixed64Array = PoolByteArray( 4, 0, 0, 0, 8, 50, 114, 22, 110, 47, 1, 0, 0, 8, 127, 159, 113, 89, 40, 0, 0, 0, 8, 139, 108, 231, 59, 132, 36, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0 )
+fixed64Array = PoolByteArray( 4, 0, 0, 0, 8, 98, 16, 88, 89, 2, 0, 0, 0, 8, 0, 0, 0, 0, 142, 32, 0, 0, 8, 9, 104, 34, 60, 92, 0, 0, 0, 8, 0, 0, 0, 0, 223, 187, 11, 2 )
 fixedVectorArray = PoolByteArray( 3, 0, 0, 0, 16, 50, 114, 22, 110, 47, 1, 0, 0, 239, 56, 69, 87, 230, 0, 0, 0, 16, 127, 159, 113, 89, 40, 0, 0, 0, 139, 108, 231, 59, 132, 36, 0, 0, 16, 9, 104, 34, 60, 9, 0, 0, 0, 200, 36, 35, 87, 24, 0, 0, 0 )
 voltRectArray = PoolByteArray( 2, 0, 0, 0, 32, 9, 104, 34, 60, 18, 36, 0, 0, 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 0, 0, 103, 0, 0, 0, 9, 104, 34, 60, 93, 0, 0, 0, 32, 61, 10, 215, 99, 92, 0, 0, 0, 0, 0, 0, 0, 45, 9, 0, 0, 0, 0, 0, 0, 243, 16, 0, 0, 0, 0, 0, 0, 195, 207, 255, 255 )
 voltRect = PoolByteArray( 160, 240, 35, 60, 29, 0, 0, 0, 204, 204, 204, 76, 214, 3, 0, 0, 0, 0, 0, 64, 166, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 tests = "asdfasdf"
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 1.38655, 2.48868 )
+script = ExtResource( 1 )
+Editing = true
+_points = PoolByteArray( 6, 0, 0, 0, 16, 0, 128, 67, 180, 3, 0, 0, 0, 0, 120, 213, 97, 4, 0, 0, 0, 16, 0, 0, 18, 41, 0, 0, 0, 0, 0, 168, 157, 163, 3, 0, 0, 0, 16, 0, 16, 210, 245, 254, 255, 255, 255, 0, 160, 165, 201, 1, 0, 0, 0, 16, 0, 176, 167, 85, 2, 0, 0, 0, 0, 248, 79, 255, 253, 255, 255, 255, 16, 0, 96, 215, 82, 5, 0, 0, 0, 0, 72, 103, 241, 255, 255, 255, 255, 16, 0, 64, 17, 34, 5, 0, 0, 0, 0, 104, 234, 9, 2, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 245, 98, 1, 0, 0, 0, 0, 64, 26, 125, 2, 0, 0, 0 )
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2( 2.62821, -2.17507 )

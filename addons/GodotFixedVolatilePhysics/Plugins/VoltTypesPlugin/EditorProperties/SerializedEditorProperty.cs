@@ -4,9 +4,19 @@ using System;
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
 {
-    [Tool]
-    public abstract class SerializedEditorProperty<T, TTypeSerializer> : ExtendedEditorProperty where TTypeSerializer : TypeSerializer<T>, new()
+    public interface ISerializedEditorProperty
     {
+        event Action<object> ManualValueChanged;
+        object ManualValue { get; set; }
+        bool UseManualValue { get; set; }
+    }
+
+    [Tool]
+    public abstract class SerializedEditorProperty<T, TTypeSerializer> : ExtendedEditorProperty, ISerializedEditorProperty where TTypeSerializer : TypeSerializer<T>, new()
+    {
+        public event Action<object> ManualValueChanged;
+        object ISerializedEditorProperty.ManualValue { get => ManualValue; set => ManualValue = (T)value; }
+
         public T ManualValue { get; set; }
         public bool UseManualValue { get; set; } = false;
 
@@ -37,6 +47,7 @@ namespace Volatile.GodotEngine.Plugin
         public void UpdateProperty(T value)
         {
             ManualValue = value;
+            ManualValueChanged?.Invoke(ManualValue);
             UpdateProperty();
         }
     }
