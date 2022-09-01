@@ -6,6 +6,7 @@ using Fractural.Utils;
 using Fractural;
 using FixMath.NET;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace Volatile.GodotEngine
 {
@@ -22,13 +23,14 @@ namespace Volatile.GodotEngine
               Restitution);
         }
 
-        public override Vector2 ComputeTrueCenterOfMass()
+        public override Vector2 ComputeGlobalCenterOfMass()
         {
-            float length = _Points.Length;
+            var points = Points;
+            float length = points.Length;
             Vector2 sum = Vector2.Zero;
-            foreach (var point in _Points)
-                sum += point;
-            return new Vector2(sum.x / length, sum.y / length);
+            foreach (var point in points)
+                sum += point.ToGDVector2();
+            return GlobalPosition + new Vector2(sum.x / length, sum.y / length);
         }
 
         #region Points
@@ -37,63 +39,57 @@ namespace Volatile.GodotEngine
         {
             get
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    return GetPointsFromData();
+                    return VoltType.Deserialize<VoltVector2[]>(_points);
                 else
+#endif
                     return points;
             }
             set
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    SetPointsData(value);
+                {
+                    _points = VoltType.Serialize(value);
+                    _PointsForward = value;
+                }
                 else
+#endif
                     points = value;
             }
         }
-        public byte[] pointsData = new byte[0];
-        public VoltVector2[] GetPointsFromData()
+        // Note that >tempPoints fowards the unserialized value to a property named tempPoints;
+        [Export(hintString: VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2 + ",>" + nameof(_PointsForward))]
+        public byte[] _points;
+        [Export]
+        public bool Editing { get; set; }
+
+        public Vector2[] EditorGDPoints { get; set; }
+        private VoltVector2[] _PointsForward
         {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutData(this.pointsData);
-            buffer.Seek(0);
-            var length = buffer.GetU16();
-            VoltVector2[] initialFixedPoints = new VoltVector2[length];
-            for (int i = 0; i < length; i++)
+            set
             {
-                initialFixedPoints[i] = new VoltVector2(Fix64.FromRaw(buffer.Get64()), Fix64.FromRaw(buffer.Get64()));
+                EditorGDPoints = value.Select(x => x.ToGDVector2()).ToArray();
+                Update();
             }
-            return initialFixedPoints;
         }
-        public void SetPointsData(IEnumerable<Vector2> array) => SetPointsData(array.Select(x => x.ToVoltVector2()));
-        public void SetPointsData(IEnumerable<VoltVector2> array)
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutU16((ushort)array.Count());
-            foreach (VoltVector2 vector2 in array)
-            {
-                buffer.Put64(vector2.x.RawValue);
-                buffer.Put64(vector2.y.RawValue);
-            }
-            pointsData = buffer.DataArray;
-            Update();
-        }
-        public Vector2[] _Points
-        {
-            get => GetPointsFromData().Select(x => x.ToGDVector2()).ToArray();
-            set => SetPointsData(value);
-        }
+
         #endregion
 
-        protected override void InitValues()
+        public override void _Ready()
         {
-            base.InitValues();
-            Points = GetPointsFromData();
+            base._Ready();
+            if (Engine.EditorHint)
+                _PointsForward = VoltType.Deserialize<VoltVector2[]>(_points);
+            else
+                Points = VoltType.Deserialize<VoltVector2[]>(_points);
         }
 
         public override void _Draw()
         {
-            if (!Engine.EditorHint) return;
-            var points = _Points;
+            if (!Engine.EditorHint || EditorGDPoints == null) return;
+            var points = EditorGDPoints;
             if (points.Length > 0)
             {
                 var color = Colors.DeepPink;
@@ -110,24 +106,6 @@ namespace Volatile.GodotEngine
                 polygonColors.Populate(fill);
                 DrawPolygon(points.ToArray(), polygonColors);
             }
-        }
-
-        public override Array _GetPropertyList()
-        {
-            var builder = new PropertyListBuilder(base._GetPropertyList());
-            builder.AddItem(
-                name: nameof(pointsData),
-                type: Variant.Type.RawArray,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Storage
-            );
-            builder.AddItem(
-                name: nameof(_Points),
-                type: Variant.Type.Vector2Array,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Editor
-            );
-            return builder.Build();
         }
     }
 }

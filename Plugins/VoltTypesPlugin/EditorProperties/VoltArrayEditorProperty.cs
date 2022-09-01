@@ -1,5 +1,6 @@
 ﻿using Fractural.Utils;
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GDC = Godot.Collections;
@@ -12,134 +13,33 @@ namespace Volatile.GodotEngine.Plugin
     /// Arrays of the same type.
     /// </summary>
     [Tool]
-    public class VoltArrayEditorProperty : ExtendedEditorProperty
+    public class VoltArrayEditorProperty : ExtendedEditorProperty, ISerializedEditorProperty
     {
-        [Tool]
-        /// <summary>
-        /// Dummy class that's passed into EditorProperties in order to let them access elements from an array.
-        /// </summary>
-        public class VoltArrayPartitionedDataObject : Godot.Reference
-        {
-            [Signal]
-            public delegate void ArrayChanged(object[] newArray);
+        #region ISerializedEditorProperty
+        public event Action<object> ManualValueChanged;
+        object ISerializedEditorProperty.ManualValue { get => workingElements; set => workingElements = (Array)value; }
+        public bool UseManualValue { get; set; }
+        #endregion
 
-            // All VoltTypes will be stored in bytes[]
-            public byte[][] PartitionedData { get; set; } = new byte[0][];
-
-
-            public VoltArrayPartitionedDataObject() { }
-
-            public override object _Get(string property)
-            {
-                if (property.BeginsWith("indices"))
-                {
-                    var index = int.Parse(property.Split('/')[1]);
-
-                    return PartitionedData[index];
-                }
-                return base._Get(property);
-            }
-
-            public override bool _Set(string property, object value)
-            {
-                if (property.BeginsWith("indices"))
-                {
-                    var index = int.Parse(property.Split('/')[1]);
-                    PartitionedData[index] = (byte[])value;
-
-                    return true;
-                }
-                return base._Set(property, value);
-            }
-
-            public byte[] GetConsolidatedData()
-            {
-                var buffer = new StreamPeerBuffer();
-                buffer.PutU32((uint)PartitionedData.Length);
-                for (int i = 0; i < PartitionedData.Length; i++)
-                {
-                    buffer.PutU8((byte)PartitionedData[i].Length);
-                    buffer.PutData(PartitionedData[i]);
-                }
-                return buffer.DataArray;
-            }
-
-            public void RemoveAndInsert(int from, int to)
-            {
-                if (from == to) return;
-
-                var previous = PartitionedData[from];
-                if (from > to)
-                {
-                    // to ---- from
-                    for (int i = to; i <= from; i++)
-                    {
-                        var temp = PartitionedData[i];
-                        PartitionedData[i] = previous;
-                        previous = temp;
-                    }
-                }
-                else
-                {
-                    // from ---- to
-                    for (int i = to; i >= from; i--)
-                    {
-                        var temp = PartitionedData[i];
-                        PartitionedData[i] = previous;
-                        previous = temp;
-                    }
-                }
-            }
-
-            public void RemoveAt(int index)
-            {
-                if (index < 0 || index >= PartitionedData.Length) return;
-                var copy = new byte[PartitionedData.Length - 1][];
-                int j = 0;
-                for (int i = 0; i < PartitionedData.Length; i++)
-                    if (index != i)
-                        copy[j++] = PartitionedData[i];
-                PartitionedData = copy;
-            }
-
-            public void InsertAt(int index, byte[] partition)
-            {
-                var copy = new byte[PartitionedData.Length + 1][];
-                int j = 0;
-                for (int i = 0; i < index; i++)
-                    copy[j++] = PartitionedData[i];
-                copy[j++] = partition;
-                for (int i = index; i < PartitionedData.Length; i++)
-                    copy[j++] = PartitionedData[i];
-                PartitionedData = copy;
-            }
-        }
-
-        private string[] elementTypeArgs;
-        private string ElementType => elementTypeArgs[0];
+        #region Base Variables + Constructor
+        // Forwarding for types (Kinda dirty to have them forwarded atm)
+        private string[] elementHintArgs;
+        private Type elementType;
+        private VoltTypesInspectorPlugin inspectorPlugin;
 
         protected byte[] Data => GetEditedObject().Get(GetEditedProperty()) as byte[];
-        protected VoltArrayPartitionedDataObject DataObject { get; } = new VoltArrayPartitionedDataObject();
 
-        private EditorSpinSlider sizeSpin;
-        private EditorSpinSlider pageSpin;
-        private VBoxContainer elementControlsContainer;
-        private Button editButton;
         private VBoxContainer bottomVBox;
 
-        private int pageLength;
-        private int pageIndex = 0;
-
-        private VoltTypesInspectorPlugin inspectorPlugin;
-        private EditorInterface editorInterface;
-
         public VoltArrayEditorProperty() { }
-        public VoltArrayEditorProperty(string[] elementTypeArgs, EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int itemsPerPage)
+        public VoltArrayEditorProperty(string[] elementHintArgs, EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int itemsPerPage)
         {
             this.editorInterface = editorInterface;
-            this.inspectorPlugin = inspectorPlugin;
             this.pageLength = itemsPerPage;
-            this.elementTypeArgs = elementTypeArgs;
+
+            this.elementType = VoltPropertyHint.HintToType[elementHintArgs[0]];
+            this.inspectorPlugin = inspectorPlugin;
+            this.elementHintArgs = elementHintArgs;
 
             editButton = new Button();
             editButton.SizeFlagsHorizontal = (int)SizeFlags.ExpandFill;
@@ -150,28 +50,98 @@ namespace Volatile.GodotEngine.Plugin
             AddChild(editButton);
             AddFocusable(editButton);
         }
+        #endregion
+
+        #region Elements
+        private Array workingElements;
+        private void RemoveAndInsert(int from, int to)
+        {
+            if (from == to) return;
+
+            var previous = workingElements.GetValue(from);
+            if (from > to)
+            {
+                // to ---- from
+                for (int i = to; i <= from; i++)
+                {
+                    var temp = workingElements.GetValue(i);
+                    workingElements.SetValue(previous, i);
+                    previous = temp;
+                }
+            }
+            else
+            {
+                // from ---- to
+                for (int i = to; i >= from; i--)
+                {
+                    var temp = workingElements.GetValue(i);
+                    workingElements.SetValue(previous, i);
+                    previous = temp;
+                }
+            }
+        }
+
+        private void RemoveAt(int index)
+        {
+            if (index < 0 || index >= workingElements.Length) return;
+            var copy = Array.CreateInstance(elementType, workingElements.Length - 1);
+            int j = 0;
+            for (int i = 0; i < workingElements.Length; i++)
+                if (index != i)
+                    copy.SetValue(workingElements.GetValue(i), j++);
+            workingElements = copy;
+        }
+
+        private void InsertAt(int index, object element)
+        {
+            var copy = Array.CreateInstance(elementType, workingElements.Length + 1);
+            int j = 0;
+            for (int i = 0; i < index; i++)
+                copy.SetValue(workingElements.GetValue(i), j++);
+            copy.SetValue(element, j++);
+            for (int i = index; i < workingElements.Length; i++)
+                copy.SetValue(workingElements.GetValue(i), j++);
+            workingElements = copy;
+        }
+
+        private void Resize(int newSize)
+        {
+            var newPartition = Array.CreateInstance(elementType, newSize);
+            for (int i = 0; i < newPartition.Length; i++)
+            {
+                // Move old data to new array. If the new array is bigger,
+                // fill the empty space with default values for our element's
+                // type.
+                if (i < workingElements.Length)
+                    newPartition.SetValue(workingElements.GetValue(i), i);
+                else
+                    newPartition.SetValue(inspectorPlugin.GetDefaultObject(elementHintArgs), i);
+            }
+            workingElements = newPartition;
+        }
+        #endregion
+
+        #region Folding, Pagination, Updating
+        private EditorSpinSlider sizeSpin;
+        private EditorSpinSlider pageSpin;
+        private VBoxContainer elementControlsContainer;
+        private Button editButton;
+
+        private int pageLength;
+        private int pageIndex = 0;
+
+        private EditorInterface editorInterface;
 
         private void OnEditPressed()
         {
             UpdateProperty();
         }
 
-        private void OnSizeSpinChanged(double value)
+        private void OnSizeSpinChanged(int value)
         {
-            if (updating || ((int)value) == DataObject.PartitionedData.Length) return;
+            if (updating || value == workingElements.Length) return;
 
-            var newPartition = new byte[(int)value][];
-            for (int i = 0; i < newPartition.Length; i++)
-            {
-                // Move old data to new array. If the new array is bigger,
-                // fill the empty space with default values for our element's
-                // type.
-                if (i < DataObject.PartitionedData.Length)
-                    newPartition[i] = DataObject.PartitionedData[i];
-                else
-                    newPartition[i] = inspectorPlugin.GetDefaultBytesForType(ElementType);
-            }
-            DataObject.PartitionedData = newPartition;
+            Resize(value);
 
             EmitChanged();
         }
@@ -188,11 +158,13 @@ namespace Volatile.GodotEngine.Plugin
         private void OnPropertyChanged(string property, object value, string field, bool changing)
         {
             if (updating) return;
-            if (property.BeginsWith("indices"))
-            {
-                DataObject._Set(property, value);
-                EmitChanged();
-            }
+            var index = int.Parse(property);
+            var controlsIndex = index - pageIndex * pageLength;
+
+            var elementControl = elementControlsContainer.GetChild(controlsIndex).GetChild(1);
+            var serializedProp = (ISerializedEditorProperty)elementControl;
+            workingElements.SetValue(serializedProp.ManualValue, index);
+            EmitChanged();
         }
 
         protected override void InternalUpdateProperty()
@@ -202,7 +174,7 @@ namespace Volatile.GodotEngine.Plugin
             buffer.PutData(dataCopy);
             buffer.Seek(0);
             var length = buffer.GetU32();
-            editButton.Text = $"{ElementType} Array (size {length})";
+            editButton.Text = $"{elementType.Name} Array (size {length})";
 
             if (editButton.Pressed)
             {
@@ -252,7 +224,7 @@ namespace Volatile.GodotEngine.Plugin
 
                 sizeSpin.Value = length;
                 pageSpin.MaxValue = length / pageLength;
-                var partitionedData = new byte[length][];
+                workingElements = ArraySerializer.Global.Deserialize(elementType, Data);
 
                 var start = pageIndex * pageLength;
                 var end = start + pageLength;
@@ -262,18 +234,13 @@ namespace Volatile.GodotEngine.Plugin
                 foreach (Node prop in elementControlsContainer.GetChildren())
                 {
                     if (prop == reorderSelectedElementHBox) continue;
-                    prop.Free();
+                    prop.QueueFree();
+                    elementControlsContainer.RemoveChild(prop);
                 }
 
                 var props = new List<ExtendedEditorProperty>();
                 for (int i = 0; i < length; i++)
                 {
-                    // Populate partitioned data
-                    var elementByteLength = buffer.GetU8();
-                    partitionedData[i] = new byte[elementByteLength];
-                    for (int j = 0; j < elementByteLength; j++)
-                        partitionedData[i][j] = buffer.GetU8();
-
                     if (i >= start && i < end)
                     {
                         // Only add children for the page
@@ -293,10 +260,16 @@ namespace Volatile.GodotEngine.Plugin
                         }
 
                         // Add editor properties
-                        var prop = inspectorPlugin.GetEditorProperty(elementTypeArgs);
+                        var prop = inspectorPlugin.GetEditorProperty(elementHintArgs);
+                        if (!(prop is ISerializedEditorProperty serializedProp))
+                        {
+                            GD.PrintErr("VoltArrayEditorProperty: Expected element EditorProperty to be ISerializedEditorProperty.");
+                            return;
+                        }
+                        serializedProp.ManualValue = workingElements.GetValue(i);
+                        serializedProp.UseManualValue = true;
+                        prop.ManualEditedProperty = i.ToString();
                         prop.SupressFocusable = true;
-                        prop.ManualEditedObject = DataObject;
-                        prop.ManualEditedProperty = $"indices/{i}";
                         prop.Connect("property_changed", this, nameof(OnPropertyChanged));
                         prop.Label = i.ToString();
                         props.Add(prop);
@@ -340,8 +313,6 @@ namespace Volatile.GodotEngine.Plugin
                 if (Reordering && reorderToIndex % pageLength > 0)
                     elementControlsContainer.MoveChild(elementControlsContainer.GetChild(0), reorderToIndex % pageLength);
 
-                DataObject.PartitionedData = partitionedData;
-
                 // Update element editor properties after the partitioned data is ready
                 foreach (var prop in props)
                     prop.UpdateProperty();
@@ -350,7 +321,7 @@ namespace Volatile.GodotEngine.Plugin
             {
                 if (bottomVBox != null)
                 {
-                    bottomVBox.Free();
+                    bottomVBox.QueueFree();
                     SetBottomEditor(null);
                     bottomVBox = null;
                     elementControlsContainer = null;
@@ -359,6 +330,14 @@ namespace Volatile.GodotEngine.Plugin
             }
         }
 
+        private void EmitChanged()
+        {
+            ManualValueChanged?.Invoke(workingElements);
+            EmitChanged(GetEditedProperty(), ArraySerializer.Global.Serialize(elementType, workingElements));
+        }
+        #endregion
+
+        #region Reordering
         private bool Reordering => reorderFromIndex >= 0;
         private int reorderFromIndex = -1;
         private int reorderToIndex = -1;
@@ -371,7 +350,7 @@ namespace Volatile.GodotEngine.Plugin
             if (!Reordering) return;
             if (inputEvent is InputEventMouseMotion mouseMotionEvent)
             {
-                var size = DataObject.PartitionedData.Length;
+                var size = workingElements.Length;
 
                 // Cumulative mouse delta
                 reorderMouseYDelta += mouseMotionEvent.Relative.y;
@@ -416,7 +395,7 @@ namespace Volatile.GodotEngine.Plugin
         {
             if (reorderFromIndex != reorderToIndex)
             {
-                DataObject.RemoveAndInsert(reorderFromIndex, reorderToIndex);
+                RemoveAndInsert(reorderFromIndex, reorderToIndex);
                 EmitChanged();
             }
 
@@ -430,27 +409,25 @@ namespace Volatile.GodotEngine.Plugin
             reorderSelectedElementHBox = null;
             reorderSelectedButton = null;
         }
+        #endregion
 
+        #region Item Buttons
         private void OnAddButtonPressed(int index)
         {
-            DataObject.InsertAt(index, inspectorPlugin.GetDefaultBytesForType(ElementType));
+            InsertAt(index, inspectorPlugin.GetDefaultObject(elementHintArgs));
             EmitChanged();
         }
 
         private void OnDeleteButtonPressed(int index)
         {
-            DataObject.RemoveAt(index);
+            RemoveAt(index);
             EmitChanged();
         }
-
-        private void EmitChanged()
-        {
-            EmitChanged(GetEditedProperty(), DataObject.GetConsolidatedData());
-        }
+        #endregion
     }
 
     [Tool]
-    public class VoltArrayEditorPropertyParser : ExtendedEditorPropertyParser
+    public class VoltArrayEditorPropertyParser : SerializedEditorPropertyParser
     {
         private int itemsPerPage;
         private VoltTypesInspectorPlugin inspectorPlugin;
@@ -476,16 +453,21 @@ namespace Volatile.GodotEngine.Plugin
         // ie.
         //  Array,Fix64,0,100   ---> Array of Fix64 with each having a range from 0 to 100
         //
-        public override ExtendedEditorProperty ParseProperty(string[] args)
+        public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.Array && args.Length >= 2)
                 return new VoltArrayEditorProperty(args.Skip(1).ToArray(), editorInterface, inspectorPlugin, itemsPerPage);
             return null;
         }
 
-        public override byte[] GetDefaultBytes(string type)
+        public override object GetDefaultObject(string[] args)
         {
-            return ArraySerializer.Global.Serialize(typeof(object), new object[0]);
+            if (args.TryGet(0) == VoltPropertyHint.Array)
+            {
+                if (VoltPropertyHint.HintToType.TryGetValue(args.TryGet(1), out System.Type type))
+                    return Array.CreateInstance(type, 0);
+            }
+            return null;
         }
     }
 }

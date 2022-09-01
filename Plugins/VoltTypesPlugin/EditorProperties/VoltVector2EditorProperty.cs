@@ -11,6 +11,7 @@ namespace Volatile.GodotEngine.Plugin
     public class VoltVector2EditorProperty : SerializedEditorProperty<VoltVector2, VoltVector2Serializer>
     {
         private EditorSpinSlider[] spin = new EditorSpinSlider[2];
+        protected VoltVector2 workingValue;
 
         public VoltVector2EditorProperty()
         {
@@ -46,40 +47,38 @@ namespace Volatile.GodotEngine.Plugin
         private void OnXSpinChanged(double value)
         {
             if (updating) return;
-            var valueCopy = Value;
-            Value = new VoltVector2((Fix64)value, valueCopy.y);
+            Value = new VoltVector2((Fix64)value, workingValue.y);
         }
 
         private void OnYSpinChanged(double value)
         {
             if (updating) return;
-            var valueCopy = Value;
-            Value = new VoltVector2(valueCopy.x, (Fix64)value);
+            Value = new VoltVector2(workingValue.x, (Fix64)value);
         }
 
         protected override void InternalUpdateProperty()
         {
-            var valueCopy = Value;
-            spin[0].Value = (double)valueCopy.x;
-            spin[1].Value = (double)valueCopy.y;
+            workingValue = Value;
+            spin[0].Value = (double)workingValue.x;
+            spin[1].Value = (double)workingValue.y;
         }
     }
 
     [Tool]
-    public class VoltVector2EditorPropertyParser : ExtendedEditorPropertyParser
+    public class VoltVector2EditorPropertyParser : SerializedEditorPropertyParser
     {
         public VoltVector2EditorPropertyParser() { }
-        public override ExtendedEditorProperty ParseProperty(string[] args)
+        public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltVector2)
                 return new VoltVector2EditorProperty();
             return null;
         }
 
-        public override byte[] GetDefaultBytes(string type)
+        public override object GetDefaultObject(string[] args)
         {
-            if (type == VoltPropertyHint.VoltVector2)
-                return VoltVector2Serializer.Global.Serialize(VoltVector2.Zero);
+            if (args.TryGet(0) == VoltPropertyHint.VoltVector2)
+                return VoltVector2.Zero;
             return null;
         }
     }

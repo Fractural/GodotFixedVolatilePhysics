@@ -10,12 +10,13 @@ namespace Volatile.GodotEngine
     public abstract class VolatileShape : VoltNode2D
     {
         public abstract VoltShape PrepareShape(VoltWorld world);
-        public abstract Vector2 ComputeTrueCenterOfMass();
+        public abstract Vector2 ComputeGlobalCenterOfMass();
 
         public override void _Ready()
         {
             base._Ready();
-            InitValues();
+            if (!Engine.EditorHint)
+                InitValues();
         }
 
         protected virtual void InitValues()
@@ -48,7 +49,7 @@ namespace Volatile.GodotEngine
                     density = value;
             }
         }
-        [Export(PropertyHint.None, VoltPropertyHint.Fix64)]
+        [Export(hintString: VoltPropertyHint.Fix64)]
         private byte[] _density = VoltType.Serialize(VoltConfig.DEFAULT_DENSITY);
         #endregion
 
@@ -75,6 +76,7 @@ namespace Volatile.GodotEngine
                     restitution = value;
             }
         }
+        [Export(hintString: VoltPropertyHint.Fix64)]
         public byte[] _restitution = VoltType.Serialize(VoltConfig.DEFAULT_RESTITUTION);
         #endregion
 
@@ -101,6 +103,7 @@ namespace Volatile.GodotEngine
                     friction = value;
             }
         }
+        [Export(hintString: VoltPropertyHint.Fix64)]
         public byte[] _friction = VoltType.Serialize(VoltConfig.DEFAULT_FRICTION);
         #endregion
     }

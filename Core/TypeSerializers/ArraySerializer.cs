@@ -7,7 +7,7 @@ namespace Volatile.GodotEngine
     {
         public static readonly ArraySerializer Global = new ArraySerializer();
 
-        public object Deserialize(Type elementType, byte[] data)
+        public Array Deserialize(Type elementType, byte[] data)
         {
             var buffer = new StreamPeerBuffer();
             buffer.PutData(data);
@@ -22,16 +22,16 @@ namespace Volatile.GodotEngine
             return buffer.DataArray;
         }
 
-        public object[] Deserialize(Type elementType, StreamPeerBuffer buffer)
+        public Array Deserialize(Type elementType, StreamPeerBuffer buffer)
         {
             var length = buffer.GetU32();
-            var array = new object[length];
+            var array = Array.CreateInstance(elementType, length);
             for (int i = 0; i < length; i++)
             {
                 // We don't to use the bytes for anything.
                 // We can store at most 255 bytes per type.
                 buffer.GetU8();
-                array[i] = VoltType.Deserialize(elementType, buffer);
+                array.SetValue(VoltType.Deserialize(elementType, buffer), i);
             }
             return array;
         }

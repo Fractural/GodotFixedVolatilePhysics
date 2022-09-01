@@ -38,15 +38,15 @@ namespace Volatile.GodotEngine.Plugin
             return null;
         }
 
-        public byte[] GetDefaultBytesForType(string type)
+        public object GetDefaultObject(string[] args)
         {
             foreach (var parser in Parsers)
             {
-                var bytes = parser.GetDefaultBytes(type);
-                if (bytes != null)
-                    return bytes;
+                var @object = parser.GetDefaultObject(args);
+                if (@object != null)
+                    return @object;
             }
-            GD.PrintErr("Couldn't get the default bytes for type: " + type);
+            GD.PrintErr("Couldn't get the default object for args: " + args);
             return null;
         }
 

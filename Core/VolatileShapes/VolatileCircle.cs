@@ -13,15 +13,15 @@ namespace Volatile.GodotEngine
             return world.CreateCircleWorldSpace(GlobalFixedPosition, Radius);
         }
 
-        public override Vector2 ComputeTrueCenterOfMass()
+        public override Vector2 ComputeGlobalCenterOfMass()
         {
-            return Position;
+            return GlobalPosition;
         }
 
         protected override void InitValues()
         {
             base.InitValues();
-            Radius = GetRadiusFromData();
+            Radius = VoltType.Deserialize<Fix64>(_radius);
         }
 
         #region Radius
@@ -30,59 +30,25 @@ namespace Volatile.GodotEngine
         {
             get
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    return GetRadiusFromData();
+                    return VoltType.Deserialize<Fix64>(_radius);
                 else
+#endif
                     return radius;
             }
             set
             {
+#if TOOLS
                 if (Engine.EditorHint)
-                    SetRadiusData(value);
+                    _radius = VoltType.Serialize(value);
                 else
+#endif
                     radius = value;
             }
         }
-        public byte[] radiusData = new byte[0];
-        public Fix64 GetRadiusFromData()
-        {
-            if (radiusData.Length == 0)
-                SetRadiusData(10);
-            var buffer = new StreamPeerBuffer();
-            buffer.PutData(radiusData);
-            buffer.Seek(0);
-            return buffer.GetFix64();
-        }
-        public void SetRadiusData(float radius) => SetRadiusData(radius);
-        public void SetRadiusData(Fix64 radius)
-        {
-            var buffer = new StreamPeerBuffer();
-            buffer.PutFix64(radius);
-            radiusData = buffer.DataArray;
-        }
-        public float _Radius
-        {
-            get => (float)GetRadiusFromData();
-            set => SetRadiusData(value);
-        }
+        [Export(hintString: VoltPropertyHint.Fix64)]
+        private byte[] _radius = VoltType.Serialize(Fix64.From(1));
         #endregion
-
-        public override Array _GetPropertyList()
-        {
-            var builder = new PropertyListBuilder(base._GetPropertyList());
-            builder.AddItem(
-                name: nameof(radiusData),
-                type: Variant.Type.RawArray,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Storage
-            );
-            builder.AddItem(
-                name: nameof(_Radius),
-                type: Variant.Type.Real,
-                hint: PropertyHint.None,
-                usage: PropertyUsageFlags.Editor
-            );
-            return builder.Build();
-        }
     }
 }
