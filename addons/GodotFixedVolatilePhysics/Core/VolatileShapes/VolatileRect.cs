@@ -32,10 +32,10 @@ namespace Volatile.GodotEngine
             return GlobalPosition;
         }
 
-        protected override void InitValues()
+        public override void _Ready()
         {
-            base.InitValues();
-            Extents = VoltType.Deserialize<VoltVector2>(_size);
+            base._Ready();
+            Extents = VoltType.DeserializeOrDefault<VoltVector2>(_size);
         }
 
         #region Rect
@@ -46,7 +46,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<VoltVector2>(_size);
+                    return VoltType.DeserializeOrDefault<VoltVector2>(_size);
                 else
 #endif
                     return size;

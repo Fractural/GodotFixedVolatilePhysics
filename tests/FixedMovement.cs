@@ -16,7 +16,7 @@ namespace Tests
 
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<Fix64>(_speed);
+                    return VoltType.DeserializeOrDefault<Fix64>(_speed);
                 else
 #endif
                     return speed;
@@ -37,7 +37,7 @@ namespace Tests
         public override void _Ready()
         {
             base._Ready();
-            speed = VoltType.Deserialize<Fix64>(_speed);
+            speed = VoltType.DeserializeOrDefault<Fix64>(_speed);
         }
 
         public static readonly Fix64 FIX_0_0001 = Fix64.From("0.0001");

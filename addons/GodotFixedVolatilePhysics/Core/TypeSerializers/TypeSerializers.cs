@@ -9,6 +9,7 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, Fix64 value) => buffer.PutFix64(value);
         public override Fix64 Deserialize(StreamPeerBuffer buffer) => buffer.GetFix64();
+        public override Fix64 Default() => Fix64.Zero;
     }
 
     public class VoltVector2Serializer : TypeSerializer<VoltVector2>
@@ -17,6 +18,7 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, VoltVector2 value) => buffer.PutVoltVector2(value);
         public override VoltVector2 Deserialize(StreamPeerBuffer buffer) => buffer.GetVoltVector2();
+        public override VoltVector2 Default() => VoltVector2.Zero;
     }
 
     public class VoltTransform2DSerializer : TypeSerializer<VoltTransform2D>
@@ -25,6 +27,7 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, VoltTransform2D value) => buffer.PutVoltTransform2D(value);
         public override VoltTransform2D Deserialize(StreamPeerBuffer buffer) => buffer.GetVoltTransform2D();
+        public override VoltTransform2D Default() => VoltTransform2D.Default();
     }
 
     public class VoltRect2Serializer : TypeSerializer<VoltRect2>
@@ -33,6 +36,7 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, VoltRect2 value) => buffer.PutVoltRect2(value);
         public override VoltRect2 Deserialize(StreamPeerBuffer buffer) => buffer.GetVoltRect2();
+        public override VoltRect2 Default() => new VoltRect2();
     }
 
     public class VoltMatrixSerializer : TypeSerializer<VoltMatrix>
@@ -41,5 +45,6 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, VoltMatrix value) => buffer.PutVoltMatrix(value);
         public override VoltMatrix Deserialize(StreamPeerBuffer buffer) => buffer.GetVoltMatrix();
+        public override VoltMatrix Default() => new VoltMatrix(0, 0);
     }
 }

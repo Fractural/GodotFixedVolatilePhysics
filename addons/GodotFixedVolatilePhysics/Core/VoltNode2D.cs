@@ -20,7 +20,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
+                    return VoltType.DeserializeOrDefault<VoltTransform2D>(_fixedTransform);
                 else
 #endif
                     return fixedTransform;
@@ -33,6 +33,7 @@ namespace Volatile.GodotEngine
                 else
 #endif
                     fixedTransform = value;
+                FixedTransformChanged();
             }
         }
         public byte[] _fixedTransform = VoltType.Serialize(VoltTransform2D.Default());
@@ -53,14 +54,12 @@ namespace Volatile.GodotEngine
                 var copy = FixedTransform;
                 copy.Origin = value;
                 FixedTransform = copy;
-
-                FixedTransformChanged();
             }
         }
         private byte[] _FixedPosition
         {
             get => VoltType.Serialize(FixedPosition);
-            set => FixedPosition = VoltType.Deserialize<VoltVector2>(value);
+            set => FixedPosition = VoltType.DeserializeOrDefault<VoltVector2>(value);
         }
 
         private VoltVector2 fixedScale = VoltVector2.One;
@@ -76,7 +75,7 @@ namespace Volatile.GodotEngine
         private byte[] _FixedScale
         {
             get => VoltType.Serialize(FixedScale);
-            set => FixedScale = VoltType.Deserialize<VoltVector2>(value);
+            set => FixedScale = VoltType.DeserializeOrDefault<VoltVector2>(value);
         }
 
         private Fix64 fixedRotation = Fix64.Zero;
@@ -92,7 +91,7 @@ namespace Volatile.GodotEngine
         private byte[] _FixedRotation
         {
             get => VoltType.Serialize(FixedRotation);
-            set => FixedRotation = VoltType.Deserialize<Fix64>(value);
+            set => FixedRotation = VoltType.DeserializeOrDefault<Fix64>(value);
         }
 
         public VoltTransform2D GlobalFixedTransform
@@ -144,7 +143,7 @@ namespace Volatile.GodotEngine
 
         public override void _Ready()
         {
-            FixedTransform = VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
+            FixedTransform = VoltType.DeserializeOrDefault<VoltTransform2D>(_fixedTransform);
 #if TOOLS
             if (Engine.EditorHint)
                 previousTransform = Transform;
@@ -158,7 +157,7 @@ namespace Volatile.GodotEngine
         private void UpdateFloatTransform()
         {
             Transform = FixedTransform.ToGDTransform2D();
-            
+
             PropertyListChangedNotify();
         }
 
@@ -205,7 +204,6 @@ namespace Volatile.GodotEngine
             var copy = FixedTransform;
             copy.SetRotationAndScale(FixedRotation, fixedScale);
             FixedTransform = copy;
-            FixedTransformChanged();
         }
 
         public void UpdateFixedTransform(VoltTransform2D transform, bool emitChanged = true)

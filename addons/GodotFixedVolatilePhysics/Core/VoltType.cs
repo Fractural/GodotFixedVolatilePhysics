@@ -6,7 +6,7 @@ namespace Volatile.GodotEngine
 {
     public static class VoltType
     {
-        public static readonly object[] TypeSerializers = new object[]
+        public static readonly ITypeSerializer[] TypeSerializers = new ITypeSerializer[]
         {
             Fix64Serializer.Global,
             VoltVector2Serializer.Global,
@@ -35,7 +35,7 @@ namespace Volatile.GodotEngine
                 return ArraySerializer.Serialize(type.GetElementType(), (Array)value);
             foreach (var serializer in TypeSerializers)
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
-                    return ((ITypeSerializer)serializer).Serialize(value);
+                    return serializer.Serialize(value);
             GD.PrintErr("VoltType: Couldn't serialize " + value.GetType().FullName);
             return null;
         }
@@ -50,7 +50,7 @@ namespace Volatile.GodotEngine
             foreach (var serializer in TypeSerializers)
             {
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
-                    return ((ITypeSerializer)serializer).Deserialize(data);
+                    return serializer.Deserialize(data);
             }
             GD.PrintErr("VoltType: Couldn't deserialize " + type.FullName);
             return null;
@@ -66,6 +66,30 @@ namespace Volatile.GodotEngine
             }
             GD.PrintErr("VoltType: Couldn't deserialize " + type.FullName);
             return null;
+        }
+
+        public static object Default(System.Type type)
+        {
+            foreach (var serializer in TypeSerializers)
+                if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
+                    return serializer.Default();
+            GD.PrintErr("VoltType: Couldn't get default for type " + type.FullName);
+            return null;
+        }
+        public static T Default<T>()
+        {
+            return (T)Default(typeof(T));
+        }
+
+        public static object DeserializeOrDefault(System.Type type, byte[] data)
+        {
+            if (data == null)
+                return Default(type);
+            return Deserialize(type, data);
+        }
+        public static T DeserializeOrDefault<T>(byte[] data)
+        {
+            return (T)DeserializeOrDefault(typeof(T), data);
         }
 
         public static T Deserialize<T>(byte[] data)

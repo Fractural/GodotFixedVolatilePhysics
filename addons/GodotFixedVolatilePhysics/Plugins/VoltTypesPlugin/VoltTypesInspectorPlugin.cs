@@ -89,8 +89,9 @@ namespace Volatile.GodotEngine.Plugin
                         var defaultObj = GetDefaultObject(args);
                         var serializedResult = VoltType.Serialize(defaultObj.GetType(), defaultObj);
                         @object.Set(path, serializedResult);
-                        // Save scene when the default is set
-                        plugin.GetEditorInterface().SaveScene();
+                        // Note that we don't have to save the default, as the user is expected to
+                        // call VoltTypes.DeserializeOrDefault in _Ready to assign the correct value
+                        // to their member variable.
                     }
                     AddPropertyEditor(path, prop);
                     return true;

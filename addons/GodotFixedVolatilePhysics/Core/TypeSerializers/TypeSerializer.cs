@@ -7,12 +7,16 @@ namespace Volatile.GodotEngine
     {
         T Deserialize(byte[] data);
         byte[] Serialize(T value);
+        T Default();
+        byte[] DefaultAsBytes();
     }
 
     public interface ITypeSerializer
     {
         object Deserialize(byte[] data);
         byte[] Serialize(object value);
+        object Default();
+        byte[] DefaultAsBytes();
     }
 
     public interface IBufferSerializer<T>
@@ -33,6 +37,8 @@ namespace Volatile.GodotEngine
         byte[] ITypeSerializer.Serialize(object value) => Serialize((T)value);
         object IBufferSerializer.Deserialize(StreamPeerBuffer buffer) => Deserialize(buffer);
         void IBufferSerializer.Serialize(StreamPeerBuffer buffer, object value) => Serialize(buffer, (T)value);
+        object ITypeSerializer.Default() => Default();
+        public abstract T Default();
 
         public T Deserialize(byte[] data)
         {
@@ -49,6 +55,7 @@ namespace Volatile.GodotEngine
         }
         public abstract T Deserialize(StreamPeerBuffer buffer);
         public abstract void Serialize(StreamPeerBuffer buffer, T value);
+        public byte[] DefaultAsBytes() => Serialize(Default());
     }
 
     public abstract class TypeSerializer : ITypeSerializer, IBufferSerializer
@@ -70,5 +77,7 @@ namespace Volatile.GodotEngine
 
         public abstract object Deserialize(StreamPeerBuffer buffer);
         public abstract void Serialize(StreamPeerBuffer buffer, object value);
+        public abstract object Default();
+        public byte[] DefaultAsBytes() => Serialize(Default());
     }
 }

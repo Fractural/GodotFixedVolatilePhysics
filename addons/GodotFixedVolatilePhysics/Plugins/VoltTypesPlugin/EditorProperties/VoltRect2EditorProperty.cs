@@ -63,7 +63,7 @@ namespace Volatile.GodotEngine.Plugin
         public override object GetDefaultObject(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltRect2)
-                return new VoltRect2();
+                return VoltRect2Serializer.Global.Default();
             return null;
         }
     }

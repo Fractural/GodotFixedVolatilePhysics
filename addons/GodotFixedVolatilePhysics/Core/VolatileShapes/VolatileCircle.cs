@@ -18,10 +18,10 @@ namespace Volatile.GodotEngine
             return GlobalPosition;
         }
 
-        protected override void InitValues()
+        public override void _Ready()
         {
-            base.InitValues();
-            Radius = VoltType.Deserialize<Fix64>(_radius);
+            base._Ready();
+            Radius = VoltType.DeserializeOrDefault<Fix64>(_radius);
         }
 
         #region Radius
@@ -32,7 +32,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<Fix64>(_radius);
+                    return VoltType.DeserializeOrDefault<Fix64>(_radius);
                 else
 #endif
                     return radius;

@@ -71,7 +71,7 @@ namespace Volatile.GodotEngine.Plugin
         public override object GetDefaultObject(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltTransform2D)
-                return VoltTransform2D.Default();
+                return VoltTransform2DSerializer.Global.Default();
             return null;
         }
     }
