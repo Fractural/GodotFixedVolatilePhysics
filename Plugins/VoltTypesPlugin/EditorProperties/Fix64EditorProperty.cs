@@ -34,12 +34,13 @@ namespace Volatile.GodotEngine.Plugin
         private void OnSpinBoxChanged(double value)
         {
             if (updating) return;
-            Value = (Fix64)value;
+            workingValue = (Fix64)value;
+            SerializeWorkingValueToEditor();
         }
 
         protected override void InternalUpdateProperty()
         {
-            spin.Value = (double)Value;
+            spin.Value = (double)workingValue;
         }
     }
 

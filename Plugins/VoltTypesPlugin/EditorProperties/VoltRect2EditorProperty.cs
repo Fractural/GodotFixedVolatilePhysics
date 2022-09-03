@@ -5,69 +5,58 @@ using Godot;
 namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
-    public class VoltRect2EditorProperty : SerializedEditorProperty<VoltRect2, VoltRect2Serializer>
+    public class VoltRect2EditorProperty : CompoundSerializedEditorProperty<VoltRect2, VoltRect2Serializer>
     {
         private VoltVector2EditorProperty positionProperty;
         private VoltVector2EditorProperty sizeProperty;
 
-        protected VoltRect2 workingValue;
+        public VoltRect2EditorProperty() { }
+        public VoltRect2EditorProperty(float scale) : base(scale) { }
 
-        public VoltRect2EditorProperty()
+        protected override void InitSubProperties()
         {
             positionProperty = new VoltVector2EditorProperty();
-            positionProperty.SupressFocusable = true;
-            positionProperty.UseManualValue = true;
-            positionProperty.Label = "Position";
-            positionProperty.ManualEditedProperty = "position";
-            positionProperty.Connect("property_changed", this, nameof(OnPropertyChanged));
+            AddProperty(positionProperty, "Position");
 
             sizeProperty = new VoltVector2EditorProperty();
-            sizeProperty.SupressFocusable = true;
-            sizeProperty.UseManualValue = true;
-            sizeProperty.Label = "Size";
-            sizeProperty.ManualEditedProperty = "size";
-            sizeProperty.Connect("property_changed", this, nameof(OnPropertyChanged));
-
-            var vbox = new VBoxContainer();
-            vbox.AddChild(positionProperty);
-            vbox.AddChild(sizeProperty);
-
-            AddChild(vbox);
-            AddFocusable(vbox);
-            SetBottomEditor(vbox);
+            AddProperty(sizeProperty, "Size");
         }
 
         protected override void InternalUpdateProperty()
         {
-            workingValue = Value;
             positionProperty.UpdateProperty(workingValue.Position);
             sizeProperty.UpdateProperty(workingValue.Size);
         }
 
-        private void OnPropertyChanged(string property, object value, string field, bool changing)
+        protected override void OnSubPropertyChanged(string property)
         {
-            if (updating) return;
             switch (property)
             {
-                case "position":
-                    workingValue.Position = positionProperty.ManualValue;
+                case "Position":
+                    workingValue.Position = positionProperty.Value;
                     break;
-                case "size":
-                    workingValue.Size = sizeProperty.ManualValue;
+                case "Size":
+                    workingValue.Size = sizeProperty.Value;
                     break;
             }
-            Value = workingValue;
         }
     }
 
     [Tool]
     public class VoltRect2EditorPropertyParser : SerializedEditorPropertyParser
     {
+        private float scale;
+
         public VoltRect2EditorPropertyParser() { }
+        public VoltRect2EditorPropertyParser(float scale)
+        {
+            this.scale = scale;
+        }
+
         public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltRect2)
-                return new VoltRect2EditorProperty();
+                return new VoltRect2EditorProperty(scale);
             return null;
         }
 

@@ -9,7 +9,6 @@ namespace Volatile.GodotEngine.Plugin
     {
         public override void Load()
         {
-            GD.Print("loaded custom type");
             Plugin.AddCustomType(nameof(VoltNode2D), nameof(Node2D),
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VoltNode2D.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltNode2D.svg"));

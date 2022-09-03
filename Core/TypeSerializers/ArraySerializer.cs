@@ -15,7 +15,7 @@ namespace Volatile.GodotEngine
             return Deserialize(elementType, buffer);
         }
 
-        public byte[] Serialize(Type elementType, object value)
+        public byte[] Serialize(Type elementType, Array value)
         {
             var buffer = new StreamPeerBuffer();
             Serialize(elementType, buffer, value);
@@ -36,20 +36,17 @@ namespace Volatile.GodotEngine
             return array;
         }
 
-        public void Serialize(Type elementType, StreamPeerBuffer buffer, object value)
+        public void Serialize(Type elementType, StreamPeerBuffer buffer, Array array)
         {
-            if (value is Array array)
+            buffer.PutU32((uint)array.Length);
+            for (int i = 0; i < array.Length; i++)
             {
-                buffer.PutU32((uint)array.Length);
-                for (int i = 0; i < array.Length; i++)
-                {
-                    var byteArray = VoltType.Serialize(elementType, array.GetValue(i));
-                    // By storing the byte length per element, we can dynamically omit
-                    // unecessary data in each type serializer. But the caveat is that
-                    // every element will take up an extra byte.
-                    buffer.PutU8((byte)byteArray.Length);
-                    buffer.PutData(byteArray);
-                }
+                var byteArray = VoltType.Serialize(elementType, array.GetValue(i));
+                // By storing the byte length per element, we can dynamically omit
+                // unecessary data in each type serializer. But the caveat is that
+                // every element will take up an extra byte.
+                buffer.PutU8((byte)byteArray.Length);
+                buffer.PutData(byteArray);
             }
         }
     }

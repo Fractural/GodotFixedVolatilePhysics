@@ -1,5 +1,6 @@
 ﻿using Fractural.Utils;
 using Godot;
+using System;
 
 namespace Volatile.GodotEngine
 {
@@ -20,7 +21,7 @@ namespace Volatile.GodotEngine
         {
             if (type.IsArray)
             {
-                ArraySerializer.Serialize(type.GetElementType(), buffer, value);
+                ArraySerializer.Serialize(type.GetElementType(), buffer, (Array)value);
                 return;
             }
             foreach (var serializer in TypeSerializers)
@@ -31,7 +32,7 @@ namespace Volatile.GodotEngine
         public static byte[] Serialize(System.Type type, object value)
         {
             if (type.IsArray)
-                return ArraySerializer.Serialize(type.GetElementType(), value);
+                return ArraySerializer.Serialize(type.GetElementType(), (Array)value);
             foreach (var serializer in TypeSerializers)
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
                     return ((ITypeSerializer)serializer).Serialize(value);

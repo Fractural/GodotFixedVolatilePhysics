@@ -53,7 +53,7 @@ namespace Volatile.GodotEngine
                 if (Engine.EditorHint)
                 {
                     _points = VoltType.Serialize(value);
-                    _PointsForward = value;
+                    _PointsForwarded = value;
                 }
                 else
 #endif
@@ -61,11 +61,11 @@ namespace Volatile.GodotEngine
             }
         }
         // Note that >tempPoints fowards the unserialized value to a property named tempPoints;
-        [Export(hintString: VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2 + ",>" + nameof(_PointsForward))]
+        [Export(hintString: VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2 + ",set:" + nameof(_PointsForwarded))]
         public byte[] _points;
 
         public Vector2[] EditorGDPoints { get; set; }
-        private VoltVector2[] _PointsForward
+        private VoltVector2[] _PointsForwarded
         {
             set
             {
@@ -80,7 +80,7 @@ namespace Volatile.GodotEngine
         {
             base._Ready();
             if (Engine.EditorHint)
-                _PointsForward = VoltType.Deserialize<VoltVector2[]>(_points);
+                _PointsForwarded = VoltType.Deserialize<VoltVector2[]>(_points);
             else
                 Points = VoltType.Deserialize<VoltVector2[]>(_points);
         }

@@ -3,6 +3,9 @@
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
 {
+    /// <summary>
+    /// Parser for <see cref="ExtendedEditorProperty"/>. It can return the default object for a type, and can also parse properties for the type.
+    /// </summary>
     [Tool]
     public abstract class ExtendedEditorPropertyParser : Godot.Reference
     {
@@ -10,10 +13,7 @@ namespace Volatile.GodotEngine.Plugin
         {
             var property = ParseProperty(args);
             if (property != null)
-            {
-                if (@object.Get(path) == null) @object.Set(path, GetDefaultObject(args));
                 return property;
-            }
             return null;
         }
         public abstract ExtendedEditorProperty ParseProperty(string[] args);
