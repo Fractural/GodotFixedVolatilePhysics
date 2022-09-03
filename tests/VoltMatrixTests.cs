@@ -1,6 +1,7 @@
 using FixMath.NET;
 using Godot;
 using Volatile;
+using Volatile.GodotEngine;
 
 namespace Tests
 {

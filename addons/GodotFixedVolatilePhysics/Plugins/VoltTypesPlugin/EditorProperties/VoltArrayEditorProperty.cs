@@ -13,14 +13,8 @@ namespace Volatile.GodotEngine.Plugin
     /// Arrays of the same type.
     /// </summary>
     [Tool]
-    public class VoltArrayEditorProperty : ExtendedEditorProperty, ISerializedEditorProperty
+    public class VoltArrayEditorProperty : SerializedEditorProperty
     {
-        #region ISerializedEditorProperty
-        public event Action<object> ManualValueChanged;
-        object ISerializedEditorProperty.ManualValue { get => workingElements; set => workingElements = (Array)value; }
-        public bool UseManualValue { get; set; }
-        #endregion
-
         #region Base Variables + Constructor
         // Forwarding for types (Kinda dirty to have them forwarded atm)
         private string[] elementHintArgs;
@@ -53,19 +47,23 @@ namespace Volatile.GodotEngine.Plugin
         #endregion
 
         #region Elements
-        private Array workingElements;
+        private Array WorkingElements
+        {
+            get => (Array)workingValue;
+            set => workingValue = value;
+        }
         private void RemoveAndInsert(int from, int to)
         {
             if (from == to) return;
 
-            var previous = workingElements.GetValue(from);
+            var previous = WorkingElements.GetValue(from);
             if (from > to)
             {
                 // to ---- from
                 for (int i = to; i <= from; i++)
                 {
-                    var temp = workingElements.GetValue(i);
-                    workingElements.SetValue(previous, i);
+                    var temp = WorkingElements.GetValue(i);
+                    WorkingElements.SetValue(previous, i);
                     previous = temp;
                 }
             }
@@ -74,8 +72,8 @@ namespace Volatile.GodotEngine.Plugin
                 // from ---- to
                 for (int i = to; i >= from; i--)
                 {
-                    var temp = workingElements.GetValue(i);
-                    workingElements.SetValue(previous, i);
+                    var temp = WorkingElements.GetValue(i);
+                    WorkingElements.SetValue(previous, i);
                     previous = temp;
                 }
             }
@@ -83,25 +81,25 @@ namespace Volatile.GodotEngine.Plugin
 
         private void RemoveAt(int index)
         {
-            if (index < 0 || index >= workingElements.Length) return;
-            var copy = Array.CreateInstance(elementType, workingElements.Length - 1);
+            if (index < 0 || index >= WorkingElements.Length) return;
+            var copy = Array.CreateInstance(elementType, WorkingElements.Length - 1);
             int j = 0;
-            for (int i = 0; i < workingElements.Length; i++)
+            for (int i = 0; i < WorkingElements.Length; i++)
                 if (index != i)
-                    copy.SetValue(workingElements.GetValue(i), j++);
-            workingElements = copy;
+                    copy.SetValue(WorkingElements.GetValue(i), j++);
+            WorkingElements = copy;
         }
 
         private void InsertAt(int index, object element)
         {
-            var copy = Array.CreateInstance(elementType, workingElements.Length + 1);
+            var copy = Array.CreateInstance(elementType, WorkingElements.Length + 1);
             int j = 0;
             for (int i = 0; i < index; i++)
-                copy.SetValue(workingElements.GetValue(i), j++);
+                copy.SetValue(WorkingElements.GetValue(i), j++);
             copy.SetValue(element, j++);
-            for (int i = index; i < workingElements.Length; i++)
-                copy.SetValue(workingElements.GetValue(i), j++);
-            workingElements = copy;
+            for (int i = index; i < WorkingElements.Length; i++)
+                copy.SetValue(WorkingElements.GetValue(i), j++);
+            WorkingElements = copy;
         }
 
         private void Resize(int newSize)
@@ -112,12 +110,12 @@ namespace Volatile.GodotEngine.Plugin
                 // Move old data to new array. If the new array is bigger,
                 // fill the empty space with default values for our element's
                 // type.
-                if (i < workingElements.Length)
-                    newPartition.SetValue(workingElements.GetValue(i), i);
+                if (i < WorkingElements.Length)
+                    newPartition.SetValue(WorkingElements.GetValue(i), i);
                 else
                     newPartition.SetValue(inspectorPlugin.GetDefaultObject(elementHintArgs), i);
             }
-            workingElements = newPartition;
+            WorkingElements = newPartition;
         }
         #endregion
 
@@ -139,11 +137,11 @@ namespace Volatile.GodotEngine.Plugin
 
         private void OnSizeSpinChanged(int value)
         {
-            if (updating || value == workingElements.Length) return;
+            if (updating || value == WorkingElements.Length) return;
 
             Resize(value);
 
-            EmitChanged();
+            SerializeWorkingValueToEditor();
         }
 
         private void OnPageChanged(int value)
@@ -163,8 +161,8 @@ namespace Volatile.GodotEngine.Plugin
 
             var elementControl = elementControlsContainer.GetChild(controlsIndex).GetChild(1);
             var serializedProp = (ISerializedEditorProperty)elementControl;
-            workingElements.SetValue(serializedProp.ManualValue, index);
-            EmitChanged();
+            WorkingElements.SetValue(serializedProp.Value, index);
+            SerializeWorkingValueToEditor();
         }
 
         protected override void InternalUpdateProperty()
@@ -178,6 +176,7 @@ namespace Volatile.GodotEngine.Plugin
 
             if (editButton.Pressed)
             {
+                // Construct bottomVBox if it doesn't exist (ie. if the property was folded).
                 if (bottomVBox == null)
                 {
                     // Initialize
@@ -224,7 +223,7 @@ namespace Volatile.GodotEngine.Plugin
 
                 sizeSpin.Value = length;
                 pageSpin.MaxValue = length / pageLength;
-                workingElements = ArraySerializer.Global.Deserialize(elementType, Data);
+                WorkingElements = ArraySerializer.Global.Deserialize(elementType, Data);
 
                 var start = pageIndex * pageLength;
                 var end = start + pageLength;
@@ -266,12 +265,14 @@ namespace Volatile.GodotEngine.Plugin
                             GD.PrintErr("VoltArrayEditorProperty: Expected element EditorProperty to be ISerializedEditorProperty.");
                             return;
                         }
-                        serializedProp.ManualValue = workingElements.GetValue(i);
-                        serializedProp.UseManualValue = true;
-                        prop.ManualEditedProperty = i.ToString();
-                        prop.SupressFocusable = true;
+                        serializedProp.UpdateProperty(WorkingElements.GetValue(i));
+                        serializedProp.ConfigureOverrides(
+                            useManualValue: true,
+                            suppressFocusable: true,
+                            manualEditedProperty: i.ToString(),
+                            label: i.ToString()
+                        );
                         prop.Connect("property_changed", this, nameof(OnPropertyChanged));
-                        prop.Label = i.ToString();
                         props.Add(prop);
 
                         prop.SizeFlagsHorizontal = (int)SizeFlags.ExpandFill;
@@ -330,11 +331,8 @@ namespace Volatile.GodotEngine.Plugin
             }
         }
 
-        private void EmitChanged()
-        {
-            ManualValueChanged?.Invoke(workingElements);
-            EmitChanged(GetEditedProperty(), ArraySerializer.Global.Serialize(elementType, workingElements));
-        }
+        protected override object Deserialize(byte[] data) => ArraySerializer.Global.Deserialize(elementType, data);
+        protected override byte[] Serialize(object workingValue) => ArraySerializer.Global.Serialize(elementType, (Array)workingValue);
         #endregion
 
         #region Reordering
@@ -350,7 +348,7 @@ namespace Volatile.GodotEngine.Plugin
             if (!Reordering) return;
             if (inputEvent is InputEventMouseMotion mouseMotionEvent)
             {
-                var size = workingElements.Length;
+                var size = WorkingElements.Length;
 
                 // Cumulative mouse delta
                 reorderMouseYDelta += mouseMotionEvent.Relative.y;
@@ -396,7 +394,7 @@ namespace Volatile.GodotEngine.Plugin
             if (reorderFromIndex != reorderToIndex)
             {
                 RemoveAndInsert(reorderFromIndex, reorderToIndex);
-                EmitChanged();
+                SerializeWorkingValueToEditor();
             }
 
             reorderFromIndex = -1;
@@ -415,13 +413,13 @@ namespace Volatile.GodotEngine.Plugin
         private void OnAddButtonPressed(int index)
         {
             InsertAt(index, inspectorPlugin.GetDefaultObject(elementHintArgs));
-            EmitChanged();
+            SerializeWorkingValueToEditor();
         }
 
         private void OnDeleteButtonPressed(int index)
         {
             RemoveAt(index);
-            EmitChanged();
+            SerializeWorkingValueToEditor();
         }
         #endregion
     }

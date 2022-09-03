@@ -25,15 +25,25 @@ namespace Volatile.GodotEngine.Plugin
             }
         }
 
-        Anchor[] anchors;
-        VolatilePolygon editedVolatilePolygon;
+        private Anchor[] anchors;
+        private VolatilePolygon editedVolatilePolygon;
+        private VolatilePolygon EditedVolatilePolygon
+        {
+            get
+            {
+                if (!IsInstanceValid(editedVolatilePolygon))
+                    editedVolatilePolygon = null;
+                return editedVolatilePolygon;
+            }
+            set => editedVolatilePolygon = value;
+        }
 
         public override void Edit(Godot.Object @object)
         {
             if (@object is VolatilePolygon shape)
             {
-                editedVolatilePolygon = shape;
-                editedVolatilePolygon.Connect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
+                EditedVolatilePolygon = shape;
+                EditedVolatilePolygon.Connect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
             }
         }
 
@@ -44,12 +54,11 @@ namespace Volatile.GodotEngine.Plugin
 
         public override void MakeVisible(bool visible)
         {
-            if (editedVolatilePolygon == null) return;
-            if (!visible && editedVolatilePolygon != null)
+            if (!visible && EditedVolatilePolygon != null)
             {
                 // Clean up
-                editedVolatilePolygon.Disconnect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
-                editedVolatilePolygon = null;
+                EditedVolatilePolygon.Disconnect(nameof(VolatileShape.EditingChanged), this, nameof(OnEditingChanged));
+                EditedVolatilePolygon = null;
             }
             Plugin.UpdateOverlays();
         }
@@ -64,19 +73,19 @@ namespace Volatile.GodotEngine.Plugin
         readonly Color STROKE_COLOR = Palette.Main;
         readonly Color FILL_COLOR = Palette.Blank;
 
-        private bool HasEditableVolatilePolygon => editedVolatilePolygon != null && editedVolatilePolygon.Editing && editedVolatilePolygon.Visible;
+        private bool HasEditableVolatilePolygon => EditedVolatilePolygon != null && EditedVolatilePolygon.Editing && EditedVolatilePolygon.Visible;
 
         public override void ForwardCanvasDrawOverViewport(Control overlay)
         {
             if (!HasEditableVolatilePolygon) return;
 
-            var transformViewport = editedVolatilePolygon.GetViewportTransform();
-            var transformGlobal = editedVolatilePolygon.GetCanvasTransform();
-            var points = editedVolatilePolygon.EditorGDPoints;
+            var transformViewport = EditedVolatilePolygon.GetViewportTransform();
+            var transformGlobal = EditedVolatilePolygon.GetCanvasTransform();
+            var points = EditedVolatilePolygon.EditorGDPoints;
             anchors = new Anchor[points.Length];
             for (int i = 0; i < points.Length; i++)
             {
-                var anchorPosition = transformViewport * (transformGlobal * (points[i] + editedVolatilePolygon.GlobalPosition));
+                var anchorPosition = transformViewport * (transformGlobal * (EditedVolatilePolygon.Transform * points[i]));
                 var anchorSize = Vector2.One * CIRCLE_RADIUS * 2f;
                 anchors[i] = new Anchor(i, anchorPosition, new Rect2(anchorPosition - anchorSize / 2f, anchorSize));
                 DrawAnchor(overlay, anchors[i]);
@@ -105,7 +114,7 @@ namespace Volatile.GodotEngine.Plugin
                         if (!anchor.rect.HasPoint(mouseButtonEvent.Position)) continue;
                         var undo = Plugin.GetUndoRedo();
                         undo.CreateAction("Move anchor");
-                        undo.AddUndoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._points), editedVolatilePolygon._points);
+                        undo.AddUndoProperty(EditedVolatilePolygon, nameof(EditedVolatilePolygon._points), EditedVolatilePolygon._points);
                         draggedAnchor = anchor;
                         return true;
                     }
@@ -116,7 +125,7 @@ namespace Volatile.GodotEngine.Plugin
                     DragTo(mouseButtonEvent.Position, true);
                     draggedAnchor = null;
                     var undo = Plugin.GetUndoRedo();
-                    undo.AddDoProperty(editedVolatilePolygon, nameof(editedVolatilePolygon._points), editedVolatilePolygon._points);
+                    undo.AddDoProperty(EditedVolatilePolygon, nameof(EditedVolatilePolygon._points), EditedVolatilePolygon._points);
                     undo.CommitAction();
                     return true;
                 }
@@ -144,21 +153,24 @@ namespace Volatile.GodotEngine.Plugin
 
         public void DragTo(Vector2 eventPosition, bool commit = false)
         {
-            var inverseTransformViewport = editedVolatilePolygon.GetViewportTransform().AffineInverse();
-            var inverseTransformGlobal = editedVolatilePolygon.GetCanvasTransform().AffineInverse();
+            var inverseTransformViewport = EditedVolatilePolygon.GetViewportTransform().AffineInverse();
+            var inverseTransformGlobal = EditedVolatilePolygon.GetCanvasTransform().AffineInverse();
+            var inverseTransformPolygon = EditedVolatilePolygon.Transform.AffineInverse();
+
+            var draggedAnchorNewPoint = (inverseTransformPolygon * (inverseTransformGlobal * (inverseTransformViewport * eventPosition)));
 
             if (commit)
             {
                 // Commiting is only done when the drag stops, because it's really costly
-                var points = (VoltVector2[])editedVolatilePolygon.Points.Clone();
-                points[draggedAnchor.index] = ((inverseTransformViewport * (inverseTransformGlobal * eventPosition)) - editedVolatilePolygon.GlobalPosition).ToVoltVector2();
-                editedVolatilePolygon.Points = points;
-                editedVolatilePolygon.PropertyListChangedNotify();
+                var points = (VoltVector2[])EditedVolatilePolygon.Points.Clone();
+                points[draggedAnchor.index] = draggedAnchorNewPoint.ToVoltVector2();
+                EditedVolatilePolygon.Points = points;
+                EditedVolatilePolygon.PropertyListChangedNotify();
             }
             else
             {
-                editedVolatilePolygon.EditorGDPoints[draggedAnchor.index] = (inverseTransformViewport * (inverseTransformGlobal * eventPosition) - editedVolatilePolygon.GlobalPosition);
-                editedVolatilePolygon.Update();
+                EditedVolatilePolygon.EditorGDPoints[draggedAnchor.index] = draggedAnchorNewPoint;
+                EditedVolatilePolygon.Update();
             }
 
             draggedAnchor.position = eventPosition;

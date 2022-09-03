@@ -11,7 +11,6 @@ namespace Volatile.GodotEngine.Plugin
     public class VoltVector2EditorProperty : SerializedEditorProperty<VoltVector2, VoltVector2Serializer>
     {
         private EditorSpinSlider[] spin = new EditorSpinSlider[2];
-        protected VoltVector2 workingValue;
 
         public VoltVector2EditorProperty()
         {
@@ -47,18 +46,19 @@ namespace Volatile.GodotEngine.Plugin
         private void OnXSpinChanged(double value)
         {
             if (updating) return;
-            Value = new VoltVector2((Fix64)value, workingValue.y);
+            workingValue = new VoltVector2((Fix64)value, workingValue.y);
+            SerializeWorkingValueToEditor();
         }
 
         private void OnYSpinChanged(double value)
         {
             if (updating) return;
-            Value = new VoltVector2(workingValue.x, (Fix64)value);
+            workingValue = new VoltVector2(workingValue.x, (Fix64)value);
+            SerializeWorkingValueToEditor();
         }
 
         protected override void InternalUpdateProperty()
         {
-            workingValue = Value;
             spin[0].Value = (double)workingValue.x;
             spin[1].Value = (double)workingValue.y;
         }
@@ -68,6 +68,7 @@ namespace Volatile.GodotEngine.Plugin
     public class VoltVector2EditorPropertyParser : SerializedEditorPropertyParser
     {
         public VoltVector2EditorPropertyParser() { }
+
         public override ISerializedEditorProperty ParseSerializedProperty(string[] args)
         {
             if (args.TryGet(0) == VoltPropertyHint.VoltVector2)

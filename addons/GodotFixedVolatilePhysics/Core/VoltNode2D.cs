@@ -36,6 +36,13 @@ namespace Volatile.GodotEngine
             }
         }
         public byte[] _fixedTransform = VoltType.Serialize(VoltTransform2D.Default());
+        public VoltTransform2D _OnFixedTransformSet
+        {
+            set
+            {
+                FixedTransformChanged();
+            }
+        }
         #endregion
 
         public VoltVector2 FixedPosition
@@ -45,23 +52,15 @@ namespace Volatile.GodotEngine
             {
                 var copy = FixedTransform;
                 copy.Origin = value;
-                fixedTransform = copy;
+                FixedTransform = copy;
 
-                TransformChanged();
-
-#if TOOLS
-                if (Engine.EditorHint)
-                {
-                    Position = copy.Origin.ToGDVector2();
-                    FixedTransform = copy;
-                }
-#endif
+                FixedTransformChanged();
             }
         }
-        private Vector2 _fixedPosition
+        private byte[] _FixedPosition
         {
-            get => FixedPosition.ToGDVector2();
-            set => FixedPosition = value.ToVoltVector2();
+            get => VoltType.Serialize(FixedPosition);
+            set => FixedPosition = VoltType.Deserialize<VoltVector2>(value);
         }
 
         private VoltVector2 fixedScale = VoltVector2.One;
@@ -72,17 +71,12 @@ namespace Volatile.GodotEngine
             {
                 fixedScale = value;
                 UpdateFixedTransformRotationAndScale();
-
-#if TOOLS
-                if (Engine.EditorHint)
-                    Scale = FixedScale.ToGDVector2();
-#endif
             }
         }
-        private Vector2 _fixedScale
+        private byte[] _FixedScale
         {
-            get => FixedScale.ToGDVector2();
-            set => FixedScale = value.ToVoltVector2();
+            get => VoltType.Serialize(FixedScale);
+            set => FixedScale = VoltType.Deserialize<VoltVector2>(value);
         }
 
         private Fix64 fixedRotation = Fix64.Zero;
@@ -93,17 +87,12 @@ namespace Volatile.GodotEngine
             {
                 fixedRotation = value;
                 UpdateFixedTransformRotationAndScale();
-
-#if TOOLS
-                if (Engine.EditorHint)
-                    Rotation = (float)FixedRotation;
-#endif
             }
         }
-        private float _fixedRotation
+        private byte[] _FixedRotation
         {
-            get => (float)FixedRotation;
-            set => FixedRotation = (Fix64)value;
+            get => VoltType.Serialize(FixedRotation);
+            set => FixedRotation = VoltType.Deserialize<Fix64>(value);
         }
 
         public VoltTransform2D GlobalFixedTransform
@@ -134,7 +123,7 @@ namespace Volatile.GodotEngine
                 else
                     copy.Origin = value;
                 FixedTransform = copy;
-                TransformChanged();
+                FixedTransformChanged();
             }
         }
 
@@ -149,74 +138,63 @@ namespace Volatile.GodotEngine
                 else
                     copy.Rotation = value;
                 FixedTransform = copy;
-                TransformChanged();
+                FixedTransformChanged();
             }
         }
-
-        private bool fixedTransformDirty = false;
 
         public override void _Ready()
         {
-            if (!Engine.EditorHint)
+            FixedTransform = VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
+#if TOOLS
+            if (Engine.EditorHint)
+                previousTransform = Transform;
+            else
+#endif
             {
-                FixedTransform = VoltType.Deserialize<VoltTransform2D>(_fixedTransform);
-                fixedTransformDirty = true;
-
                 UpdateFloatTransform();
-            }
-
-            previousTransform = Transform;
-            SetNotifyTransform(true);
-        }
-
-        public override void _Notification(int what)
-        {
-            switch (what)
-            {
-                case NotificationTransformChanged:
-                    UpdateFloatTransform();
-                    break;
             }
         }
 
         private void UpdateFloatTransform()
         {
-            if (fixedTransformDirty)
-            {
-                Transform = FixedTransform.ToGDTransform2D();
-                PropertyListChangedNotify();
-
-                fixedTransformDirty = false;
-            }
+            Transform = FixedTransform.ToGDTransform2D();
+            
+            PropertyListChangedNotify();
         }
 
 #if TOOLS
         private Transform2D previousTransform;
-        private const float updateDelay = 0.5f;
-        private float updateDelayTime = 0;
-        private bool updateDelaying = false;
+        private bool updating = false;
+        private float updateDelay = 0.1f;
+        private float updateTime;
 #endif
         public override void _Process(float delta)
         {
 #if TOOLS
             if (Engine.EditorHint && !Transform.IsEqualApprox(previousTransform))
             {
-                updateDelayTime = updateDelay;
+                // We defer updates, to avoid making several updates when the
+                // user is dragging the transform around
+                updateTime = updateDelay;
                 previousTransform = Transform;
-                updateDelaying = true;
+                updating = true;
             }
-            else
+            else if (updating)
             {
-                if (updateDelaying)
+                updateTime -= delta;
+                if (updateTime <= 0)
                 {
-                    if (updateDelayTime > 0)
-                        updateDelayTime -= delta;
-                    else if (updateDelayTime < 0)
-                    {
-                        UpdateFixedTransform(Transform.ToVoltTransform2D());
-                        UpdateFloatTransform();
-                        updateDelaying = false;
-                    }
+                    // Fixed transform changes immediately propagate to the float transform (see TransformChanged())
+                    // Therefore we know that the float transform is the cause of the difference here (due to the user
+                    // dragging/rotating/scaling the node2D using Godot's editor tools),
+
+                    // We don't want to emit changed here, because we're using data from the Transform
+                    // to update the FixedTransform, and not the other way around. Otherwise
+                    // you'd trigger a double update, where Transform gets updated, you update FixedTransform,
+                    // which then causes Transform to get reupdated.
+                    UpdateFixedTransform(Transform.ToVoltTransform2D(), false);
+                    PropertyListChangedNotify();
+                    updating = false;
                 }
             }
 #endif
@@ -227,10 +205,10 @@ namespace Volatile.GodotEngine
             var copy = FixedTransform;
             copy.SetRotationAndScale(FixedRotation, fixedScale);
             FixedTransform = copy;
-            TransformChanged();
+            FixedTransformChanged();
         }
 
-        public void UpdateFixedTransform(VoltTransform2D transform)
+        public void UpdateFixedTransform(VoltTransform2D transform, bool emitChanged = true)
         {
             FixedTransform = transform;
 
@@ -238,12 +216,13 @@ namespace Volatile.GodotEngine
             // so we set the backing fields instead
             fixedScale = transform.Scale;
             fixedRotation = transform.Rotation;
-            TransformChanged();
+            if (emitChanged) FixedTransformChanged();
         }
 
-        private void TransformChanged()
+        private void FixedTransformChanged()
         {
-            fixedTransformDirty = true;
+            // Update float transform immediately when the fixed transform changed.
+            UpdateFloatTransform();
         }
 
         public override Array _GetPropertyList()
@@ -252,38 +231,35 @@ namespace Volatile.GodotEngine
             builder.AddItem(
                 name: "VoltNode2D",
                 type: Variant.Type.Nil,
-                hint: PropertyHint.None,
                 usage: PropertyUsageFlags.Category
             );
             builder.AddItem(
                 name: "Fixed Transform",
                 type: Variant.Type.Nil,
-                hint: PropertyHint.None,
                 usage: PropertyUsageFlags.Group
             );
             builder.AddItem(
                 name: nameof(_fixedTransform),
                 type: Variant.Type.RawArray,
-                hint: PropertyHint.None,
-                hintString: VoltPropertyHint.VoltTransform2D,
+                hintString: VoltPropertyHint.VoltTransform2D + ",set:" + nameof(_OnFixedTransformSet),
                 usage: PropertyUsageFlags.Default
             );
             builder.AddItem(
-                name: nameof(_fixedPosition),
-                type: Variant.Type.Vector2,
-                hint: PropertyHint.None,
+                name: nameof(_FixedPosition),
+                type: Variant.Type.RawArray,
+                hintString: VoltPropertyHint.VoltVector2,
                 usage: PropertyUsageFlags.Editor
             );
             builder.AddItem(
-                name: nameof(_fixedScale),
-                type: Variant.Type.Vector2,
-                hint: PropertyHint.None,
+                name: nameof(_FixedScale),
+                type: Variant.Type.RawArray,
+                hintString: VoltPropertyHint.VoltVector2,
                 usage: PropertyUsageFlags.Editor
             );
             builder.AddItem(
-                name: nameof(_fixedRotation),
-                type: Variant.Type.Real,
-                hint: PropertyHint.None,
+                name: nameof(_FixedRotation),
+                type: Variant.Type.RawArray,
+                hintString: VoltPropertyHint.Fix64,
                 usage: PropertyUsageFlags.Editor
             );
             return builder.Build();

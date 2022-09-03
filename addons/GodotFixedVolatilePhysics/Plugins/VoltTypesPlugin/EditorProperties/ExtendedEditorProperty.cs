@@ -1,10 +1,28 @@
 ﻿using Godot;
+using GDC = Godot.Collections;
 
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
 {
+    public interface IEditorProperty
+    {
+        string GetEditedProperty();
+        Godot.Object GetEditedObject();
+        void AddFocusable(Control control);
+        void UpdateProperty();
+        string Label { get; set; }
+        Error Connect(string signal, Godot.Object target, string method, GDC.Array binds = null, uint flags = 0);
+    }
+
+    public interface IExtendedEditorProperty : IEditorProperty
+    {
+        bool SupressFocusable { get; set; }
+        string ManualEditedProperty { get; set; }
+        Godot.Object ManualEditedObject { get; set; }
+    }
+
     [Tool]
-    public abstract class ExtendedEditorProperty : EditorProperty
+    public abstract class ExtendedEditorProperty : EditorProperty, IExtendedEditorProperty
     {
         public bool SupressFocusable { get; set; } = false;
         public string ManualEditedProperty { get; set; } = "";
@@ -44,6 +62,13 @@ namespace Volatile.GodotEngine.Plugin
         }
 
         protected abstract void InternalUpdateProperty();
+
+        public void ConfigureOverrides(string manualEditedProperty = "", Object manualEditedObject = null, bool supressFocusable = false)
+        {
+            ManualEditedProperty = manualEditedProperty;
+            ManualEditedObject = manualEditedObject;
+            SupressFocusable = supressFocusable;
+        }
     }
 }
 #endif

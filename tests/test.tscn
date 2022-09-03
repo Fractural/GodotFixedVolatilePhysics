@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=1]
+[ext_resource path="res://tests/FixedMovement.cs" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/Test.cs" type="Script" id=4]
 
 [node name="Node2D" type="Node2D"]
@@ -14,12 +15,20 @@ voltRectArray = PoolByteArray( 2, 0, 0, 0, 32, 9, 104, 34, 60, 18, 36, 0, 0, 0, 
 voltRect = PoolByteArray( 160, 240, 35, 60, 29, 0, 0, 0, 204, 204, 204, 76, 214, 3, 0, 0, 0, 0, 0, 64, 166, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 tests = "asdfasdf"
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 1.38655, 2.48868 )
+[node name="FixedMovement" type="Node2D" parent="."]
+position = Vector2( 134.101, -25.905 )
 script = ExtResource( 1 )
-Editing = true
-_points = PoolByteArray( 6, 0, 0, 0, 16, 0, 160, 183, 204, 1, 0, 0, 0, 0, 56, 58, 30, 2, 0, 0, 0, 16, 0, 0, 18, 41, 0, 0, 0, 0, 0, 168, 157, 163, 3, 0, 0, 0, 16, 0, 208, 245, 206, 251, 255, 255, 255, 0, 128, 130, 229, 0, 0, 0, 0, 16, 0, 88, 202, 74, 254, 255, 255, 255, 0, 148, 5, 160, 252, 255, 255, 255, 16, 0, 16, 11, 149, 1, 0, 0, 0, 0, 224, 229, 2, 253, 255, 255, 255, 16, 0, 176, 1, 194, 3, 0, 0, 0, 0, 156, 70, 91, 254, 255, 255, 255 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 245, 98, 1, 0, 0, 0, 0, 64, 26, 125, 2, 0, 0, 0 )
+_speed = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 212, 25, 134, 0, 0, 0, 0, 128, 81, 24, 230, 255, 255, 255 )
 
-[node name="Node2D2" type="Node2D" parent="."]
-position = Vector2( 2.62821, -2.17507 )
+[node name="Sprite" type="Sprite" parent="FixedMovement"]
+texture = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="FixedMovement"]
+current = true
+zoom = Vector2( 5, 5 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0.329412 )
+position = Vector2( -103.881, 54.7806 )
+texture = ExtResource( 2 )

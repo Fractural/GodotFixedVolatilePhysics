@@ -28,6 +28,8 @@ namespace FixMath.NET
         public static readonly Fix64 PiTimes2 = new Fix64(PI_TIMES_2);
         public static readonly Fix64 PiInv = (Fix64)0.3183098861837906715377675267M;
         public static readonly Fix64 PiOver2Inv = (Fix64)0.6366197723675813430755350535M;
+        public static readonly Fix64 Deg2Rad = (Fix64)0.01745329251M;
+        public static readonly Fix64 Rad2Deg = (Fix64)57.2957795131M;
         static readonly Fix64 Log2Max = new Fix64(LOG2MAX);
         static readonly Fix64 Log2Min = new Fix64(LOG2MIN);
         static readonly Fix64 Ln2 = new Fix64(LN2);
