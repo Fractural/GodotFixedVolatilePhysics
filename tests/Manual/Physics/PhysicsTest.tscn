@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=1]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
 
 [node name="PhysicsTest" type="Node2D"]
 
@@ -8,4 +9,8 @@
 script = ExtResource( 1 )
 Editing = true
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 128, 27, 102, 34, 0, 0, 0, 0, 0, 231, 144, 46, 0, 0, 0, 16, 0, 128, 201, 152, 41, 0, 0, 0, 0, 128, 173, 164, 17, 0, 0, 0, 16, 0, 128, 190, 207, 79, 0, 0, 0, 0, 0, 18, 89, 33, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="VolatileRect" type="Node2D" parent="."]
+script = ExtResource( 2 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
