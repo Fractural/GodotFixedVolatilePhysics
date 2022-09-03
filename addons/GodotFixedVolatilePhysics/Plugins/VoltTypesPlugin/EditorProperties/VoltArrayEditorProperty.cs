@@ -26,10 +26,10 @@ namespace Volatile.GodotEngine.Plugin
         private VBoxContainer bottomVBox;
 
         public VoltArrayEditorProperty() { }
-        public VoltArrayEditorProperty(string[] elementHintArgs, EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int itemsPerPage)
+        public VoltArrayEditorProperty(string[] elementHintArgs, EditorInterface editorInterface, VoltTypesInspectorPlugin inspectorPlugin, int pageLength)
         {
             this.editorInterface = editorInterface;
-            this.pageLength = itemsPerPage;
+            this.pageLength = pageLength;
 
             this.elementType = VoltPropertyHint.HintToType[elementHintArgs[0]];
             this.inspectorPlugin = inspectorPlugin;
@@ -272,6 +272,7 @@ namespace Volatile.GodotEngine.Plugin
                             manualEditedProperty: i.ToString(),
                             label: i.ToString()
                         );
+                        serializedProp.UpdateProperty(WorkingElements.GetValue(i));
                         prop.Connect("property_changed", this, nameof(OnPropertyChanged));
                         props.Add(prop);
 
