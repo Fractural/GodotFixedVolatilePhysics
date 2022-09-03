@@ -463,7 +463,7 @@ namespace Volatile.GodotEngine.Plugin
             if (args.TryGet(0) == VoltPropertyHint.Array)
             {
                 if (VoltPropertyHint.HintToType.TryGetValue(args.TryGet(1), out System.Type type))
-                    return Array.CreateInstance(type, 0);
+                    return ArraySerializer.Global.Default(type);
             }
             return null;
         }

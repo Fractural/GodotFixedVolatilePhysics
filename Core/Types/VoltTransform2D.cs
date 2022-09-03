@@ -303,6 +303,14 @@ namespace Volatile
         }
 
         /// <summary>
+        /// Approximates <paramref name="a"/> == <paramref name="b"/> with a margin of <see cref="Fix64.Epsilon"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>Whether <paramref name="a"/> approximately == <paramref name="b"/></returns>
+        public static bool Approx(VoltTransform2D a, VoltTransform2D b) => Approx(a, b, Fix64.Epsilon);
+
+        /// <summary>
         /// Approximates <paramref name="a"/> == <paramref name="b"/> with a margin of <paramref name="error"/>
         /// </summary>
         /// <param name="a"></param>

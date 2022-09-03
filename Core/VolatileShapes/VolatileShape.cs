@@ -8,29 +8,17 @@ using System;
 namespace Volatile.GodotEngine
 {
     [Tool]
-    public class VolatileShape : VoltNode2D
+    public abstract class VolatileShape : VoltNode2D
     {
-        public virtual VoltShape PrepareShape(VoltWorld world)
-        {
-            throw new NotImplementedException();
-        }
-        public virtual Vector2 ComputeGlobalCenterOfMass()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract VoltShape PrepareShape(VoltWorld world);
+        public abstract Vector2 ComputeGlobalCenterOfMass();
 
         public override void _Ready()
         {
             base._Ready();
-            if (!Engine.EditorHint)
-                InitValues();
-        }
-
-        protected virtual void InitValues()
-        {
-            Density = VoltType.Deserialize<Fix64>(_density);
-            Restitution = VoltType.Deserialize<Fix64>(_restitution);
-            Friction = VoltType.Deserialize<Fix64>(_friction);
+            Density = VoltType.DeserializeOrDefault<Fix64>(_density);
+            Restitution = VoltType.DeserializeOrDefault<Fix64>(_restitution);
+            Friction = VoltType.DeserializeOrDefault<Fix64>(_friction);
         }
 
         #region Density
@@ -41,7 +29,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<Fix64>(_density);
+                    return VoltType.DeserializeOrDefault<Fix64>(_density);
                 else
 #endif
                     return density;
@@ -68,7 +56,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<Fix64>(_restitution);
+                    return VoltType.DeserializeOrDefault<Fix64>(_restitution);
                 else
 #endif
                     return restitution;
@@ -95,7 +83,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<Fix64>(_friction);
+                    return VoltType.DeserializeOrDefault<Fix64>(_friction);
                 else
 #endif
                     return friction;

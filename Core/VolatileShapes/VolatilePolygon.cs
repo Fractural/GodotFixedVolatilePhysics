@@ -42,7 +42,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.Deserialize<VoltVector2[]>(_points);
+                    return VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
                 else
 #endif
                     return points;
@@ -80,9 +80,9 @@ namespace Volatile.GodotEngine
         {
             base._Ready();
             if (Engine.EditorHint)
-                _PointsForwarded = VoltType.Deserialize<VoltVector2[]>(_points);
+                _PointsForwarded = VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
             else
-                Points = VoltType.Deserialize<VoltVector2[]>(_points);
+                Points = VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
         }
 
 #if TOOLS

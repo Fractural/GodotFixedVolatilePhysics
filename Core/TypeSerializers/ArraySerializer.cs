@@ -36,6 +36,9 @@ namespace Volatile.GodotEngine
             return array;
         }
 
+        public Array Default(Type elementType) => Array.CreateInstance(elementType, 0);
+        public byte[] DefaultAsBytes(Type elementType) => Serialize(elementType, Default(elementType));
+
         public void Serialize(Type elementType, StreamPeerBuffer buffer, Array array)
         {
             buffer.PutU32((uint)array.Length);
