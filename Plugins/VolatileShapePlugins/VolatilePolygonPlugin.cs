@@ -39,7 +39,7 @@ namespace Volatile.GodotEngine.Plugin
                 }
                 else
                 {
-                    editedPolygon.EditorGDPoints[index] = localPosition;
+                    editedPolygon.EditorPoints[index] = localPosition;
                     editedPolygon.Update();
                 }
             }
@@ -50,6 +50,8 @@ namespace Volatile.GodotEngine.Plugin
             get => (VolatilePolygon)EditedTarget;
             set => EditedTarget = value;
         }
+
+        protected override bool HasEditableTarget => EditedVolatilePolygon != null && EditedVolatilePolygon.Editing;
 
         public override void Edit(Godot.Object @object)
         {
@@ -79,7 +81,7 @@ namespace Volatile.GodotEngine.Plugin
         public override void AddAndDrawAnchors()
         {
             var transform = LocalToViewportTransform;
-            var points = EditedVolatilePolygon.EditorGDPoints;
+            var points = EditedVolatilePolygon.EditorPoints;
             for (int i = 0; i < points.Length; i++)
             {
                 AddAndDrawAnchor(new PointsArrayAnchor()

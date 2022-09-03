@@ -4,6 +4,8 @@ using Godot.Collections;
 using Fractural;
 using FixMath.NET;
 using System.Linq;
+using Volatile.GodotEngine.Plugin;
+using Fractural.Utils;
 
 namespace Volatile.GodotEngine
 {
@@ -35,7 +37,7 @@ namespace Volatile.GodotEngine
         public override void _Ready()
         {
             base._Ready();
-            Extents = VoltType.DeserializeOrDefault<VoltVector2>(_size);
+            Extents = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
         }
 
         #region Rect
@@ -46,7 +48,7 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    return VoltType.DeserializeOrDefault<VoltVector2>(_size);
+                    return VoltType.DeserializeOrDefault<VoltVector2>(_extents);
                 else
 #endif
                     return size;
@@ -55,14 +57,44 @@ namespace Volatile.GodotEngine
             {
 #if TOOLS
                 if (Engine.EditorHint)
-                    _size = VoltType.Serialize(value);
+                    _extents = VoltType.Serialize(value);
                 else
 #endif
                     size = value;
             }
         }
-        [Export(PropertyHint.None, VoltPropertyHint.VoltVector2)]
-        private byte[] _size = VoltType.Serialize(VoltVector2.One);
+        [Export(PropertyHint.None, VoltPropertyHint.VoltVector2 + ",set:" + nameof(_OnExtentsSet))]
+        public byte[] _extents = VoltType.Serialize(VoltVector2.One);
+
+        public Vector2 EditorExtents { get; set; }
+        private VoltVector2 _OnExtentsSet
+        {
+            set
+            {
+                EditorExtents = value.ToGDVector2();
+                Update();
+            }
+        }
         #endregion
+
+#if TOOLS
+        public override void _Draw()
+        {
+            if (!Engine.EditorHint || Extents == VoltVector2.Zero) return;
+            var extents = Extents.ToGDVector2();
+            var color = Palette.Main;
+            var fill = color;
+            fill.a = 0.075f;
+
+            var points = new Vector2[] {
+                extents,
+                new Vector2(-extents.x, extents.y),
+                new Vector2(-extents.x, -extents.y),
+                new Vector2(extents.x, -extents.y)
+            };
+            this.DrawSegmentedPolyline(points, color);
+            DrawColoredPolygon(points.ToArray(), fill);
+        }
+#endif
     }
 }

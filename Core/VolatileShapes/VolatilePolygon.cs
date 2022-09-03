@@ -64,12 +64,12 @@ namespace Volatile.GodotEngine
         [Export(hintString: VoltPropertyHint.Array + "," + VoltPropertyHint.VoltVector2 + ",set:" + nameof(_OnPointsSet))]
         public byte[] _points;
 
-        public Vector2[] EditorGDPoints { get; set; }
+        public Vector2[] EditorPoints { get; set; }
         private VoltVector2[] _OnPointsSet
         {
             set
             {
-                EditorGDPoints = value.Select(x => x.ToGDVector2()).ToArray();
+                EditorPoints = value.Select(x => x.ToGDVector2()).ToArray();
                 Update();
             }
         }
@@ -88,23 +88,16 @@ namespace Volatile.GodotEngine
 #if TOOLS
         public override void _Draw()
         {
-            if (!Engine.EditorHint || EditorGDPoints == null) return;
-            var points = EditorGDPoints;
+            if (!Engine.EditorHint || EditorPoints == null) return;
+            var points = EditorPoints;
             if (points.Length > 0)
             {
                 var color = Palette.Main;
                 var fill = color;
                 fill.a = 0.075f;
 
-                var previousPoint = points.Last();
-                foreach (var point in points)
-                {
-                    DrawLine(previousPoint, point, color, 1, true);
-                    previousPoint = point;
-                }
-                var polygonColors = new Color[points.Length];
-                polygonColors.Populate(fill);
-                DrawPolygon(points.ToArray(), polygonColors);
+                this.DrawSegmentedPolyline(points, color);
+                DrawColoredPolygon(points.ToArray(), fill);
             }
         }
 #endif
