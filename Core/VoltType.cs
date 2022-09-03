@@ -70,6 +70,8 @@ namespace Volatile.GodotEngine
 
         public static object Default(System.Type type)
         {
+            if (type.IsArray)
+                return ArraySerializer.Default(type.GetElementType());
             foreach (var serializer in TypeSerializers)
                 if (serializer.IsInstanceOfGenericType(typeof(TypeSerializer<>), type))
                     return serializer.Default();
@@ -78,7 +80,10 @@ namespace Volatile.GodotEngine
         }
         public static T Default<T>()
         {
-            return (T)Default(typeof(T));
+            var result = Default(typeof(T));
+            if (!(result is T))
+                GD.PrintErr($"VoltType: Expected default to be type {typeof(T).FullName} but got {result.GetType().FullName} instead");
+            return (T)result;
         }
 
         public static object DeserializeOrDefault(System.Type type, byte[] data)
@@ -89,16 +94,18 @@ namespace Volatile.GodotEngine
         }
         public static T DeserializeOrDefault<T>(byte[] data)
         {
-            return (T)DeserializeOrDefault(typeof(T), data);
+            var result = DeserializeOrDefault(typeof(T), data);
+            if (result is T casted)
+                return casted;
+            GD.PrintErr($"VoltType: Expected default to be type {typeof(T).FullName} but got {result.GetType().FullName} instead");
+            return default(T);
         }
 
         public static T Deserialize<T>(byte[] data)
         {
             var result = Deserialize(typeof(T), data);
-            if (result.GetType() != typeof(T))
-            {
+            if (!(result is T))
                 GD.PrintErr("VoltType: Deserialize got " + result.GetType() + " but expected " + typeof(T));
-            }
             return (T)result;
         }
 
