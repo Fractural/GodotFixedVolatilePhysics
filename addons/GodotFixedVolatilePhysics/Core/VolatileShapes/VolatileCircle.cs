@@ -2,7 +2,9 @@
 using Godot.Collections;
 using Fractural;
 using FixMath.NET;
+#if TOOLS
 using Volatile.GodotEngine.Plugin;
+#endif
 
 namespace Volatile.GodotEngine
 {

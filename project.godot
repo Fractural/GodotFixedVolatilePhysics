@@ -45,7 +45,7 @@ Cache_Tests=true
 [application]
 
 config/name="GodotFixedVolatilePhysics"
-run/main_scene="res://tests/Manual/Physics/PhysicsTest.tscn"
+run/main_scene="res://tests/Manual/VoltNode2D/VoltNode2DTest.tscn"
 boot_splash/image="res://bootsplash.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"

@@ -7,12 +7,18 @@ namespace Volatile.GodotEngine
     {
         public static Fix64 SignedArea(this VoltVector2[] points)
         {
-            Fix64 signedArea = Fix64.Zero;
-            var previousPoint = points.Last();
-            foreach (var point in points)
-                signedArea += (previousPoint.x * point.y - point.x * previousPoint.y);
+            Fix64 sum = Fix64.Zero;
 
-            return signedArea / Fix64.From(2);
+            for (int i = 0; i < points.Length; i++)
+            {
+                VoltVector2 v = points[i];
+                VoltVector2 u = points[(i + 1) % points.Length];
+                VoltVector2 w = points[(i + 2) % points.Length];
+
+                sum += u.x * (v.y - w.y);
+            }
+
+            return sum / (Fix64)2;
         }
     }
 }

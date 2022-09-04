@@ -4,7 +4,9 @@ using Godot.Collections;
 using Fractural;
 using FixMath.NET;
 using System.Linq;
+#if TOOLS
 using Volatile.GodotEngine.Plugin;
+#endif
 using Fractural.Utils;
 
 namespace Volatile.GodotEngine

@@ -7,7 +7,9 @@ using Fractural;
 using FixMath.NET;
 using System.Linq;
 using System.Collections.ObjectModel;
+#if TOOLS
 using Volatile.GodotEngine.Plugin;
+#endif
 
 namespace Volatile.GodotEngine
 {
@@ -18,6 +20,10 @@ namespace Volatile.GodotEngine
         {
             var globalPosition = GlobalFixedPosition;
             var points = Points.Select(x => x + globalPosition).ToArray();
+            var signedArea = points.SignedArea();
+            // VolatilePhysics requires positive signed areas for polygons
+            if (signedArea < Fix64.Zero)
+                points = points.Reverse().ToArray();
             return world.CreatePolygonWorldSpace(
               points,
               Density,

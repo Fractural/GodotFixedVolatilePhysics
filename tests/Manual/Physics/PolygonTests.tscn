@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=1]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=3]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=4]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs" type="Script" id=5]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/SimpleForce.cs" type="Script" id=6]
+
+[node name="PolygoinTests" type="Node2D"]
+
+[node name="VolatileWorld" type="Node2D" parent="."]
+script = ExtResource( 1 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="VolatileBody" type="Node2D" parent="VolatileWorld"]
+position = Vector2( 0, -0.877136 )
+script = ExtResource( 3 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 116, 31, 255, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="VolatileWorld/VolatileBody"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 124, 165, 199, 255, 255, 255, 0, 0, 190, 106, 89, 0, 0, 0, 16, 0, 0, 124, 130, 221, 255, 255, 255, 0, 0, 248, 19, 215, 255, 255, 255, 16, 0, 0, 96, 211, 111, 0, 0, 0, 0, 0, 172, 89, 245, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="SimpleForce" type="Node2D" parent="VolatileWorld/VolatileBody"]
+script = ExtResource( 6 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 78, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="VolatileBody2" type="Node2D" parent="VolatileWorld"]
+position = Vector2( 0, -0.877136 )
+script = ExtResource( 3 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 116, 31, 255, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="VolatileWorld/VolatileBody2"]
+position = Vector2( 0, -190.819 )
+script = ExtResource( 5 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 0, 0, 0, 50, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 118, 46, 65, 255, 255, 255 )
+
+[node name="SimpleForce2" type="Node2D" parent="VolatileWorld/VolatileBody2"]
+script = ExtResource( 6 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 78, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="StaticRect" type="Node2D" parent="VolatileWorld"]
+position = Vector2( 0, 256.024 )
+script = ExtResource( 3 )
+IsStatic = true
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 58, 6, 0, 1, 0, 0 )
+
+[node name="VolatileRect" type="Node2D" parent="VolatileWorld/StaticRect"]
+script = ExtResource( 4 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 4, 32, 112, 2, 0, 0, 0, 0, 224, 115, 52, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true

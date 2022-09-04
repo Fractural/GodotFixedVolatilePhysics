@@ -16,11 +16,11 @@ voltRect = PoolByteArray( 160, 240, 35, 60, 29, 0, 0, 0, 204, 204, 204, 76, 214,
 tests = "asdfasdf"
 
 [node name="FixedMovement" type="Node2D" parent="."]
-position = Vector2( 141.101, -25.905 )
-rotation = 0.122173
+position = Vector2( 154.101, -25.905 )
+rotation = 0.226891
 script = ExtResource( 2 )
 _speed = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 129, 23, 254, 0, 0, 0, 0, 64, 212, 50, 31, 0, 0, 0, 0, 192, 43, 205, 224, 255, 255, 255, 255, 0, 129, 23, 254, 0, 0, 0, 0, 0, 0, 212, 25, 141, 0, 0, 0, 0, 128, 81, 24, 230, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 90, 112, 249, 0, 0, 0, 0, 128, 63, 150, 57, 0, 0, 0, 0, 128, 192, 105, 198, 255, 255, 255, 255, 0, 90, 112, 249, 0, 0, 0, 0, 0, 0, 212, 25, 154, 0, 0, 0, 0, 128, 81, 24, 230, 255, 255, 255 )
 
 [node name="Sprite" type="Sprite" parent="FixedMovement"]
 texture = ExtResource( 1 )

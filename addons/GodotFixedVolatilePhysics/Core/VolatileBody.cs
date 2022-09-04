@@ -42,7 +42,7 @@ namespace Volatile.GodotEngine
         {
             base._Ready();
 #if TOOLS
-            if (Engine.EditorHint) 
+            if (Engine.EditorHint)
             {
                 SetPhysicsProcess(false);
                 return;
@@ -106,9 +106,20 @@ namespace Volatile.GodotEngine
             Body.AddTorque(radians);
         }
 
-        public void SetState(VoltVector2 position, Fix64 radians)
+        public void Set(VoltVector2 position, Fix64 radians)
         {
             Body.Set(position, radians);
+        }
+
+        public void SetVelocity(VoltVector2 linearVelocity, Fix64 angularVelocity)
+        {
+            Body.LinearVelocity = linearVelocity;
+            Body.AngularVelocity = angularVelocity;
+        }
+
+        public void SetForce(VoltVector2 force, Fix64 torque, VoltVector2 biasVelocity, Fix64 biasRotation)
+        {
+            Body.SetForce(force, torque, biasVelocity, biasRotation);
         }
     }
 }
