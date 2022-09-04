@@ -120,11 +120,13 @@ namespace Volatile.GodotEngine
         }
 #endif
 
-#if TOOLS
+        [Export]
+        public bool DebugDraw { get; set; } = false;
+
         public override void _Draw()
         {
             base._Draw();
-            if (!Engine.EditorHint) return;
+            if (!DebugDraw && !Engine.EditorHint) return;
 
             var color = Palette.Accent;
             var localCenterOfMass = ComputeLocalCenterOfMass();
@@ -135,6 +137,5 @@ namespace Volatile.GodotEngine
             DrawArc(localCenterOfMass, innerRadius, 0, 2 * Mathf.Pi, 60, color);
             DrawArc(localCenterOfMass, outerRadius, 0, 2 * Mathf.Pi, 60, color);
         }
-#endif
     }
 }
