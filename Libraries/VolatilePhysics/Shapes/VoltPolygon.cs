@@ -396,9 +396,7 @@ namespace Volatile
         private Fix64 ComputeArea()
         {
             Fix64 sum = Fix64.Zero;
-
-            var elements = bodyVertices.ToElementsString();
-
+            
             for (int i = 0; i < this.countBody; i++)
             {
                 VoltVector2 v = this.bodyVertices[i];
@@ -408,7 +406,7 @@ namespace Volatile
                 sum += u.x * (v.y - w.y);
             }
 
-            return Fix64.Abs(sum / (Fix64)2);
+            return sum / (Fix64)2;
         }
 
         private Fix64 ComputeInertia()

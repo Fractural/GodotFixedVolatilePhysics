@@ -1,7 +1,6 @@
 ﻿using Godot;
 
-#if TOOLS
-namespace Volatile.GodotEngine.Plugin
+namespace Volatile.GodotEngine
 {
     public static class Palette
     {
@@ -10,4 +9,3 @@ namespace Volatile.GodotEngine.Plugin
         public static readonly Color Blank = Colors.White;
     }
 }
-#endif
