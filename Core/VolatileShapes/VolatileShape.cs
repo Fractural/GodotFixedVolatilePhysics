@@ -4,6 +4,7 @@ using Godot.Collections;
 using Fractural;
 using FixMath.NET;
 using System;
+using Volatile.GodotEngine.Plugin;
 
 namespace Volatile.GodotEngine
 {
@@ -11,7 +12,7 @@ namespace Volatile.GodotEngine
     public abstract class VolatileShape : VoltNode2D
     {
         public abstract VoltShape PrepareShape(VoltWorld world);
-        public abstract Vector2 ComputeGlobalCenterOfMass();
+        public abstract Vector2 ComputeLocalCenterOfMass();
 
         public override void _Ready()
         {
@@ -116,6 +117,23 @@ namespace Volatile.GodotEngine
                 editing = value;
                 EmitSignal(nameof(EditingChanged), value);
             }
+        }
+#endif
+
+#if TOOLS
+        public override void _Draw()
+        {
+            base._Draw();
+            if (!Engine.EditorHint) return;
+
+            var color = Palette.Accent;
+            var localCenterOfMass = ComputeLocalCenterOfMass();
+            var innerRadius = 1;
+            var outerRadius = 1.1f;
+            DrawLine(localCenterOfMass - new Vector2(innerRadius, 0), localCenterOfMass + new Vector2(innerRadius, 0), color);
+            DrawLine(localCenterOfMass - new Vector2(0, innerRadius), localCenterOfMass + new Vector2(0, innerRadius), color);
+            DrawArc(localCenterOfMass, innerRadius, 0, 2 * Mathf.Pi, 60, color);
+            DrawArc(localCenterOfMass, outerRadius, 0, 2 * Mathf.Pi, 60, color);
         }
 #endif
     }

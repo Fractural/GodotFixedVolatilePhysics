@@ -53,6 +53,11 @@ namespace Volatile.GodotEngine.Plugin
 
         protected override bool HasEditableTarget => EditedVolatilePolygon != null && EditedVolatilePolygon.Editing;
 
+        public override bool Handles(Object @object)
+        {
+            return @object is VolatilePolygon;
+        }
+
         public override void Edit(Godot.Object @object)
         {
             if (@object is VolatilePolygon shape)

@@ -13,6 +13,8 @@ namespace Volatile.GodotEngine.Plugin
         protected override void Load()
         {
             AddSubPlugin(new VolatilePolygonPlugin());
+            AddSubPlugin(new VolatileRectPlugin());
+            AddSubPlugin(new VolatileCirclePlugin());
             AddSubPlugin(new VoltTypesPlugin());
             AddSubPlugin(new VolatileNodesPlugin());
         }
