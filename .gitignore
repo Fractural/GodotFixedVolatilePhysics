@@ -13,6 +13,8 @@ data_*/
 # Visual studio
 .vs/
 
+Builds/
+
 # Tests
 tests/results.xml
 tests/metadata.json
