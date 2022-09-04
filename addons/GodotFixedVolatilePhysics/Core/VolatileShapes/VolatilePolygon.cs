@@ -24,14 +24,14 @@ namespace Volatile.GodotEngine
               Restitution);
         }
 
-        public override Vector2 ComputeGlobalCenterOfMass()
+        public override Vector2 ComputeLocalCenterOfMass()
         {
-            var points = Points;
+            var points = EditorPoints;
             float length = points.Length;
             Vector2 sum = Vector2.Zero;
             foreach (var point in points)
-                sum += point.ToGDVector2();
-            return GlobalPosition + new Vector2(sum.x / length, sum.y / length);
+                sum += point;
+            return new Vector2(sum.x / length, sum.y / length);
         }
 
         #region Points
@@ -88,6 +88,7 @@ namespace Volatile.GodotEngine
 #if TOOLS
         public override void _Draw()
         {
+            base._Draw();
             if (!Engine.EditorHint || EditorPoints == null) return;
             var points = EditorPoints;
             if (points.Length > 0)

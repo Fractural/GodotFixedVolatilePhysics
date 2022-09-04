@@ -29,15 +29,18 @@ namespace Volatile.GodotEngine
               Restitution);
         }
 
-        public override Vector2 ComputeGlobalCenterOfMass()
+        public override Vector2 ComputeLocalCenterOfMass()
         {
-            return GlobalPosition;
+            return Vector2.Zero;
         }
 
         public override void _Ready()
         {
             base._Ready();
-            Extents = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
+            if (Engine.EditorHint)
+                _OnExtentsSet = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
+            else
+                Extents = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
         }
 
         #region Rect
@@ -80,8 +83,9 @@ namespace Volatile.GodotEngine
 #if TOOLS
         public override void _Draw()
         {
-            if (!Engine.EditorHint || Extents == VoltVector2.Zero) return;
-            var extents = Extents.ToGDVector2();
+            base._Draw();
+            if (!Engine.EditorHint || EditorExtents == Vector2.Zero) return;
+            var extents = EditorExtents;
             var color = Palette.Main;
             var fill = color;
             fill.a = 0.075f;

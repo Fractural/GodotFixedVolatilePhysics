@@ -18,20 +18,15 @@ namespace Volatile.GodotEngine.Plugin
                 YAxis
             }
             public MovementMode movementMode;
-            public Vector2 xRange;
-            public Vector2 yRange;
+            public Vector2 xRange = new Vector2(-Mathf.Inf, Mathf.Inf);
+            public Vector2 yRange = new Vector2(-Mathf.Inf, Mathf.Inf);
 
             public abstract void RegisterUndo(UndoRedo undo);
             public abstract void CommitUndo(UndoRedo undo);
             public abstract void DragTo(Vector2 localPosition, bool commit);
         }
 
-        private GDC.Array<Anchor> anchors = new GDC.Array<Anchor>();
-
-        public override bool Handles(Object @object)
-        {
-            return @object is VolatilePolygon polygon;
-        }
+        protected GDC.Array<Anchor> anchors = new GDC.Array<Anchor>();
 
         const float CIRCLE_RADIUS = 6;
         const float STROKE_RADIUS = 2;
@@ -134,8 +129,47 @@ namespace Volatile.GodotEngine.Plugin
 
         public void DragTo(Vector2 eventPosition, bool commit = false)
         {
-            var translatedPosition = ViewportToLocalTransform * eventPosition;
-            draggedAnchor.DragTo(translatedPosition, commit);
+            var viewportToLocalTransform = ViewportToLocalTransform;
+            var localPosition = viewportToLocalTransform * eventPosition;
+            var localAnchorPosition = viewportToLocalTransform * draggedAnchor.position;
+            var deltaPosition = localPosition - localAnchorPosition;
+
+            // We only apply movement mode constraints to the change in position.
+            // This way, anchors will still stay on the line that intersects the
+            // position they were originally located in, instead of being snapped
+            // to either the x or y axis.
+            switch (draggedAnchor.movementMode)
+            {
+                case Anchor.MovementMode.Freeform:
+                    break;
+                case Anchor.MovementMode.XAxis:
+                    // Remove any y translation
+                    deltaPosition.y = 0;
+                    break;
+                case Anchor.MovementMode.YAxis:
+                    // Remove any x translation
+                    deltaPosition.x = 0;
+                    break;
+            }
+
+            // Apply the delta position
+            localPosition = localAnchorPosition + deltaPosition;
+
+            // Apply range constraints
+            if (!Mathf.IsInf(draggedAnchor.xRange.x) && localPosition.x < draggedAnchor.xRange.x)
+                localPosition.x = draggedAnchor.xRange.x;
+            else if (!Mathf.IsInf(draggedAnchor.xRange.y) && localPosition.x > draggedAnchor.xRange.y)
+                localPosition.x = draggedAnchor.xRange.y;
+
+            if (!Mathf.IsInf(draggedAnchor.yRange.x) && localPosition.x < draggedAnchor.yRange.x)
+                localPosition.y = draggedAnchor.yRange.x;
+            else if (!Mathf.IsInf(draggedAnchor.yRange.y) && localPosition.x > draggedAnchor.yRange.y)
+                localPosition.y = draggedAnchor.yRange.y;
+            // Update the event position to reflect this new delta
+            // (may be different than the inital event position if an axis is contrained).
+            eventPosition = LocalToViewportTransform * localPosition;
+
+            draggedAnchor.DragTo(localPosition, commit);
 
             draggedAnchor.position = eventPosition;
             Plugin.UpdateOverlays();

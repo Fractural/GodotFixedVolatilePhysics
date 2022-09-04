@@ -1,16 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=1]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs" type="Script" id=3]
 
 [node name="PhysicsTest" type="Node2D"]
 
 [node name="VolatilePolygon" type="Node2D" parent="."]
+position = Vector2( 23.5, -0.0625 )
 script = ExtResource( 1 )
 Editing = true
-_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 128, 27, 102, 34, 0, 0, 0, 0, 0, 231, 144, 46, 0, 0, 0, 16, 0, 128, 3, 56, 33, 0, 0, 0, 0, 64, 140, 170, 14, 0, 0, 0, 16, 0, 0, 184, 145, 54, 0, 0, 0, 0, 128, 88, 44, 26, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 147, 54, 8, 0, 0, 0, 0, 0, 53, 198, 23, 0, 0, 0, 16, 0, 128, 250, 32, 246, 255, 255, 255, 0, 160, 94, 125, 255, 255, 255, 255, 16, 0, 0, 180, 224, 21, 0, 0, 0, 0, 128, 108, 75, 247, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 128, 23, 0, 0, 0, 0, 0, 0, 240, 255, 255, 255, 255 )
 
 [node name="VolatileRect" type="Node2D" parent="."]
+position = Vector2( 4.91632, 1.49831 )
 script = ExtResource( 2 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+Editing = true
+_extents = PoolByteArray( 0, 0, 189, 56, 7, 0, 0, 0, 0, 64, 133, 58, 9, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 148, 234, 4, 0, 0, 0, 0, 0, 145, 127, 1, 0, 0, 0 )
+
+[node name="VolatileCircle" type="Node2D" parent="."]
+position = Vector2( 12.1729, -18.1286 )
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+_radius = PoolByteArray( 0, 192, 65, 104, 9, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 0, 243, 43, 193, 255, 255, 255, 255, 0, 13, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 240, 67, 44, 12, 0, 0, 0, 0, 0, 17, 223, 237, 255, 255, 255 )

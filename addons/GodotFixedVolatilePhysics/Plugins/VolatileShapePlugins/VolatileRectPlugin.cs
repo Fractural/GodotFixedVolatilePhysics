@@ -7,7 +7,7 @@ namespace Volatile.GodotEngine.Plugin
     [Tool]
     public class VolatileRectPlugin : PointsEditorPlugin
     {
-        public override string PluginName => nameof(VolatilePolygonPlugin);
+        public override string PluginName => nameof(VolatileRectPlugin);
 
         public class ExtentsPointAnchor : Anchor
         {
@@ -59,6 +59,11 @@ namespace Volatile.GodotEngine.Plugin
 
         protected override bool HasEditableTarget => EditedVolatileRect != null && EditedVolatileRect.Editing;
 
+        public override bool Handles(Object @object)
+        {
+            return @object is VolatileRect;
+        }
+
         public override void Edit(Godot.Object @object)
         {
             if (@object is VolatileRect shape)
@@ -87,7 +92,7 @@ namespace Volatile.GodotEngine.Plugin
         public override void AddAndDrawAnchors()
         {
             var transform = LocalToViewportTransform;
-            var extents = EditedVolatileRect.Extents.ToGDVector2();
+            var extents = EditedVolatileRect.EditorExtents;
 
             // Corners of the rect
             AddAndDrawAnchor(new ExtentsPointAnchor()
