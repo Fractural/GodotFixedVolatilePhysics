@@ -22,9 +22,8 @@ namespace Volatile.GodotEngine
         public override void _Ready()
         {
             base._Ready();
-            if (Engine.EditorHint)
-                _OnRadiusSet = VoltType.DeserializeOrDefault<Fix64>(_radius);
-            else
+            _OnRadiusSet = VoltType.DeserializeOrDefault<Fix64>(_radius);
+            if (!Engine.EditorHint)
                 Radius = VoltType.DeserializeOrDefault<Fix64>(_radius);
         }
 
@@ -65,11 +64,10 @@ namespace Volatile.GodotEngine
         }
         #endregion
 
-#if TOOLS
         public override void _Draw()
         {
             base._Draw();
-            if (!Engine.EditorHint || EditorRadius == 0) return;
+            if (!DebugDraw && (!Engine.EditorHint || EditorRadius == 0)) return;
             var radius = EditorRadius;
 
             var color = Palette.Main;
@@ -82,6 +80,5 @@ namespace Volatile.GodotEngine
             DrawArc(Vector2.Zero, radius, 0, 2 * Mathf.Pi, points, color);
             DrawCircle(Vector2.Zero, radius, fill);
         }
-#endif
     }
 }

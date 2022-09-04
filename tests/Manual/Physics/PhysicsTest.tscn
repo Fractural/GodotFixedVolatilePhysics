@@ -1,29 +1,2185 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=1]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs" type="Script" id=3]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=4]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=5]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/SimpleForce.cs" type="Script" id=7]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VoltNode2D.cs" type="Script" id=8]
+[ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=9]
 
-[node name="PhysicsTest" type="Node2D"]
+[node name="PhysicsTest" type="Node"]
 
-[node name="VolatilePolygon" type="Node2D" parent="."]
-position = Vector2( 23.5, -0.0625 )
-script = ExtResource( 1 )
-Editing = true
-_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 147, 54, 8, 0, 0, 0, 0, 0, 53, 198, 23, 0, 0, 0, 16, 0, 128, 250, 32, 246, 255, 255, 255, 0, 160, 94, 125, 255, 255, 255, 255, 16, 0, 0, 180, 224, 21, 0, 0, 0, 0, 128, 108, 75, 247, 255, 255, 255 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 128, 23, 0, 0, 0, 0, 0, 0, 240, 255, 255, 255, 255 )
+[node name="Node2D" type="Node2D" parent="."]
 
-[node name="VolatileRect" type="Node2D" parent="."]
-position = Vector2( 4.91632, 1.49831 )
-script = ExtResource( 2 )
-Editing = true
-_extents = PoolByteArray( 0, 0, 189, 56, 7, 0, 0, 0, 0, 64, 133, 58, 9, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 148, 234, 4, 0, 0, 0, 0, 0, 145, 127, 1, 0, 0, 0 )
+[node name="VolatileWorld" type="Node2D" parent="Node2D"]
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
-[node name="VolatileCircle" type="Node2D" parent="."]
-position = Vector2( 12.1729, -18.1286 )
+[node name="Group" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -130.167, 169.706 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 168, 180, 169, 0, 0, 0 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle"]
 rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
-_radius = PoolByteArray( 0, 192, 65, 104, 9, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 0, 243, 43, 193, 255, 255, 255, 255, 0, 13, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 240, 67, 44, 12, 0, 0, 0, 0, 0, 17, 223, 237, 255, 255, 255 )
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group2" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -130.167, -298.294 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 168, 180, 213, 254, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group2/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group2/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group2"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group2/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group3" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -130.167, -776.294 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 160, 180, 247, 252, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group3/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group3/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group3"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group3/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group4" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -130.167, -1267.29 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 160, 180, 12, 251, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group4/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group4/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group4"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group4/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group5" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 101.659, 169.706 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 168, 168, 101, 0, 0, 0, 0, 0, 168, 180, 169, 0, 0, 0 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group5/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group5/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group5"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group5/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group6" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 101.659, -298.294 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 168, 168, 101, 0, 0, 0, 0, 0, 168, 180, 213, 254, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group6/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group6/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group6"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group6/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group7" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 101.659, -776.294 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 168, 168, 101, 0, 0, 0, 0, 0, 160, 180, 247, 252, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group7/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group7/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group7"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group7/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group8" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 101.659, -1267.29 )
+script = ExtResource( 8 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 168, 168, 101, 0, 0, 0, 0, 0, 160, 180, 12, 251, 255, 255 )
+
+[node name="Circle" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -61.0531, -44.4346 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 103, 242, 194, 255, 255, 255, 0, 0, 193, 144, 211, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle2" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -25.8491, -118.247 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 160, 38, 230, 255, 255, 255, 0, 0, 203, 192, 137, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle2"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle3" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 92.5835, -245.499 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle3"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle4" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 38.4069, -359.522 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle4"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle5" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -47.2678, -408.659 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 114, 187, 208, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle5"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle6" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle6"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Circle7" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 56.6757, -439.527 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle7"]
+rotation = -0.247956
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Circle7"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 75.6908, -96.2238 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group8/Rect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Rect"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Rect2" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -14.4492, -177.869 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 254, 140, 241, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/Group8/Rect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Rect2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 34.3994, -37.9265 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon3" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -38.0461, -323.929 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 54, 244, 217, 255, 255, 255, 0, 0, 70, 18, 188, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon3"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon3"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon2" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 4.10529, -258.135 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon2"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon2"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon4" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 80.9605, -328.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon4"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon4"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon5" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( -73.0395, -222.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 182, 255, 255, 255, 0, 0, 22, 79, 33, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon5"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon5"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Polygon6" type="Node2D" parent="Node2D/VolatileWorld/Group8"]
+position = Vector2( 58.9605, -156.691 )
+script = ExtResource( 4 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
+
+[node name="VolatilePolygon" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon6"]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="GravityForce" type="Node2D" parent="Node2D/VolatileWorld/Group8/Polygon6"]
+script = ExtResource( 7 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 11, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 0.445465, 249.061 )
+script = ExtResource( 4 )
+IsStatic = true
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 192, 17, 119, 5, 0, 0, 0, 0, 40, 212, 43, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+position = Vector2( 32.0361, 15.2291 )
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="FPS" type="Label" parent="CanvasLayer/Control"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 50.0
+margin_bottom = 24.0
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 9 )

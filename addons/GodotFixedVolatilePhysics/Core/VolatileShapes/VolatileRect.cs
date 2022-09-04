@@ -23,7 +23,7 @@ namespace Volatile.GodotEngine
                 new VoltVector2(globalPosition.x + Extents.x, globalPosition.y - Extents.y),
             };
             return world.CreatePolygonWorldSpace(
-              points,
+              points.Reverse().ToArray(),
               Density,
               Friction,
               Restitution);
@@ -37,9 +37,8 @@ namespace Volatile.GodotEngine
         public override void _Ready()
         {
             base._Ready();
-            if (Engine.EditorHint)
-                _OnExtentsSet = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
-            else
+            _OnExtentsSet = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
+            if (!Engine.EditorHint)
                 Extents = VoltType.DeserializeOrDefault<VoltVector2>(_extents);
         }
 
@@ -84,7 +83,7 @@ namespace Volatile.GodotEngine
         public override void _Draw()
         {
             base._Draw();
-            if (!Engine.EditorHint || EditorExtents == Vector2.Zero) return;
+            if (!DebugDraw && (!Engine.EditorHint || EditorExtents == Vector2.Zero)) return;
             var extents = EditorExtents;
             var color = Palette.Main;
             var fill = color;

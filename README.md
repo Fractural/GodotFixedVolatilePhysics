@@ -3,3 +3,5 @@
 ![Deploy](https://github.com/Fractural/GodotFixedVolatilePhysics/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/GodotFixedVolatilePhysics/actions/workflows/tests.yml/badge.svg)
 
 Fixed-point 2D physics in Godot C# using [cathei's Fixed point fork of VolatilePhysics](https://github.com/cathei/VolatilePhysics-FixedMath).
+
+![Physics Test](ReadmeAssets/PhysicsTest.gif)

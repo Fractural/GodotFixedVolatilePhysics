@@ -21,6 +21,15 @@ namespace Volatile.GodotEngine.Plugin
             Plugin.AddCustomType(nameof(VolatileCircle), nameof(Node2D),
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltNode2D.svg"));
+            Plugin.AddCustomType(nameof(VolatileBody), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltBody.svg"));
+            Plugin.AddCustomType(nameof(VolatileWorld), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltWorld.svg"));
+            Plugin.AddCustomType(nameof(SimpleForce), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/SimpleForce.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/SimpleForce.svg"));
         }
 
         public override void Unload()
@@ -29,6 +38,9 @@ namespace Volatile.GodotEngine.Plugin
             Plugin.RemoveCustomType(nameof(VolatileRect));
             Plugin.RemoveCustomType(nameof(VolatilePolygon));
             Plugin.RemoveCustomType(nameof(VolatileCircle));
+            Plugin.RemoveCustomType(nameof(VolatileBody));
+            Plugin.RemoveCustomType(nameof(VolatileWorld));
+            Plugin.RemoveCustomType(nameof(SimpleForce));
         }
     }
 }

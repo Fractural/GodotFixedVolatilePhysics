@@ -17,8 +17,9 @@ namespace Volatile.GodotEngine
         public override VoltShape PrepareShape(VoltWorld world)
         {
             var globalPosition = GlobalFixedPosition;
+            var points = Points.Select(x => x + globalPosition).ToArray();
             return world.CreatePolygonWorldSpace(
-              Points.Select(x => x + globalPosition).ToArray(),
+              points,
               Density,
               Friction,
               Restitution);
@@ -79,17 +80,15 @@ namespace Volatile.GodotEngine
         public override void _Ready()
         {
             base._Ready();
-            if (Engine.EditorHint)
-                _OnPointsSet = VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
-            else
+            _OnPointsSet = VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
+            if (!Engine.EditorHint)
                 Points = VoltType.DeserializeOrDefault<VoltVector2[]>(_points);
         }
 
-#if TOOLS
         public override void _Draw()
         {
             base._Draw();
-            if (!Engine.EditorHint || EditorPoints == null) return;
+            if (!DebugDraw && (!Engine.EditorHint || EditorPoints == null)) return;
             var points = EditorPoints;
             if (points.Length > 0)
             {
@@ -101,6 +100,5 @@ namespace Volatile.GodotEngine
                 DrawColoredPolygon(points.ToArray(), fill);
             }
         }
-#endif
     }
 }

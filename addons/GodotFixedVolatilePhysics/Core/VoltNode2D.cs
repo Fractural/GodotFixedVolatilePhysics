@@ -99,7 +99,9 @@ namespace Volatile.GodotEngine
             get
             {
                 if (GetParent() is VoltNode2D voltNode)
+                {
                     return voltNode.GlobalFixedTransform * FixedTransform;
+                }
                 return FixedTransform;
             }
             set
@@ -141,9 +143,15 @@ namespace Volatile.GodotEngine
             }
         }
 
+        public override void _EnterTree()
+        {
+            // We want parent transforms to be initialized first, which is why we load it in
+            // _EnterTree.
+            FixedTransform = VoltType.DeserializeOrDefault<VoltTransform2D>(_fixedTransform);
+        }
+
         public override void _Ready()
         {
-            FixedTransform = VoltType.DeserializeOrDefault<VoltTransform2D>(_fixedTransform);
 #if TOOLS
             if (Engine.EditorHint)
                 previousTransform = Transform;
@@ -170,7 +178,8 @@ namespace Volatile.GodotEngine
         public override void _Process(float delta)
         {
 #if TOOLS
-            if (Engine.EditorHint && !Transform.IsEqualApprox(previousTransform))
+            if (!Engine.EditorHint) return;
+            if (!Transform.IsEqualApprox(previousTransform))
             {
                 // We defer updates, to avoid making several updates when the
                 // user is dragging the transform around

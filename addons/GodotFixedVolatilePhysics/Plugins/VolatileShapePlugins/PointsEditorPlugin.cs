@@ -49,9 +49,9 @@ namespace Volatile.GodotEngine.Plugin
         }
         protected virtual bool HasEditableTarget => EditedTarget != null;
         protected Transform2D LocalToViewportTransform
-            => EditedTarget.GetViewportTransform() * (EditedTarget.GetCanvasTransform() * EditedTarget.Transform);
+            => EditedTarget.GetViewportTransform() * (EditedTarget.GetCanvasTransform() * EditedTarget.GlobalTransform);
         protected Transform2D ViewportToLocalTransform
-            => EditedTarget.Transform.AffineInverse() * (EditedTarget.GetCanvasTransform().AffineInverse() * EditedTarget.GetViewportTransform().AffineInverse());
+            => EditedTarget.GlobalTransform.AffineInverse() * (EditedTarget.GetCanvasTransform().AffineInverse() * EditedTarget.GetViewportTransform().AffineInverse());
 
         private Control overlay;
         public override void ForwardCanvasDrawOverViewport(Control overlay)
