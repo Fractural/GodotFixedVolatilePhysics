@@ -23,8 +23,8 @@ using System.Collections.Generic;
 
 namespace Volatile
 {
-  internal interface IIndexedValue
-  {
-    int Index { get; set; }
-  }
+    internal interface IIndexedValue
+    {
+        int Index { get; set; }
+    }
 }

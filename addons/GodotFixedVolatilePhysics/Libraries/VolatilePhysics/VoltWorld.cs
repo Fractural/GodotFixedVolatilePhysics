@@ -19,8 +19,10 @@
 */
 
 using FixMath.NET;
+using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #if UNITY
 using UnityEngine;
@@ -175,12 +177,12 @@ namespace Volatile
               restitution);
             return polygon;
         }
-        
+
         public VoltPolygon CreatePolygonBodySpace(VoltVector2[] bodyVertices, Fix64 density)
         {
             return CreatePolygonBodySpace(bodyVertices, density, VoltConfig.DEFAULT_FRICTION, VoltConfig.DEFAULT_RESTITUTION);
         }
-        
+
         public VoltPolygon CreatePolygonBodySpace(VoltVector2[] bodyVertices)
         {
             return CreatePolygonBodySpace(bodyVertices, VoltConfig.DEFAULT_DENSITY, VoltConfig.DEFAULT_FRICTION, VoltConfig.DEFAULT_RESTITUTION);
@@ -206,7 +208,7 @@ namespace Volatile
         {
             return CreateCircleWorldSpace(worldSpaceOrigin, radius, density, VoltConfig.DEFAULT_FRICTION, VoltConfig.DEFAULT_RESTITUTION);
         }
-        
+
         public VoltCircle CreateCircleWorldSpace(VoltVector2 worldSpaceOrigin, Fix64 radius)
         {
             return CreateCircleWorldSpace(worldSpaceOrigin, radius, VoltConfig.DEFAULT_DENSITY, VoltConfig.DEFAULT_FRICTION, VoltConfig.DEFAULT_RESTITUTION);
@@ -236,6 +238,34 @@ namespace Volatile
         {
             VoltBody body = this.bodyPool.Allocate();
             body.InitializeDynamic(position, radians, shapesToAdd);
+            this.AddBodyInternal(body);
+            return body;
+        }
+
+        /// <summary>
+        /// Creates a new kinematic body and adds it to the world.
+        /// </summary>
+        public VoltBody CreateKinematicBody(
+          VoltVector2 position,
+          Fix64 radians,
+          params VoltShape[] shapesToAdd)
+        {
+            VoltBody body = this.bodyPool.Allocate();
+            body.InitializeKinematic(position, radians, shapesToAdd);
+            this.AddBodyInternal(body);
+            return body;
+        }
+
+        /// <summary>
+        /// Creates a new trigger body and adds it to the world.
+        /// </summary>
+        public VoltBody CreateTriggerBody(
+          VoltVector2 position,
+          Fix64 radians,
+          params VoltShape[] shapesToAdd)
+        {
+            VoltBody body = this.bodyPool.Allocate();
+            body.InitializeTrigger(position, radians, shapesToAdd);
             this.AddBodyInternal(body);
             return body;
         }
@@ -295,7 +325,7 @@ namespace Volatile
             for (int i = 0; i < this.bodies.Count; i++)
             {
                 VoltBody body = this.bodies[i];
-                if (body.IsStatic == false)
+                if (!body.IsStatic)
                 {
                     body.Update();
                     this.dynamicBroadphase.UpdateBody(body);
@@ -303,7 +333,6 @@ namespace Volatile
             }
 
             this.BroadPhase();
-
             this.UpdateCollision();
             this.FreeManifolds();
         }
@@ -316,7 +345,9 @@ namespace Volatile
         /// Note: This function is best used with dynamic collisions disabled, 
         /// otherwise you might get symmetric duplicates on collisions.
         /// </summary>
-        public void Update(VoltBody body, bool collideDynamic = false)
+        public void Update(VoltBody body, bool collideDynamic)
+            => Update(body, collideDynamic, VoltBody.CanCollide_Default);
+        public void Update(VoltBody body, bool collideDynamic, VoltCollisionFilter filter)
         {
             if (body.IsStatic)
             {
@@ -326,7 +357,7 @@ namespace Volatile
 
             body.Update();
             this.dynamicBroadphase.UpdateBody(body);
-            this.BroadPhase(body, collideDynamic);
+            this.BroadPhase(body, collideDynamic, filter);
 
             this.UpdateCollision();
             this.FreeManifolds();
@@ -479,6 +510,42 @@ namespace Volatile
         }
 
         /// <summary>
+        /// Finds collisions for a body.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="collideDynamic"></param>
+        /// <returns></returns>
+        public VoltBodyCollisionResult QueryCollisions(VoltBody body, bool collideDynamic)
+            => QueryCollisions(body, collideDynamic, VoltBody.CanCollide_Default);
+
+        /// <summary>
+        /// Finds collisions for a body.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="collideDynamic"></param>
+        /// <param name="filter">Filter for checking whether two bodies can collide</param>
+        /// <returns></returns>
+        public VoltBodyCollisionResult QueryCollisions(VoltBody query, bool collideDynamic, VoltCollisionFilter filter)
+        {
+            BroadPhase(query, collideDynamic, filter);
+
+            if (this.manifolds.Count == 0)
+                return new VoltBodyCollisionResult();
+
+            var collisions = new VoltShapeCollision[this.manifolds.Count];
+            for (int j = 0; j < this.manifolds.Count; j++)
+            {
+                // ShapeB is the collision
+                var collisionContacts = new VoltCollisionContact[manifolds[j].UsedContacts];
+                for (int i = 0; i < manifolds[j].UsedContacts; i++)
+                    collisionContacts[i] = new VoltCollisionContact(manifolds[j].Contacts[i].position, manifolds[j].Contacts[i].normal, manifolds[j].Contacts[i].penetration);
+                collisions[j] = new VoltShapeCollision(manifolds[j].ShapeA, manifolds[j].ShapeB, collisionContacts.ToArray());
+            }
+            FreeManifolds();
+            return new VoltBodyCollisionResult(query, collisions);
+        }
+
+        /// <summary>
         /// Identifies collisions for all bodies, ignoring symmetrical duplicates.
         /// </summary>
         private void BroadPhase()
@@ -506,7 +573,7 @@ namespace Volatile
         /// Identifies collisions for a single body. Does not keep track of 
         /// symmetrical duplicates (they could be counted twice).
         /// </summary>
-        private void BroadPhase(VoltBody query, bool collideDynamic = false)
+        private void BroadPhase(VoltBody query, bool collideDynamic, VoltCollisionFilter filter)
         {
             VoltDebug.Assert(query.IsStatic == false);
 
@@ -515,17 +582,25 @@ namespace Volatile
             if (collideDynamic)
                 this.dynamicBroadphase.QueryOverlap(query.AABB, this.reusableBuffer);
 
-            this.TestBuffer(query);
+            this.TestBuffer(query, filter);
         }
 
         private void TestBuffer(VoltBody query)
+        {
+            TestBuffer(query, VoltBody.CanCollide_Default);
+        }
+
+        /// <summary>
+        /// Tests all bodies queued in the <see cref="reusableBuffer"/>.
+        /// </summary>
+        /// <param name="query">Body to test against</param>
+        private void TestBuffer(VoltBody query, VoltCollisionFilter filter)
         {
             for (int i = 0; i < this.reusableBuffer.Count; i++)
             {
                 VoltBody test = this.reusableBuffer[i];
                 bool canCollide =
-                  query.CanCollide(test) &&
-                  test.CanCollide(query) &&
+                  filter(query, test) &&
                   query.AABB.Intersect(test.AABB);
 
                 if (canCollide)

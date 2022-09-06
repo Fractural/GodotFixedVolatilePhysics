@@ -1,0 +1,109 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://tests/Manual/Physics/DispersedDynamicGroup.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs" type="Script" id=3]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=7]
+[ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=8]
+[ext_resource path="res://tests/Manual/VoltNode2D/KinematicFixedMovement.cs" type="Script" id=9]
+
+[node name="PhysicsTest" type="Node"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="VolatileWorld" type="Node2D" parent="Node2D"]
+script = ExtResource( 7 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="DispersedDynamicGroup" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( -130.167, 169.706 )
+
+[node name="DispersedDynamicGroup2" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( 323.036, 169.706 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 68, 9, 67, 1, 0, 0, 0, 0, 168, 180, 169, 0, 0, 0 )
+
+[node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 0.445465, 249.061 )
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 48, 139, 16, 2, 0, 0, 0, 0, 40, 187, 40, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="StaticRect2" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 0.445465, -368.293 )
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 20, 181, 143, 254, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect2"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 48, 139, 16, 2, 0, 0, 0, 0, 40, 187, 40, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="StaticRect3" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -567.555, -48.2927 )
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 8, 114, 200, 253, 255, 255, 0, 0, 20, 181, 207, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect3"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 120, 239, 72, 0, 0, 0, 0, 0, 32, 108, 107, 1, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="StaticRect4" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 570.445, -48.2927 )
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 8, 114, 58, 2, 0, 0, 0, 0, 20, 181, 207, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect4"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 120, 239, 72, 0, 0, 0, 0, 0, 32, 108, 107, 1, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="KinematicMovement" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 261.629, -50.7239 )
+script = ExtResource( 9 )
+BodyType = 3
+_speed = PoolByteArray( 0, 0, 0, 0, 5, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 5, 1, 0, 0, 0, 0, 172, 70, 205, 255, 255, 255 )
+
+[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement"]
+script = ExtResource( 3 )
+Editing = true
+DebugDraw = true
+_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement"]
+scale = Vector2( 0.124448, 0.124448 )
+texture = ExtResource( 6 )
+
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+position = Vector2( 1.11679, -62.0694 )
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="FPS" type="Label" parent="CanvasLayer/Control"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 50.0
+margin_bottom = 24.0
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 8 )

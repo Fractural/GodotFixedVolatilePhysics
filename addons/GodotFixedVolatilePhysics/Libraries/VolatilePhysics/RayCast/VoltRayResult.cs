@@ -28,56 +28,56 @@ using UnityEngine;
 
 namespace Volatile
 {
-  public struct VoltRayResult
-  {
-    public bool IsValid { get { return this.shape != null; } }
-    public bool IsContained
+    public struct VoltRayResult
     {
-      get { return this.IsValid && this.distance == Fix64.Zero; }
+        public bool IsValid { get { return this.shape != null; } }
+        public bool IsContained
+        {
+            get { return this.IsValid && this.distance == Fix64.Zero; }
+        }
+
+        public VoltShape Shape { get { return this.shape; } }
+
+        public VoltBody Body
+        {
+            get { return (this.shape == null) ? null : this.shape.Body; }
+        }
+
+        public Fix64 Distance { get { return this.distance; } }
+        public VoltVector2 Normal { get { return this.normal; } }
+
+        private VoltShape shape;
+        private Fix64 distance;
+        internal VoltVector2 normal;
+
+        public VoltVector2 ComputePoint(ref VoltRayCast cast)
+        {
+            return cast.origin + (cast.direction * this.distance);
+        }
+
+        internal void Set(
+          VoltShape shape,
+          Fix64 distance,
+          VoltVector2 normal)
+        {
+            if (this.IsValid == false || distance < this.distance)
+            {
+                this.shape = shape;
+                this.distance = distance;
+                this.normal = normal;
+            }
+        }
+
+        internal void Reset()
+        {
+            this.shape = null;
+        }
+
+        internal void SetContained(VoltShape shape)
+        {
+            this.shape = shape;
+            this.distance = Fix64.Zero;
+            this.normal = VoltVector2.Zero;
+        }
     }
-
-    public VoltShape Shape { get { return this.shape; } }
-
-    public VoltBody Body 
-    { 
-      get { return (this.shape == null) ? null : this.shape.Body; } 
-    }
-
-    public Fix64 Distance { get { return this.distance; } }
-    public VoltVector2 Normal { get { return this.normal; } }
-
-    private VoltShape shape;
-    private Fix64 distance;
-    internal VoltVector2 normal;
-
-    public VoltVector2 ComputePoint(ref VoltRayCast cast)
-    {
-      return cast.origin + (cast.direction * this.distance);
-    }
-
-    internal void Set(
-      VoltShape shape,
-      Fix64 distance,
-      VoltVector2 normal)
-    {
-      if (this.IsValid == false || distance < this.distance)
-      {
-        this.shape = shape;
-        this.distance = distance;
-        this.normal = normal;
-      }
-    }
-
-    internal void Reset()
-    {
-      this.shape = null;
-    }
-
-    internal void SetContained(VoltShape shape)
-    {
-      this.shape = shape;
-      this.distance = Fix64.Zero;
-      this.normal = VoltVector2.Zero;
-    }
-  }
 }

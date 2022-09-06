@@ -23,111 +23,111 @@ using System.Collections.Generic;
 
 namespace Volatile
 {
-  internal class HistoryBuffer
-    : IVoltPoolable<HistoryBuffer>
-  {
-    #region Interface
-    IVoltPool<HistoryBuffer> IVoltPoolable<HistoryBuffer>.Pool { get; set; }
-    void IVoltPoolable<HistoryBuffer>.Reset() { this.Reset(); }
-    #endregion
-
-    private HistoryRecord[] data;
-    private int capacity;
-    int count;
-    int start;
-
-    public int Capacity { get { return this.capacity; } }
-
-    public HistoryBuffer()
+    internal class HistoryBuffer
+      : IVoltPoolable<HistoryBuffer>
     {
-      this.data = null;
-      this.capacity = 0;
-      this.count = 0;
-      this.start = 0;
-    }
+        #region Interface
+        IVoltPool<HistoryBuffer> IVoltPoolable<HistoryBuffer>.Pool { get; set; }
+        void IVoltPoolable<HistoryBuffer>.Reset() { this.Reset(); }
+        #endregion
 
-    public void Initialize(int capacity)
-    {
-      if ((this.data == null) || (this.data.Length < capacity))
-        this.data = new HistoryRecord[capacity];
-      this.capacity = capacity;
-      this.count = 0;
-      this.start = 0;
-    }
+        private HistoryRecord[] data;
+        private int capacity;
+        int count;
+        int start;
 
-    private void Reset()
-    {
-      this.count = 0;
-      this.start = 0;
-    }
+        public int Capacity { get { return this.capacity; } }
 
-    /// <summary>
-    /// Stores a value as latest.
-    /// </summary>
-    public void Store(HistoryRecord value)
-    {
-      if (this.count < this.capacity)
-      {
-        this.data[this.count++] = value;
-        this.IncrementStart();
-      }
-      else
-      {
-        this.data[this.start] = value;
-        this.IncrementStart();
-      }
-    }
-
-    /// <summary>
-    /// Tries to get a value with a given number of frames behind the last 
-    /// value stored. If the value can't be found, this function will find
-    /// the closest and return false, indicating a clamp.
-    /// </summary>
-    public bool TryGet(int numBehind, out HistoryRecord value)
-    {
-      if (numBehind < 0)
-        throw new ArgumentOutOfRangeException("numBehind");
-
-      if (this.count < this.capacity)
-      {
-        if (numBehind >= this.count)
+        public HistoryBuffer()
         {
-          value = this.data[0];
-          return false;
+            this.data = null;
+            this.capacity = 0;
+            this.count = 0;
+            this.start = 0;
         }
 
-        value = this.data[this.count - numBehind - 1];
-        return true;
-      }
-      else
-      {
-        bool found = true;
-        if (numBehind >= this.capacity)
+        public void Initialize(int capacity)
         {
-          numBehind = this.capacity - 1;
-          found = false;
+            if ((this.data == null) || (this.data.Length < capacity))
+                this.data = new HistoryRecord[capacity];
+            this.capacity = capacity;
+            this.count = 0;
+            this.start = 0;
         }
 
-        int index =
-          ((this.start - numBehind - 1) + this.capacity)
-          % this.capacity;
-        value = this.data[index];
-        return found;
-      }
-    }
+        private void Reset()
+        {
+            this.count = 0;
+            this.start = 0;
+        }
 
-    /// <summary>
-    /// Returns all values, but not in order.
-    /// </summary>
-    public IEnumerable<HistoryRecord> GetValues()
-    {
-      for (int i = 0; i < this.count; i++)
-        yield return this.data[i];
-    }
+        /// <summary>
+        /// Stores a value as latest.
+        /// </summary>
+        public void Store(HistoryRecord value)
+        {
+            if (this.count < this.capacity)
+            {
+                this.data[this.count++] = value;
+                this.IncrementStart();
+            }
+            else
+            {
+                this.data[this.start] = value;
+                this.IncrementStart();
+            }
+        }
 
-    private void IncrementStart()
-    {
-      this.start = (this.start + 1) % this.capacity;
+        /// <summary>
+        /// Tries to get a value with a given number of frames behind the last 
+        /// value stored. If the value can't be found, this function will find
+        /// the closest and return false, indicating a clamp.
+        /// </summary>
+        public bool TryGet(int numBehind, out HistoryRecord value)
+        {
+            if (numBehind < 0)
+                throw new ArgumentOutOfRangeException("numBehind");
+
+            if (this.count < this.capacity)
+            {
+                if (numBehind >= this.count)
+                {
+                    value = this.data[0];
+                    return false;
+                }
+
+                value = this.data[this.count - numBehind - 1];
+                return true;
+            }
+            else
+            {
+                bool found = true;
+                if (numBehind >= this.capacity)
+                {
+                    numBehind = this.capacity - 1;
+                    found = false;
+                }
+
+                int index =
+                  ((this.start - numBehind - 1) + this.capacity)
+                  % this.capacity;
+                value = this.data[index];
+                return found;
+            }
+        }
+
+        /// <summary>
+        /// Returns all values, but not in order.
+        /// </summary>
+        public IEnumerable<HistoryRecord> GetValues()
+        {
+            for (int i = 0; i < this.count; i++)
+                yield return this.data[i];
+        }
+
+        private void IncrementStart()
+        {
+            this.start = (this.start + 1) % this.capacity;
+        }
     }
-  }
 }

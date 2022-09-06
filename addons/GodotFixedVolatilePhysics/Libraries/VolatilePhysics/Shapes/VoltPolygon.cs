@@ -396,7 +396,7 @@ namespace Volatile
         private Fix64 ComputeArea()
         {
             Fix64 sum = Fix64.Zero;
-            
+
             for (int i = 0; i < this.countBody; i++)
             {
                 VoltVector2 v = this.bodyVertices[i];

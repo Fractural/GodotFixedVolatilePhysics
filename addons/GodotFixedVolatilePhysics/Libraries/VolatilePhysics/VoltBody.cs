@@ -19,6 +19,7 @@
 */
 
 using FixMath.NET;
+using Godot;
 using System;
 
 #if UNITY
@@ -31,6 +32,8 @@ namespace Volatile
     {
         Static,
         Dynamic,
+        Trigger,
+        Kinematic,
         Invalid,
     }
 
@@ -144,6 +147,37 @@ namespace Volatile
             }
         }
 
+        public bool IsKinematic
+        {
+            get
+            {
+                if (this.BodyType == VoltBodyType.Invalid)
+                    throw new InvalidOperationException();
+                return this.BodyType == VoltBodyType.Kinematic;
+            }
+        }
+
+        public bool IsDynamic
+        {
+            get
+            {
+                if (this.BodyType == VoltBodyType.Invalid)
+                    throw new InvalidOperationException();
+                return this.BodyType == VoltBodyType.Dynamic;
+            }
+        }
+
+
+        public bool IsTrigger
+        {
+            get
+            {
+                if (this.BodyType == VoltBodyType.Invalid)
+                    throw new InvalidOperationException();
+                return this.BodyType == VoltBodyType.Trigger;
+            }
+        }
+
         /// <summary>
         /// If we're doing historical queries or tests, the body may have since
         /// been removed from the world.
@@ -181,7 +215,6 @@ namespace Volatile
 
         public VoltWorld World { get; private set; }
         public VoltBodyType BodyType { get; private set; }
-        public VoltCollisionFilter CollisionFilter { private get; set; }
 
         /// <summary>
         /// Current angle in radians.
@@ -379,6 +412,27 @@ namespace Volatile
             this.ProxyId = -1;
         }
 
+        #region Initialization
+        internal void InitializeTrigger(
+          VoltVector2 position,
+          Fix64 radians,
+          VoltShape[] shapesToAdd)
+        {
+            this.Initialize(position, radians, shapesToAdd);
+            this.OnPositionUpdated();
+            this.SetTrigger();
+        }
+
+        internal void InitializeKinematic(
+          VoltVector2 position,
+          Fix64 radians,
+          VoltShape[] shapesToAdd)
+        {
+            this.Initialize(position, radians, shapesToAdd);
+            this.OnPositionUpdated();
+            this.SetKinematic();
+        }
+
         internal void InitializeDynamic(
           VoltVector2 position,
           Fix64 radians,
@@ -424,6 +478,7 @@ namespace Volatile
             this.IsInitialized = true;
 #endif
         }
+        #endregion
 
         internal void Update()
         {
@@ -491,7 +546,6 @@ namespace Volatile
             this.UserData = null;
             this.World = null;
             this.BodyType = VoltBodyType.Invalid;
-            this.CollisionFilter = null;
 
             this.Angle = Fix64.Zero;
             this.LinearVelocity = VoltVector2.Zero;
@@ -512,15 +566,92 @@ namespace Volatile
             this.currentState = default(HistoryRecord);
         }
 
-        #region Collision
-        internal bool CanCollide(VoltBody other)
+        #region Kinematic Body
+        public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
         {
-            // Ignore self and static-static collisions
-            if ((this == other) || (this.IsStatic && other.IsStatic))
-                return false;
+            if (linearVelocity == VoltVector2.Zero) return new VoltKinematicCollisionResult();
 
-            if (this.CollisionFilter != null)
-                return this.CollisionFilter.Invoke(this, other);
+            VoltVector2 originalPosition = Position;
+            Position += linearVelocity;
+            this.OnPositionUpdated();
+
+            var bestBodyCollisionResult = World.QueryCollisions(this, false, VoltBody.CanCollide_MoveAndCollide);
+
+            if (!bestBodyCollisionResult.HasCollision)
+            {
+                GD.Print("exit early " + originalPosition + " result " + Position);
+                return new VoltKinematicCollisionResult();
+            }
+
+            // Use binary search to fine tune onto the exact point of collision (8 iterations for now)
+            //Fix64 low = Fix64.Zero;
+            //Fix64 high = Fix64.One;
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    Fix64 middle = low + (high - low) * Fix64.Half;
+            //    Position = originalPosition + linearVelocity * middle;
+            //    this.OnPositionUpdated();
+            //    var result = World.QueryCollisions(this, false);
+            //    if (result.HasCollision)
+            //    {
+            //        bestBodyCollisionResult = result;
+            //        high = middle;
+            //    }
+            //    else
+            //    {
+            //        low = middle;
+            //    }
+            //}
+
+            // Unstuck the body.
+            // Otherwise it would inch closer into the collider every time
+            // MoveAndCollide is called.
+            Position = originalPosition + bestBodyCollisionResult.CumulativePenetrationVector();
+            this.OnPositionUpdated();
+
+            GD.Print("original position: " + originalPosition + "bestBodyCollisionResult: " + bestBodyCollisionResult.CumulativePenetrationVector() + " " + bestBodyCollisionResult.CumulativePenetrationVector().Magnitude + " result " + Position);
+
+            // TODO: Find 
+            return new VoltKinematicCollisionResult(
+                bestCollision: bestBodyCollisionResult,
+                remainingVelocity: linearVelocity - (linearVelocity) //* low)
+            );
+        }
+
+        public VoltVector2 MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
+        {
+            if (linearVelocity == VoltVector2.Zero) return VoltVector2.Zero;
+
+            VoltKinematicCollisionResult kinematicCollisionResult;
+            do
+            {
+                kinematicCollisionResult = MoveAndCollide(linearVelocity);
+                if (!kinematicCollisionResult.HasCollision) return VoltVector2.Zero;
+                linearVelocity = kinematicCollisionResult.RemainingVelocity.Slide(kinematicCollisionResult.CollisionNormal);
+                maxSlides--;
+            } while (kinematicCollisionResult.HasCollision && maxSlides > 0);
+            return linearVelocity;
+        }
+        #endregion
+
+        #region Collision
+        internal static bool CanCollide_Default(VoltBody one, VoltBody other)
+        {
+            // Ignore self collisions
+            // Ignore static-static collisions
+            // Ignore kinematic and static collisions
+            if ((one == other)
+                || (one.IsStatic && other.IsStatic)
+                || (one.IsKinematic && other.IsStatic)
+                || (one.IsStatic && other.IsKinematic))
+                return false;
+            return true;
+        }
+
+        internal static bool CanCollide_MoveAndCollide(VoltBody one, VoltBody other)
+        {
+            if ((one == other))
+                return false;
             return true;
         }
 
@@ -571,9 +702,9 @@ namespace Volatile
         private void UpdateAABB()
         {
             Fix64 top = Fix64.MinValue;
-            Fix64 right = Fix64.MaxValue;
+            Fix64 right = Fix64.MinValue;
             Fix64 bottom = Fix64.MaxValue;
-            Fix64 left = Fix64.MinValue;
+            Fix64 left = Fix64.MaxValue;
 
             for (int i = 0; i < this.shapeCount; i++)
             {
@@ -593,20 +724,25 @@ namespace Volatile
         /// </summary>
         private void Integrate()
         {
-            // Apply damping
-            this.LinearVelocity *= this.World.Damping;
-            this.AngularVelocity *= this.World.Damping;
+            switch (BodyType)
+            {
+                case VoltBodyType.Dynamic:
+                    // Apply damping
+                    this.LinearVelocity *= this.World.Damping;
+                    this.AngularVelocity *= this.World.Damping;
 
-            // Calculate total force and torque
-            VoltVector2 totalForce = this.Force * this.InvMass;
-            Fix64 totalTorque = this.Torque * this.InvInertia;
+                    // Calculate total force and torque
+                    VoltVector2 totalForce = this.Force * this.InvMass;
+                    Fix64 totalTorque = this.Torque * this.InvInertia;
 
-            // See http://www.niksula.hut.fi/~hkankaan/Homepages/gravity.html
-            this.IntegrateForces(totalForce, totalTorque, Fix64.One / (Fix64)2);
-            this.IntegrateVelocity();
-            this.IntegrateForces(totalForce, totalTorque, Fix64.One / (Fix64)2);
+                    // See http://www.niksula.hut.fi/~hkankaan/Homepages/gravity.html
+                    this.IntegrateForces(totalForce, totalTorque, Fix64.One / (Fix64)2);
+                    this.IntegrateVelocity();
+                    this.IntegrateForces(totalForce, totalTorque, Fix64.One / (Fix64)2);
 
-            this.ClearForces();
+                    this.ClearForces();
+                    break;
+            }
         }
 
         private void IntegrateForces(
@@ -663,6 +799,26 @@ namespace Volatile
             }
 
             this.BodyType = VoltBodyType.Dynamic;
+        }
+
+        private void SetKinematic()
+        {
+            this.Mass = Fix64.Zero;
+            this.Inertia = Fix64.Zero;
+            this.InvMass = Fix64.Zero;
+            this.InvInertia = Fix64.Zero;
+
+            this.BodyType = VoltBodyType.Kinematic;
+        }
+
+        private void SetTrigger()
+        {
+            this.Mass = Fix64.Zero;
+            this.Inertia = Fix64.Zero;
+            this.InvMass = Fix64.Zero;
+            this.InvInertia = Fix64.Zero;
+
+            this.BodyType = VoltBodyType.Trigger;
         }
 
         private void SetStatic()

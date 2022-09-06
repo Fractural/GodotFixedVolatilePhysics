@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://tests/Manual/Physics/DynamicGroup.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=5]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=7]
+[ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=8]
+
+[node name="PhysicsTest" type="Node"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="VolatileWorld" type="Node2D" parent="Node2D"]
+script = ExtResource( 7 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Group" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( -130.167, 169.706 )
+
+[node name="Group2" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( 139.781, 169.706 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 200, 139, 0, 0, 0, 0, 0, 168, 180, 169, 0, 0, 0 )
+
+[node name="Group3" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( -130.167, -322.997 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 216, 0, 189, 254, 255, 255 )
+
+[node name="Group4" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( 139.781, -322.997 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 200, 139, 0, 0, 0, 0, 0, 216, 0, 189, 254, 255, 255 )
+
+[node name="Group5" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( -130.167, -810.036 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 208, 246, 213, 252, 255, 255 )
+
+[node name="Group6" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( 139.781, -810.036 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 200, 139, 0, 0, 0, 0, 0, 208, 246, 213, 252, 255, 255 )
+
+[node name="Group7" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( -130.167, -1310.72 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 80, 213, 125, 255, 255, 255, 0, 0, 112, 71, 225, 250, 255, 255 )
+
+[node name="Group8" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
+position = Vector2( 139.781, -1310.72 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 200, 139, 0, 0, 0, 0, 0, 112, 71, 225, 250, 255, 255 )
+
+[node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( 0.445465, 249.061 )
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 192, 17, 119, 5, 0, 0, 0, 0, 40, 212, 43, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+position = Vector2( 32.0361, 15.2291 )
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="FPS" type="Label" parent="CanvasLayer/Control"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 50.0
+margin_bottom = 24.0
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 8 )

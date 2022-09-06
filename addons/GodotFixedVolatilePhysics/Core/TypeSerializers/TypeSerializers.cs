@@ -45,6 +45,6 @@ namespace Volatile.GodotEngine
 
         public override void Serialize(StreamPeerBuffer buffer, VoltMatrix value) => buffer.PutVoltMatrix(value);
         public override VoltMatrix Deserialize(StreamPeerBuffer buffer) => buffer.GetVoltMatrix();
-        public override VoltMatrix Default() => new VoltMatrix(0, 0);
+        public override VoltMatrix Default() => new VoltMatrix(1, 1);
     }
 }

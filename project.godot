@@ -24,6 +24,11 @@ _global_script_class_icons={
 "WATTest": ""
 }
 
+[FracturalCommons]
+
+"Generate CSharp Scripts Table"=false
+"Generate Version Preprocessor Defines"=false
+
 [MonoCustomResourceRegistry]
 
 ClassPrefix=""
@@ -45,10 +50,15 @@ Cache_Tests=true
 [application]
 
 config/name="GodotFixedVolatilePhysics"
-run/main_scene="res://tests/Manual/VoltNode2D/VoltNode2DTest.tscn"
+run/main_scene="res://tests/Manual/Physics/KinematicBody.tscn"
 boot_splash/image="res://bootsplash.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
@@ -61,9 +71,10 @@ file_logging/max_log_files=10
 
 [physics]
 
-common/physics_fps=20
 common/enable_pause_aware_picking=true
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
 environment/default_environment="res://default_env.tres"

@@ -28,64 +28,64 @@ using UnityEngine;
 
 namespace Volatile
 {
-  /// <summary>
-  /// A stored historical image of a past body state, used for historical
-  /// queries and raycasts. Rather than actually rolling the body back to
-  /// its old position (expensive), we transform the ray into the body's
-  /// local space based on the body's old position/axis. Then all casts
-  /// on shapes use the local-space ray (this applies both for current-
-  /// time and past-time raycasts and point queries).
-  /// </summary>
-  internal struct HistoryRecord
-  {
-    internal VoltAABB aabb;
-    internal VoltVector2 position;
-    internal VoltVector2 facing;
-
-    internal void Store(ref HistoryRecord other)
+    /// <summary>
+    /// A stored historical image of a past body state, used for historical
+    /// queries and raycasts. Rather than actually rolling the body back to
+    /// its old position (expensive), we transform the ray into the body's
+    /// local space based on the body's old position/axis. Then all casts
+    /// on shapes use the local-space ray (this applies both for current-
+    /// time and past-time raycasts and point queries).
+    /// </summary>
+    internal struct HistoryRecord
     {
-      this.aabb = other.aabb;
-      this.position = other.position;
-      this.facing = other.facing;
-    }
+        internal VoltAABB aabb;
+        internal VoltVector2 position;
+        internal VoltVector2 facing;
 
-    #region World-Space to Body-Space Transformations
-    internal VoltVector2 WorldToBodyPoint(VoltVector2 vector)
-    {
-      return VoltMath.WorldToBodyPoint(this.position, this.facing, vector);
-    }
+        internal void Store(ref HistoryRecord other)
+        {
+            this.aabb = other.aabb;
+            this.position = other.position;
+            this.facing = other.facing;
+        }
 
-    internal VoltVector2 WorldToBodyDirection(VoltVector2 vector)
-    {
-      return VoltMath.WorldToBodyDirection(this.facing, vector);
-    }
+        #region World-Space to Body-Space Transformations
+        internal VoltVector2 WorldToBodyPoint(VoltVector2 vector)
+        {
+            return VoltMath.WorldToBodyPoint(this.position, this.facing, vector);
+        }
 
-    internal VoltRayCast WorldToBodyRay(ref VoltRayCast rayCast)
-    {
-      return new VoltRayCast(
-        this.WorldToBodyPoint(rayCast.origin),
-        this.WorldToBodyDirection(rayCast.direction),
-        rayCast.distance);
-    }
-    #endregion
+        internal VoltVector2 WorldToBodyDirection(VoltVector2 vector)
+        {
+            return VoltMath.WorldToBodyDirection(this.facing, vector);
+        }
 
-    #region Body-Space to World-Space Transformations
-    internal VoltVector2 BodyToWorldPoint(VoltVector2 vector)
-    {
-      return VoltMath.BodyToWorldPoint(this.position, this.facing, vector);
-    }
+        internal VoltRayCast WorldToBodyRay(ref VoltRayCast rayCast)
+        {
+            return new VoltRayCast(
+              this.WorldToBodyPoint(rayCast.origin),
+              this.WorldToBodyDirection(rayCast.direction),
+              rayCast.distance);
+        }
+        #endregion
 
-    internal VoltVector2 BodyToWorldDirection(VoltVector2 vector)
-    {
-      return VoltMath.BodyToWorldDirection(this.facing, vector);
-    }
+        #region Body-Space to World-Space Transformations
+        internal VoltVector2 BodyToWorldPoint(VoltVector2 vector)
+        {
+            return VoltMath.BodyToWorldPoint(this.position, this.facing, vector);
+        }
 
-    internal Axis BodyToWorldAxis(Axis axis)
-    {
-      VoltVector2 normal = axis.Normal.Rotate(this.facing);
-      Fix64 width = VoltVector2.Dot(normal, this.position) + axis.Width;
-      return new Axis(normal, width);
+        internal VoltVector2 BodyToWorldDirection(VoltVector2 vector)
+        {
+            return VoltMath.BodyToWorldDirection(this.facing, vector);
+        }
+
+        internal Axis BodyToWorldAxis(Axis axis)
+        {
+            VoltVector2 normal = axis.Normal.Rotate(this.facing);
+            Fix64 width = VoltVector2.Dot(normal, this.position) + axis.Width;
+            return new Axis(normal, width);
+        }
+        #endregion
     }
-    #endregion
-  }
 }

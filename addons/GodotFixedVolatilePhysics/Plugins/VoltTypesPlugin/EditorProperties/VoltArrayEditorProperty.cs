@@ -278,7 +278,7 @@ namespace Volatile.GodotEngine.Plugin
 
                         prop.SizeFlagsHorizontal = (int)SizeFlags.ExpandFill;
 
-                        var theme = this.GetThemeFromParents();
+                        var theme = this.GetThemeFromAncestor();
 
                         var propHBox = new HBoxContainer();
 
