@@ -81,7 +81,6 @@ namespace Volatile.GodotEngine
         }
         #endregion
 
-#if TOOLS
         public override void _Draw()
         {
             base._Draw();
@@ -100,6 +99,5 @@ namespace Volatile.GodotEngine
             this.DrawSegmentedPolyline(points, color);
             DrawColoredPolygon(points.ToArray(), fill);
         }
-#endif
     }
 }

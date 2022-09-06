@@ -22,38 +22,38 @@ using System;
 
 namespace Volatile
 {
-  public static class VoltUtil
-  {
-    public static void Swap<T>(ref T a, ref T b)
+    public static class VoltUtil
     {
-      T temp = b;
-      b = a;
-      a = temp;
-    }
+        public static void Swap<T>(ref T a, ref T b)
+        {
+            T temp = b;
+            b = a;
+            a = temp;
+        }
 
-    public static int ExpandArray<T>(ref T[] oldArray, int minSize = 1)
-    {
-      // TODO: Revisit this using next-largest primes like built-in lists do
-      int newCapacity = Math.Max(oldArray.Length * 2, minSize);
-      T[] newArray = new T[newCapacity];
-      Array.Copy(oldArray, newArray, oldArray.Length);
-      oldArray = newArray;
-      return newCapacity;
-    }
+        public static int ExpandArray<T>(ref T[] oldArray, int minSize = 1)
+        {
+            // TODO: Revisit this using next-largest primes like built-in lists do
+            int newCapacity = Math.Max(oldArray.Length * 2, minSize);
+            T[] newArray = new T[newCapacity];
+            Array.Copy(oldArray, newArray, oldArray.Length);
+            oldArray = newArray;
+            return newCapacity;
+        }
 
-    public static bool Filter_StaticOnly(VoltBody body)
-    {
-      return body.IsStatic;
-    }
+        public static bool Filter_StaticOnly(VoltBody body)
+        {
+            return body.IsStatic;
+        }
 
-    public static bool Filter_DynamicOnly(VoltBody body)
-    {
-      return (body.IsStatic == false);
-    }
+        public static bool Filter_DynamicOnly(VoltBody body)
+        {
+            return (body.IsStatic == false);
+        }
 
-    public static bool Filter_All(VoltBody body)
-    {
-      return true;
+        public static bool Filter_All(VoltBody body)
+        {
+            return true;
+        }
     }
-  }
 }

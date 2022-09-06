@@ -42,6 +42,23 @@ namespace Volatile.GodotEngine
         public override void _PhysicsProcess(float delta)
         {
             World.Update();
+            Update();
+        }
+
+        public override void _Draw()
+        {
+            base._Draw();
+            if (Engine.EditorHint) return;
+            var color = Palette.Accent;
+            foreach (var body in World.Bodies)
+            {
+                DrawRect(new Rect2(body.AABB.BottomLeft.ToGDVector2(), body.AABB.Size.ToGDVector2()), color, false);
+                for (int i = 0; i < body.shapeCount; i++)
+                {
+                    var AABB = body.shapes[i].AABB;
+                    DrawRect(new Rect2(AABB.BottomLeft.ToGDVector2(), AABB.Size.ToGDVector2()), color, false);
+                }
+            }
         }
     }
 }

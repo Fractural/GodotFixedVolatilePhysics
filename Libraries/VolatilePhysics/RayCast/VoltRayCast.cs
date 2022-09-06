@@ -28,40 +28,40 @@ using UnityEngine;
 
 namespace Volatile
 {
-  /// <summary>
-  /// A semi-precomputed ray optimized for fast AABB tests.
-  /// </summary>
-  public struct VoltRayCast
-  {
-    internal readonly VoltVector2 origin;
-    internal readonly VoltVector2 direction;
-    internal readonly VoltVector2 invDirection;
-    internal readonly Fix64 distance;
-    internal readonly bool signX;
-    internal readonly bool signY;
-
-    public VoltRayCast(VoltVector2 origin, VoltVector2 destination)
+    /// <summary>
+    /// A semi-precomputed ray optimized for fast AABB tests.
+    /// </summary>
+    public struct VoltRayCast
     {
-      VoltVector2 delta = destination - origin;
+        internal readonly VoltVector2 origin;
+        internal readonly VoltVector2 direction;
+        internal readonly VoltVector2 invDirection;
+        internal readonly Fix64 distance;
+        internal readonly bool signX;
+        internal readonly bool signY;
 
-      this.origin = origin;
-      this.direction = delta.Normalized;
-      this.distance = delta.Magnitude;
-      this.signX = direction.x < Fix64.Zero;
-      this.signY = direction.y < Fix64.Zero;
-      this.invDirection = 
-        new VoltVector2(Fix64.One / direction.x, Fix64.One / direction.y);
-    }
+        public VoltRayCast(VoltVector2 origin, VoltVector2 destination)
+        {
+            VoltVector2 delta = destination - origin;
 
-    public VoltRayCast(VoltVector2 origin, VoltVector2 direction, Fix64 distance)
-    {
-      this.origin = origin;
-      this.direction = direction;
-      this.distance = distance;
-      this.signX = direction.x < Fix64.Zero;
-      this.signY = direction.y < Fix64.Zero;
-      this.invDirection = 
-        new VoltVector2(Fix64.One / direction.x, Fix64.One / direction.y);
+            this.origin = origin;
+            this.direction = delta.Normalized;
+            this.distance = delta.Magnitude;
+            this.signX = direction.x < Fix64.Zero;
+            this.signY = direction.y < Fix64.Zero;
+            this.invDirection =
+              new VoltVector2(Fix64.One / direction.x, Fix64.One / direction.y);
+        }
+
+        public VoltRayCast(VoltVector2 origin, VoltVector2 direction, Fix64 distance)
+        {
+            this.origin = origin;
+            this.direction = direction;
+            this.distance = distance;
+            this.signX = direction.x < Fix64.Zero;
+            this.signY = direction.y < Fix64.Zero;
+            this.invDirection =
+              new VoltVector2(Fix64.One / direction.x, Fix64.One / direction.y);
+        }
     }
-  }
 }

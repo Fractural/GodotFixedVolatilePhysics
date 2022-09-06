@@ -5,7 +5,6 @@ using Godot.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Volatile;
-using Thread = System.Threading.Thread;
 
 namespace Volatile.GodotEngine
 {

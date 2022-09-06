@@ -176,5 +176,40 @@ namespace Volatile
         {
             return $"({x}, {y})";
         }
+
+        /// <summary>
+        /// Slides this vector across a collision normal.
+        /// It removes the component of the component of the vector that is parallel with the normal
+        /// (aka, the component that points into the normal). We only want the component that 
+        /// orthogonal to the collision normal (aka, parallel to the surface).
+        /// 
+        /// \
+        ///   \ 
+        ///     \      /|\
+        ///       \     |
+        /// vector  \   | Normal
+        ///          _\||
+        /// ---------------------------
+        /// 
+        /// </summary>
+        /// <param name="normal"></param>
+        /// <returns></returns>
+        public VoltVector2 Slide(VoltVector2 normal)
+        {
+            //  Original Vector
+            //      :               Magnitude of the projection of original vector onto the normal vector
+            //      :     Normal    (works out because the normal vector is normalized)
+            //      :      :       .------'------.
+            return this - normal * this.Dot(normal);
+            //            '----------.------------'
+            //           Original vector projected onto the normal vector
+            //           This vector represents the "component" of the original vector that's
+            //           parallel to the surface.
+            //     '------------------------------'
+            //    Subtract the original vector from the projected vector to get the component
+            //    of the original vector that's orthoganal to the normal vector. This is also
+            //    the vector that is parallel to the surface (since the normal represents a vector
+            //    perpendicular to the surface).
+        }
     }
 }

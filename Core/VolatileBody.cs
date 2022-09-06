@@ -12,7 +12,7 @@ namespace Volatile.GodotEngine
     {
         public VolatileShape[] Shapes { get; set; }
         [Export]
-        public bool IsStatic { get; set; } = false;
+        public VoltBodyType BodyType { get; set; } = VoltBodyType.Static;
         [Export]
         public bool DoInterpolation { get; set; } = true;
 
@@ -59,10 +59,21 @@ namespace Volatile.GodotEngine
             var world = volatileWorldNode.World;
             var shapes = shapeNodes.Select(x => x.PrepareShape(world)).ToArray();
 
-            if (IsStatic)
-                Body = world.CreateStaticBody(GlobalFixedPosition, FixedRotation, shapes);
-            else
-                Body = world.CreateDynamicBody(GlobalFixedPosition, FixedRotation, shapes);
+            switch (BodyType)
+            {
+                case VoltBodyType.Static:
+                    Body = world.CreateStaticBody(GlobalFixedPosition, FixedRotation, shapes);
+                    break;
+                case VoltBodyType.Kinematic:
+                    Body = world.CreateKinematicBody(GlobalFixedPosition, FixedRotation, shapes);
+                    break;
+                case VoltBodyType.Dynamic:
+                    Body = world.CreateDynamicBody(GlobalFixedPosition, FixedRotation, shapes);
+                    break;
+                case VoltBodyType.Trigger:
+                    Body = world.CreateTriggerBody(GlobalFixedPosition, FixedRotation, shapes);
+                    break;
+            }
 
             lastPosition = nextPosition = GlobalFixedPosition;
             lastAngle = nextAngle = GlobalFixedRotation;
@@ -120,6 +131,16 @@ namespace Volatile.GodotEngine
         public void SetForce(VoltVector2 force, Fix64 torque, VoltVector2 biasVelocity, Fix64 biasRotation)
         {
             Body.SetForce(force, torque, biasVelocity, biasRotation);
+        }
+
+        public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
+        {
+            return Body.MoveAndCollide(linearVelocity);
+        }
+
+        public VoltVector2 MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
+        {
+            return Body.MoveAndSlide(linearVelocity, maxSlides);
         }
     }
 }
