@@ -22,6 +22,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -36,6 +38,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -50,6 +54,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -64,6 +70,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -78,6 +86,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -92,6 +102,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -106,6 +118,8 @@ rotation = -0.247956
 script = ExtResource( 3 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _radius = PoolByteArray( 0, 128, 216, 191, 22, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 255, 255, 255, 255, 192, 12, 212, 62, 0, 0, 0, 0, 0, 167, 43, 248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -119,6 +133,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 2 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -132,6 +148,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 2 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _extents = PoolByteArray( 0, 128, 46, 112, 30, 0, 0, 0, 0, 128, 202, 26, 12, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -145,6 +163,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -158,6 +178,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 76, 247, 11, 0, 0, 0, 0, 0, 28, 65, 27, 0, 0, 0, 16, 0, 0, 19, 64, 40, 0, 0, 0, 0, 0, 87, 240, 236, 255, 255, 255, 16, 0, 0, 121, 135, 219, 255, 255, 255, 0, 0, 33, 41, 229, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -171,6 +193,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -184,6 +208,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -197,6 +223,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
@@ -210,5 +238,7 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 4 )
 Editing = true
 DebugDraw = true
+_restitution = PoolByteArray( 102, 102, 102, 230, 0, 0, 0, 0 )
+_friction = PoolByteArray( 153, 153, 153, 25, 0, 0, 0, 0 )
 _points = PoolByteArray( 3, 0, 0, 0, 16, 0, 0, 101, 73, 232, 255, 255, 255, 0, 0, 82, 60, 17, 0, 0, 0, 16, 0, 0, 202, 50, 27, 0, 0, 0, 0, 128, 143, 176, 7, 0, 0, 0, 16, 0, 0, 173, 241, 6, 0, 0, 0, 0, 64, 95, 233, 220, 255, 255, 255 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )

@@ -5,3 +5,4 @@
 Fixed-point 2D physics in Godot C# using [cathei's Fixed point fork of VolatilePhysics](https://github.com/cathei/VolatilePhysics-FixedMath).
 
 ![Physics Test](ReadmeAssets/PhysicsTest.gif)
+![Kinematic Body](ReadmeAssets/KinematicBody.gif)

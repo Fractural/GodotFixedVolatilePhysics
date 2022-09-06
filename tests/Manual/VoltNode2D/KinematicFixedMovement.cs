@@ -45,7 +45,8 @@ namespace Tests
             base._PhysicsProcess(delta);
             if (Engine.EditorHint) return;
             var movementInput = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down").ToVoltVector2();
-            MoveAndCollide(movementInput * speed);
+            if (movementInput != VoltVector2.Zero)
+                MoveAndSlide(movementInput * speed);
         }
     }
 }

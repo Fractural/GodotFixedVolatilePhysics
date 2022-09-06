@@ -18,19 +18,34 @@ script = ExtResource( 7 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="DispersedDynamicGroup" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
-position = Vector2( -130.167, 169.706 )
 
 [node name="DispersedDynamicGroup2" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
 position = Vector2( 323.036, 169.706 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 68, 9, 67, 1, 0, 0, 0, 0, 168, 180, 169, 0, 0, 0 )
 
 [node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
+position = Vector2( -7.12259, -36.8426 )
+rotation = -0.071726
+script = ExtResource( 5 )
+_fixedTransform = PoolByteArray( 0, 126, 87, 255, 0, 0, 0, 0, 128, 100, 167, 237, 255, 255, 255, 255, 128, 155, 88, 18, 0, 0, 0, 0, 0, 126, 87, 255, 0, 0, 0, 0, 0, 0, 158, 224, 248, 255, 255, 255, 0, 0, 78, 40, 219, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+position = Vector2( 43.7445, -22.1489 )
+rotation = 1.77533
+scale = Vector2( 1, 1 )
+script = ExtResource( 2 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 0, 10, 144, 0, 0, 0, 0, 0, 80, 214, 25, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 192, 250, 0, 204, 255, 255, 255, 255, 0, 246, 169, 250, 0, 0, 0, 0, 0, 10, 86, 5, 255, 255, 255, 255, 192, 250, 0, 204, 255, 255, 255, 255, 0, 128, 151, 190, 43, 0, 0, 0, 0, 192, 228, 217, 233, 255, 255, 255 )
+
+[node name="StaticRect5" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( 0.445465, 249.061 )
 rotation = -0.071726
 script = ExtResource( 5 )
 _fixedTransform = PoolByteArray( 0, 126, 87, 255, 0, 0, 0, 0, 160, 100, 167, 237, 255, 255, 255, 255, 96, 155, 88, 18, 0, 0, 0, 0, 0, 126, 87, 255, 0, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
 
-[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+[node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect5"]
 rotation = -0.0386372
 script = ExtResource( 2 )
 Editing = true
@@ -78,7 +93,7 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 position = Vector2( 261.629, -50.7239 )
 script = ExtResource( 9 )
 BodyType = 3
-_speed = PoolByteArray( 0, 0, 0, 0, 5, 0, 0, 0 )
+_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 5, 1, 0, 0, 0, 0, 172, 70, 205, 255, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement"]
