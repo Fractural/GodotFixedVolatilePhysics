@@ -7,12 +7,11 @@ using System.Collections.Generic;
 
 namespace Volatile.GodotEngine
 {
+
     [Tool]
-    public class VolatileBody : VoltNode2D
+    public abstract class VolatileBody : VoltNode2D
     {
         public VolatileShape[] Shapes { get; set; }
-        [Export]
-        public VoltBodyType BodyType { get; set; } = VoltBodyType.Static;
         [Export]
         public bool DoInterpolation { get; set; } = true;
 
@@ -59,25 +58,13 @@ namespace Volatile.GodotEngine
             var world = volatileWorldNode.World;
             var shapes = shapeNodes.Select(x => x.PrepareShape(world)).ToArray();
 
-            switch (BodyType)
-            {
-                case VoltBodyType.Static:
-                    Body = world.CreateStaticBody(GlobalFixedPosition, FixedRotation, shapes);
-                    break;
-                case VoltBodyType.Kinematic:
-                    Body = world.CreateKinematicBody(GlobalFixedPosition, FixedRotation, shapes);
-                    break;
-                case VoltBodyType.Dynamic:
-                    Body = world.CreateDynamicBody(GlobalFixedPosition, FixedRotation, shapes);
-                    break;
-                case VoltBodyType.Trigger:
-                    Body = world.CreateTriggerBody(GlobalFixedPosition, FixedRotation, shapes);
-                    break;
-            }
+            Body = CreateBody(world, shapes);
 
             lastPosition = nextPosition = GlobalFixedPosition;
             lastAngle = nextAngle = GlobalFixedRotation;
         }
+
+        protected abstract VoltBody CreateBody(VoltWorld world, VoltShape[] shapes);
 
         public override void _Process(float delta)
         {
@@ -105,42 +92,6 @@ namespace Volatile.GodotEngine
             lastAngle = nextAngle;
             nextPosition = Body.Position;
             nextAngle = Body.Angle;
-        }
-
-        public void AddForce(VoltVector2 force)
-        {
-            Body.AddForce(force);
-        }
-
-        public void AddTorque(Fix64 radians)
-        {
-            Body.AddTorque(radians);
-        }
-
-        public void Set(VoltVector2 position, Fix64 radians)
-        {
-            Body.Set(position, radians);
-        }
-
-        public void SetVelocity(VoltVector2 linearVelocity, Fix64 angularVelocity)
-        {
-            Body.LinearVelocity = linearVelocity;
-            Body.AngularVelocity = angularVelocity;
-        }
-
-        public void SetForce(VoltVector2 force, Fix64 torque, VoltVector2 biasVelocity, Fix64 biasRotation)
-        {
-            Body.SetForce(force, torque, biasVelocity, biasRotation);
-        }
-
-        public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
-        {
-            return Body.MoveAndCollide(linearVelocity);
-        }
-
-        public void MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
-        {
-            Body.MoveAndSlide(linearVelocity, maxSlides);
         }
     }
 }

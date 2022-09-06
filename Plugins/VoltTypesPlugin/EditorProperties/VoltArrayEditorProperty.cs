@@ -21,8 +21,6 @@ namespace Volatile.GodotEngine.Plugin
         private Type elementType;
         private VoltTypesInspectorPlugin inspectorPlugin;
 
-        protected byte[] Data => GetEditedObject().Get(GetEditedProperty()) as byte[];
-
         private VBoxContainer bottomVBox;
 
         public VoltArrayEditorProperty() { }

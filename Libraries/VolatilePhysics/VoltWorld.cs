@@ -91,7 +91,15 @@ namespace Volatile
         private CheapList<VoltBody> bodies;
         private List<Manifold> manifolds;
 
+        /// <summary>
+        /// Includes dynamic, kinematic, and trigger bodies. It's fast
+        /// to add and remove bodies from this phase.
+        /// </summary>
         private IBroadPhase dynamicBroadphase;
+        /// <summary>
+        /// Includes only static bodies. It's costly to add and remove 
+        /// bodies from this phase because it regenerates the tree.
+        /// </summary>
         private IBroadPhase staticBroadphase;
 
         private VoltBuffer<VoltBody> reusableBuffer;
@@ -346,7 +354,7 @@ namespace Volatile
         /// otherwise you might get symmetric duplicates on collisions.
         /// </summary>
         public void Update(VoltBody body, bool collideDynamic)
-            => Update(body, collideDynamic, VoltBody.CanCollide_Default);
+            => Update(body, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
         public void Update(VoltBody body, bool collideDynamic, VoltCollisionFilter filter)
         {
             if (body.IsStatic)
@@ -516,7 +524,7 @@ namespace Volatile
         /// <param name="collideDynamic"></param>
         /// <returns></returns>
         public bool QueryColliding(VoltBody query, bool collideDynamic = false)
-           => QueryColliding(query, collideDynamic, VoltBody.CanCollide_Default);
+           => QueryColliding(query, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
 
         /// <summary>
         /// Returns whether or not this body is currently colliding
@@ -541,7 +549,7 @@ namespace Volatile
         /// <param name="collideDynamic"></param>
         /// <returns></returns>
         public VoltBodyCollisionResult QueryCollisions(VoltBody body, bool collideDynamic)
-            => QueryCollisions(body, collideDynamic, VoltBody.CanCollide_Default);
+            => QueryCollisions(body, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
 
         /// <summary>
         /// Finds collisions for a body.
@@ -612,7 +620,7 @@ namespace Volatile
 
         private void TestBuffer(VoltBody query)
         {
-            TestBuffer(query, VoltBody.CanCollide_Default);
+            TestBuffer(query, VoltCollisionFilters.DefaultCollisionFilter);
         }
 
         /// <summary>

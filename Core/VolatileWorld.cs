@@ -12,6 +12,8 @@ namespace Volatile.GodotEngine
         public int HistoryLength = 0;
         [Export]
         public bool ProcessSelf { get; set; } = true;
+        [Export]
+        public bool DebugDraw { get; set; } = false;
         public VoltWorld World { get; private set; }
 
         public override void _EnterTree()
@@ -48,7 +50,7 @@ namespace Volatile.GodotEngine
         public override void _Draw()
         {
             base._Draw();
-            if (Engine.EditorHint) return;
+            if (Engine.EditorHint || !DebugDraw) return;
             var color = Palette.Accent;
             foreach (var body in World.Bodies)
             {
