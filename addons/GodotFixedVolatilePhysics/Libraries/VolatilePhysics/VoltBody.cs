@@ -606,7 +606,7 @@ namespace Volatile
             // Unstuck the body.
             // Otherwise it would inch closer into the collider every time
             // MoveAndCollide is called.
-            Position = originalPosition + bestBodyCollisionResult.CumulativePenetrationVector();
+            Position += bestBodyCollisionResult.CumulativePenetrationVector();
             this.OnPositionUpdated();
 
             GD.Print("original position: " + originalPosition + "bestBodyCollisionResult: " + bestBodyCollisionResult.CumulativePenetrationVector() + " " + bestBodyCollisionResult.CumulativePenetrationVector().Magnitude + " result " + Position);

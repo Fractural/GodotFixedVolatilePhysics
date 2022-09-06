@@ -43,8 +43,8 @@ namespace Tests
         public override void _PhysicsProcess(float delta)
         {
             base._PhysicsProcess(delta);
+            if (Engine.EditorHint) return;
             var movementInput = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down").ToVoltVector2();
-            //if (Input.IsKeyPressed)
             MoveAndCollide(movementInput * speed);
         }
     }
