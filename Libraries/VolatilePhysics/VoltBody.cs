@@ -571,6 +571,7 @@ namespace Volatile
         {
             if (linearVelocity == VoltVector2.Zero) return new VoltKinematicCollisionResult();
 
+            var currentlyStuck = World.QueryColliding(this, false, VoltBody.CanCollide_MoveAndCollide);
             VoltVector2 originalPosition = Position;
             Position += linearVelocity;
             this.OnPositionUpdated();
@@ -580,31 +581,63 @@ namespace Volatile
             if (!bestBodyCollisionResult.HasCollision)
                 return new VoltKinematicCollisionResult();
 
+            if (currentlyStuck)
+            {
+                // If we're stuck in a wall, and moving doesn't get us unstuck, then bail.
+                // We don't want to let move and collide move through walls
+                Position = originalPosition;
+                this.OnPositionUpdated();
+                return new VoltKinematicCollisionResult(
+                    bestCollision: bestBodyCollisionResult,
+                    remainingVelocity: linearVelocity
+                );
+            }
+
+            // Use binary search to fine tune onto the exact point of collision (8 iterations for now)
+            Fix64 low = Fix64.Zero;
+            Fix64 high = Fix64.One;
+            for (int i = 0; i < 8; i++)
+            {
+                Fix64 middle = low + (high - low) * Fix64.Half;
+                Position = originalPosition + linearVelocity * middle;
+                this.OnPositionUpdated();
+                var result = World.QueryCollisions(this, false);
+                if (result.HasCollision)
+                {
+                    bestBodyCollisionResult = result;
+                    high = middle;
+                }
+                else
+                {
+                    low = middle;
+                }
+            }
+
             // Unstuck the body.
-            // Otherwise it would inch closer into the collider every time
-            // MoveAndCollide is called.
             Position += bestBodyCollisionResult.CumulativePenetrationVector();
             this.OnPositionUpdated();
 
             return new VoltKinematicCollisionResult(
                 bestCollision: bestBodyCollisionResult,
-                remainingVelocity: linearVelocity - (linearVelocity) //* low)
+                remainingVelocity: linearVelocity - (linearVelocity * low)
             );
         }
 
-        public VoltVector2 MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
+        public void MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
         {
-            if (linearVelocity == VoltVector2.Zero) return VoltVector2.Zero;
+            if (linearVelocity == VoltVector2.Zero) return;
 
-            VoltKinematicCollisionResult kinematicCollisionResult;
-            do
-            {
-                kinematicCollisionResult = MoveAndCollide(linearVelocity);
-                if (!kinematicCollisionResult.HasCollision) return VoltVector2.Zero;
-                linearVelocity = kinematicCollisionResult.RemainingVelocity.Slide(kinematicCollisionResult.CollisionNormal);
-                maxSlides--;
-            } while (kinematicCollisionResult.HasCollision && maxSlides > 0);
-            return linearVelocity;
+            VoltVector2 originalPosition = Position;
+            Position += linearVelocity;
+            this.OnPositionUpdated();
+
+            var bestBodyCollisionResult = World.QueryCollisions(this, false, VoltBody.CanCollide_MoveAndCollide);
+
+            if (!bestBodyCollisionResult.HasCollision) return;
+
+            // Unstuck the body. This automatically slides as well.
+            Position += bestBodyCollisionResult.CumulativePenetrationVector();
+            this.OnPositionUpdated();
         }
         #endregion
 

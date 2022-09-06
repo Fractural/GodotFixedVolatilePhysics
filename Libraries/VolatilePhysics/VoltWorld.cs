@@ -510,6 +510,31 @@ namespace Volatile
         }
 
         /// <summary>
+        /// Returns whether or not this body is currently colliding
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="collideDynamic"></param>
+        /// <returns></returns>
+        public bool QueryColliding(VoltBody query, bool collideDynamic = false)
+           => QueryColliding(query, collideDynamic, VoltBody.CanCollide_Default);
+
+        /// <summary>
+        /// Returns whether or not this body is currently colliding
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="collideDynamic"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public bool QueryColliding(VoltBody query, bool collideDynamic, VoltCollisionFilter filter)
+        {
+            BroadPhase(query, collideDynamic, filter);
+
+            var colliding = this.manifolds.Count != 0;
+            FreeManifolds();
+            return colliding;
+        }
+
+        /// <summary>
         /// Finds collisions for a body.
         /// </summary>
         /// <param name="query"></param>

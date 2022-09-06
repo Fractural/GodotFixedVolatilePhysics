@@ -138,9 +138,9 @@ namespace Volatile.GodotEngine
             return Body.MoveAndCollide(linearVelocity);
         }
 
-        public VoltVector2 MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
+        public void MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
         {
-            return Body.MoveAndSlide(linearVelocity, maxSlides);
+            Body.MoveAndSlide(linearVelocity, maxSlides);
         }
     }
 }

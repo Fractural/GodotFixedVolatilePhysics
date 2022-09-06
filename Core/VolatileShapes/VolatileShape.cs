@@ -22,8 +22,6 @@ namespace Volatile.GodotEngine
             Density = VoltType.DeserializeOrDefault<Fix64>(_density);
             Restitution = VoltType.DeserializeOrDefault<Fix64>(_restitution);
             Friction = VoltType.DeserializeOrDefault<Fix64>(_friction);
-
-            GD.Print(GetPath() + " volatile shape init with rot: " + Rotation + " " + FixedRotation + " " + Transform + " " + FixedTransform);
         }
 
         #region Density
