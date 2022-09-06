@@ -26,15 +26,17 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 [node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( 0.445465, 249.061 )
+rotation = -0.071726
 script = ExtResource( 5 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 126, 87, 255, 0, 0, 0, 0, 160, 100, 167, 237, 255, 255, 255, 255, 96, 155, 88, 18, 0, 0, 0, 0, 0, 126, 87, 255, 0, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
 
 [node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
+rotation = -0.0386372
 script = ExtResource( 2 )
 Editing = true
 DebugDraw = true
 _extents = PoolByteArray( 0, 0, 48, 139, 16, 2, 0, 0, 0, 0, 40, 187, 40, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 23, 207, 255, 0, 0, 0, 0, 192, 128, 28, 246, 255, 255, 255, 255, 64, 127, 227, 9, 0, 0, 0, 0, 0, 23, 207, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="StaticRect2" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( 0.445465, -368.293 )

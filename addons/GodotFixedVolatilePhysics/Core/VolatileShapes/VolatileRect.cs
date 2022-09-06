@@ -16,13 +16,13 @@ namespace Volatile.GodotEngine
     {
         public override VoltShape PrepareShape(VoltWorld world)
         {
-            var globalPosition = GlobalFixedPosition;
+            var globalTransform = GlobalFixedTransform;
             var points = new VoltVector2[]
             {
-                new VoltVector2(globalPosition.x + Extents.x, globalPosition.y + Extents.y),
-                new VoltVector2(globalPosition.x - Extents.x, globalPosition.y + Extents.y),
-                new VoltVector2(globalPosition.x - Extents.x, globalPosition.y - Extents.y),
-                new VoltVector2(globalPosition.x + Extents.x, globalPosition.y - Extents.y),
+                globalTransform * new VoltVector2(Extents.x, Extents.y),
+                globalTransform * new VoltVector2(-Extents.x, Extents.y),
+                globalTransform * new VoltVector2(-Extents.x, -Extents.y),
+                globalTransform * new VoltVector2(Extents.x, -Extents.y),
             };
             return world.CreatePolygonWorldSpace(
               points.Reverse().ToArray(),
