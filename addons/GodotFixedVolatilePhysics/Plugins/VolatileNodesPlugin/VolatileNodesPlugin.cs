@@ -21,7 +21,19 @@ namespace Volatile.GodotEngine.Plugin
             Plugin.AddCustomType(nameof(VolatileCircle), nameof(Node2D),
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltNode2D.svg"));
-            Plugin.AddCustomType(nameof(VolatileBody), nameof(Node2D),
+            Plugin.AddCustomType(nameof(VolatileRigidBody), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileRigidBody.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltRigidBody.svg"));
+            Plugin.AddCustomType(nameof(VolatileStaticBody), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileStaticBody.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltStaticBody.svg"));
+            Plugin.AddCustomType(nameof(VolatileKinematicBody), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileKinematicBody.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltKinematicBody.svg"));
+            Plugin.AddCustomType(nameof(VolatileArea), nameof(Node2D),
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileArea.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltArea.svg"));
+            Plugin.AddCustomType(nameof(VolatileRigidBody), nameof(Node2D),
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltBody.svg"));
             Plugin.AddCustomType(nameof(VolatileWorld), nameof(Node2D),
@@ -38,7 +50,10 @@ namespace Volatile.GodotEngine.Plugin
             Plugin.RemoveCustomType(nameof(VolatileRect));
             Plugin.RemoveCustomType(nameof(VolatilePolygon));
             Plugin.RemoveCustomType(nameof(VolatileCircle));
-            Plugin.RemoveCustomType(nameof(VolatileBody));
+            Plugin.RemoveCustomType(nameof(VolatileRigidBody));
+            Plugin.RemoveCustomType(nameof(VolatileStaticBody));
+            Plugin.RemoveCustomType(nameof(VolatileKinematicBody));
+            Plugin.RemoveCustomType(nameof(VolatileArea));
             Plugin.RemoveCustomType(nameof(VolatileWorld));
             Plugin.RemoveCustomType(nameof(SimpleForce));
         }

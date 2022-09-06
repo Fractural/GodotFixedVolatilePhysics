@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/VoltBody.svg-771b57b4505742adc1b4793f68b1bfaf.stex"
+path="res://.import/VoltArea.svg-6f308530d7fb20a6323be50a206fbcef.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/GodotFixedVolatilePhysics/Assets/VoltBody.svg"
-dest_files=[ "res://.import/VoltBody.svg-771b57b4505742adc1b4793f68b1bfaf.stex" ]
+source_file="res://addons/GodotFixedVolatilePhysics/Assets/VoltArea.svg"
+dest_files=[ "res://.import/VoltArea.svg-6f308530d7fb20a6323be50a206fbcef.stex" ]
 
 [params]
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileCircle.cs" type="Script" id=3]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatilePolygon.cs" type="Script" id=4]
-[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=5]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileRigidBody.cs" type="Script" id=5]
 
 [node name="Group" type="Node2D"]
 position = Vector2( -130.167, 169.706 )
@@ -14,7 +14,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Circle" type="Node2D" parent="."]
 position = Vector2( -199.001, -44.4346 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 184, 255, 56, 255, 255, 255, 0, 0, 192, 144, 211, 255, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle"]
@@ -30,7 +29,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle2" type="Node2D" parent="."]
 position = Vector2( -163.797, -118.247 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 240, 51, 92, 255, 255, 255, 0, 0, 204, 192, 137, 255, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle2"]
@@ -46,7 +44,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle3" type="Node2D" parent="."]
 position = Vector2( 92.5835, -245.499 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 96, 149, 92, 0, 0, 0, 0, 0, 69, 128, 10, 255, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle3"]
@@ -62,7 +59,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle4" type="Node2D" parent="."]
 position = Vector2( 38.4069, -359.522 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 40, 104, 38, 0, 0, 0, 0, 0, 104, 122, 152, 254, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle4"]
@@ -78,7 +74,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle5" type="Node2D" parent="."]
 position = Vector2( -185.216, -408.659 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 194, 200, 70, 255, 255, 255, 0, 0, 92, 87, 103, 254, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle5"]
@@ -94,7 +89,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle6" type="Node2D" parent="."]
 position = Vector2( 56.6757, -439.527 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle6"]
@@ -110,7 +104,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Circle7" type="Node2D" parent="."]
 position = Vector2( 56.6757, -439.527 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 252, 172, 56, 0, 0, 0, 0, 0, 36, 121, 72, 254, 255, 255 )
 
 [node name="VolatileCircle" type="Node2D" parent="Circle7"]
@@ -126,7 +119,6 @@ _fixedTransform = PoolByteArray( 0, 167, 43, 248, 0, 0, 0, 0, 64, 243, 43, 193, 
 [node name="Rect" type="Node2D" parent="."]
 position = Vector2( 75.6908, -96.2238 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 216, 176, 75, 0, 0, 0, 0, 0, 178, 198, 159, 255, 255, 255 )
 
 [node name="VolatileRect" type="Node2D" parent="Rect"]
@@ -141,7 +133,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Rect2" type="Node2D" parent="."]
 position = Vector2( -152.397, -177.869 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 78, 154, 103, 255, 255, 255, 0, 0, 136, 33, 78, 255, 255, 255 )
 
 [node name="VolatileRect" type="Node2D" parent="Rect2"]
@@ -156,7 +147,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon" type="Node2D" parent="."]
 position = Vector2( 34.3994, -37.9265 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 62, 102, 34, 0, 0, 0, 0, 128, 207, 18, 218, 255, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon"]
@@ -171,7 +161,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon3" type="Node2D" parent="."]
 position = Vector2( -175.994, -323.929 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 134, 1, 80, 255, 255, 255, 0, 0, 68, 18, 188, 254, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon3"]
@@ -186,7 +175,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon2" type="Node2D" parent="."]
 position = Vector2( 4.10529, -258.135 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 244, 26, 4, 0, 0, 0, 0, 0, 82, 221, 253, 254, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon2"]
@@ -201,7 +189,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon4" type="Node2D" parent="."]
 position = Vector2( 80.9605, -328.691 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 80, 0, 0, 0, 0, 0, 22, 79, 183, 254, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon4"]
@@ -216,7 +203,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon5" type="Node2D" parent="."]
 position = Vector2( -210.987, -222.691 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 52, 3, 45, 255, 255, 255, 0, 0, 20, 79, 33, 255, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon5"]
@@ -231,7 +217,6 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [node name="Polygon6" type="Node2D" parent="."]
 position = Vector2( 58.9605, -156.691 )
 script = ExtResource( 5 )
-BodyType = 1
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 228, 245, 58, 0, 0, 0, 0, 0, 22, 79, 99, 255, 255, 255 )
 
 [node name="VolatilePolygon" type="Node2D" parent="Polygon6"]

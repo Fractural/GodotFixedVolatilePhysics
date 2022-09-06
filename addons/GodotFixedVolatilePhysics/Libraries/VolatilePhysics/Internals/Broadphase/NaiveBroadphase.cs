@@ -26,88 +26,88 @@ using FixMath.NET;
 
 namespace Volatile
 {
-  internal class NaiveBroadphase : IBroadPhase
-  {
-    private VoltBody[] bodies;
-    private int count;
-
-    public NaiveBroadphase()
+    internal class NaiveBroadphase : IBroadPhase
     {
-      this.bodies = new VoltBody[256];
-      this.count = 0;
+        private VoltBody[] bodies;
+        private int count;
+
+        public NaiveBroadphase()
+        {
+            this.bodies = new VoltBody[256];
+            this.count = 0;
+        }
+
+        public void AddBody(VoltBody body)
+        {
+            if (this.count >= this.bodies.Length)
+                VoltUtil.ExpandArray(ref this.bodies);
+
+            this.bodies[this.count] = body;
+            body.ProxyId = this.count;
+            this.count++;
+        }
+
+        public void RemoveBody(VoltBody body)
+        {
+            int index = body.ProxyId;
+            VoltDebug.Assert(index >= 0);
+            VoltDebug.Assert(index < this.count);
+
+            int lastIndex = this.count - 1;
+            if (index < lastIndex)
+            {
+                VoltBody lastBody = this.bodies[lastIndex];
+
+                this.bodies[lastIndex].ProxyId = -1;
+                this.bodies[lastIndex] = null;
+
+                this.bodies[index] = lastBody;
+                lastBody.ProxyId = index;
+            }
+
+            this.count--;
+        }
+
+        public void UpdateBody(VoltBody body)
+        {
+            // Do nothing
+        }
+
+        public void QueryOverlap(
+          VoltAABB aabb,
+          VoltBuffer<VoltBody> outBuffer)
+        {
+            outBuffer.Add(this.bodies, this.count);
+        }
+
+        public void QueryPoint(
+          VoltVector2 point,
+          VoltBuffer<VoltBody> outBuffer)
+        {
+            outBuffer.Add(this.bodies, this.count);
+        }
+
+        public void QueryCircle(
+          VoltVector2 point,
+          Fix64 radius,
+          VoltBuffer<VoltBody> outBuffer)
+        {
+            outBuffer.Add(this.bodies, this.count);
+        }
+
+        public void RayCast(
+          ref VoltRayCast ray,
+          VoltBuffer<VoltBody> outBuffer)
+        {
+            outBuffer.Add(this.bodies, this.count);
+        }
+
+        public void CircleCast(
+          ref VoltRayCast ray,
+          Fix64 radius,
+          VoltBuffer<VoltBody> outBuffer)
+        {
+            outBuffer.Add(this.bodies, this.count);
+        }
     }
-
-    public void AddBody(VoltBody body)
-    {
-      if (this.count >= this.bodies.Length)
-        VoltUtil.ExpandArray(ref this.bodies);
-
-      this.bodies[this.count] = body;
-      body.ProxyId = this.count;
-      this.count++;
-    }
-
-    public void RemoveBody(VoltBody body)
-    {
-      int index = body.ProxyId;
-      VoltDebug.Assert(index >= 0);
-      VoltDebug.Assert(index < this.count);
-
-      int lastIndex = this.count - 1;
-      if (index < lastIndex)
-      {
-        VoltBody lastBody = this.bodies[lastIndex];
-
-        this.bodies[lastIndex].ProxyId = -1;
-        this.bodies[lastIndex] = null;
-
-        this.bodies[index] = lastBody;
-        lastBody.ProxyId = index;
-      }
-
-      this.count--;
-    }
-
-    public void UpdateBody(VoltBody body)
-    {
-      // Do nothing
-    }
-
-    public void QueryOverlap(
-      VoltAABB aabb,
-      VoltBuffer<VoltBody> outBuffer)
-    {
-      outBuffer.Add(this.bodies, this.count);
-    }
-
-    public void QueryPoint(
-      VoltVector2 point,
-      VoltBuffer<VoltBody> outBuffer)
-    {
-      outBuffer.Add(this.bodies, this.count);
-    }
-
-    public void QueryCircle(
-      VoltVector2 point,
-      Fix64 radius,
-      VoltBuffer<VoltBody> outBuffer)
-    {
-      outBuffer.Add(this.bodies, this.count);
-    }
-
-    public void RayCast(
-      ref VoltRayCast ray,
-      VoltBuffer<VoltBody> outBuffer)
-    {
-      outBuffer.Add(this.bodies, this.count);
-    }
-
-    public void CircleCast(
-      ref VoltRayCast ray,
-      Fix64 radius,
-      VoltBuffer<VoltBody> outBuffer)
-    {
-      outBuffer.Add(this.bodies, this.count);
-    }
-  }
 }

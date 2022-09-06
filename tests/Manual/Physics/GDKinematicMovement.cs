@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using VirtualJoystickAddon;
+using Fractural.Utils;
 
 namespace Tests
 {
@@ -7,12 +9,19 @@ namespace Tests
     {
         [Export]
         public float speed;
+        [Export]
+        private NodePath joystickPath;
+        private VirtualJoystick joystick;
+
+        public override void _Ready()
+        {
+            joystick = this.GetNodeAsWrapper<VirtualJoystick>(joystickPath);
+        }
 
         public override void _PhysicsProcess(float delta)
         {
-            var movementInput = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-            if (movementInput != Vector2.Zero)
-                MoveAndSlide(movementInput * speed);
+            if (joystick.Output != Vector2.Zero)
+                MoveAndSlide(joystick.Output * speed);
         }
     }
 }

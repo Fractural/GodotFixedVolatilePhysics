@@ -32,7 +32,7 @@ namespace Volatile.GodotEngine
         private byte[] _force;
         #endregion
 
-        private VolatileBody body;
+        private VolatileRigidBody body;
 
         public override void _Ready()
         {
@@ -44,13 +44,13 @@ namespace Volatile.GodotEngine
                 SetPhysicsProcess(false);
                 return;
             }
-            body = GetParent<VolatileBody>();
+            body = GetParent<VolatileRigidBody>();
         }
 
         public override string _GetConfigurationWarning()
         {
-            if (!(GetParent() is VolatileBody))
-                return "Gravity must be a descendant of a VolatileBody!";
+            if (!(GetParent() is VolatileRigidBody))
+                return $"{nameof(SimpleForce)} must be a child of a {nameof(VolatileRigidBody)}!";
             return "";
         }
 

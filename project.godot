@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "VirtualJoystick",
+"language": "GDScript",
+"path": "res://addons/VirtualJoystick/virtual_joystick.gd"
+}, {
 "base": "Reference",
 "class": "WAT",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://addons/WAT/test/test.gd"
 } ]
 _global_script_class_icons={
+"VirtualJoystick": "",
 "WAT": "",
 "WATTest": ""
 }
@@ -63,6 +69,10 @@ window/stretch/aspect="expand"
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/FracturalCommons/plugin.cfg", "res://addons/GodotFixedVolatilePhysics/plugin.cfg", "res://addons/WAT/plugin.cfg" )
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [logging]
 

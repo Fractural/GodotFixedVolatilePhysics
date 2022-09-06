@@ -1,4 +1,5 @@
 ﻿using FixMath.NET;
+using System.Collections.Generic;
 
 namespace Volatile
 {
@@ -29,6 +30,7 @@ namespace Volatile
             QueryBody = queryBody;
             ShapeCollisions = shapeCollisions;
             HasCollision = true;
+            collidingBodies = null;
         }
 
         public VoltVector2 CumulativeNormal()
@@ -38,13 +40,30 @@ namespace Volatile
                 cumulativeNormal += collision.CumulativeNormal();
             return cumulativeNormal.Normalized;
         }
-
         public VoltVector2 CumulativePenetrationVector()
         {
             var cumulativeNormal = VoltVector2.Zero;
             foreach (var collision in ShapeCollisions)
                 cumulativeNormal += collision.CumulativePenetrationVector();
             return cumulativeNormal;
+        }
+
+        private VoltBody[] collidingBodies;
+        // CollidingBodies is lazy initialized
+        public VoltBody[] CollidingBodies
+        {
+            get
+            {
+                if (collidingBodies == null)
+                {
+                    var collidingBodiesHashset = new HashSet<VoltBody>();
+                    foreach (VoltShapeCollision shapeCollision in ShapeCollisions)
+                        collidingBodiesHashset.Add(shapeCollision.CollidingShape.Body);
+                    collidingBodies = new VoltBody[collidingBodiesHashset.Count];
+                    collidingBodiesHashset.CopyTo(collidingBodies);
+                }
+                return collidingBodies;
+            }
         }
     }
 

@@ -566,32 +566,42 @@ namespace Volatile
             this.currentState = default(HistoryRecord);
         }
 
+        #region Trigger
+        /// <summary>
+        /// Finds all the bodies that currently intersect this body. This is meant to be used with trigger bodies,
+        /// who can pass through bodies and act as sensors.
+        /// </summary>
+        /// <param name="collideDynamic"></param>
+        /// <returns>Collision results</returns>
+        public VoltBodyCollisionResult QueryTriggerCollisions(bool collideDynamic = false)
+            => QueryTriggerCollisions(collideDynamic, VoltCollisionFilters.DefaultTriggerQueryFilter);
+
+        /// <summary>
+        /// Finds all the bodies that currently intersect this body. This is meant to be used with trigger bodies,
+        /// who can pass through bodies and act as sensors.
+        /// </summary>
+        /// <param name="collideDynamic"></param>
+        /// <param name="filter"></param>
+        /// <returns>Collision results</returns>
+        public VoltBodyCollisionResult QueryTriggerCollisions(bool collideDynamic, VoltCollisionFilter filter)
+        {
+            return World.QueryCollisions(this, collideDynamic, filter);
+        }
+        #endregion
+
         #region Kinematic Body
         public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
         {
             if (linearVelocity == VoltVector2.Zero) return new VoltKinematicCollisionResult();
-
-            var currentlyStuck = World.QueryColliding(this, false, VoltBody.CanCollide_MoveAndCollide);
+            
             VoltVector2 originalPosition = Position;
             Position += linearVelocity;
             this.OnPositionUpdated();
 
-            var bestBodyCollisionResult = World.QueryCollisions(this, false, VoltBody.CanCollide_MoveAndCollide);
+            var bestBodyCollisionResult = World.QueryCollisions(this, true, VoltCollisionFilters.DefaultMoveAndCollideFilter);
 
             if (!bestBodyCollisionResult.HasCollision)
                 return new VoltKinematicCollisionResult();
-
-            if (currentlyStuck)
-            {
-                // If we're stuck in a wall, and moving doesn't get us unstuck, then bail.
-                // We don't want to let move and collide move through walls
-                Position = originalPosition;
-                this.OnPositionUpdated();
-                return new VoltKinematicCollisionResult(
-                    bestCollision: bestBodyCollisionResult,
-                    remainingVelocity: linearVelocity
-                );
-            }
 
             // Use binary search to fine tune onto the exact point of collision (8 iterations for now)
             Fix64 low = Fix64.Zero;
@@ -601,7 +611,7 @@ namespace Volatile
                 Fix64 middle = low + (high - low) * Fix64.Half;
                 Position = originalPosition + linearVelocity * middle;
                 this.OnPositionUpdated();
-                var result = World.QueryCollisions(this, false);
+                var result = World.QueryCollisions(this, true, VoltCollisionFilters.DefaultMoveAndCollideFilter);
                 if (result.HasCollision)
                 {
                     bestBodyCollisionResult = result;
@@ -623,45 +633,23 @@ namespace Volatile
             );
         }
 
-        public void MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
+        public VoltVector2 MoveAndSlide(VoltVector2 linearVelocity, int maxSlides = 4)
         {
-            if (linearVelocity == VoltVector2.Zero) return;
+            if (linearVelocity == VoltVector2.Zero) return VoltVector2.Zero;
 
-            VoltVector2 originalPosition = Position;
-            Position += linearVelocity;
-            this.OnPositionUpdated();
-
-            var bestBodyCollisionResult = World.QueryCollisions(this, false, VoltBody.CanCollide_MoveAndCollide);
-
-            if (!bestBodyCollisionResult.HasCollision) return;
-
-            // Unstuck the body. This automatically slides as well.
-            Position += bestBodyCollisionResult.CumulativePenetrationVector();
-            this.OnPositionUpdated();
+            VoltKinematicCollisionResult kinematicCollisionResult;
+            do
+            {
+                kinematicCollisionResult = MoveAndCollide(linearVelocity);
+                if (!kinematicCollisionResult.HasCollision) return VoltVector2.Zero;
+                linearVelocity = kinematicCollisionResult.RemainingVelocity.Slide(kinematicCollisionResult.CollisionNormal);
+                maxSlides--;
+            } while (kinematicCollisionResult.HasCollision && maxSlides > 0);
+            return linearVelocity;
         }
         #endregion
 
         #region Collision
-        internal static bool CanCollide_Default(VoltBody one, VoltBody other)
-        {
-            // Ignore self collisions
-            // Ignore static-static collisions
-            // Ignore kinematic and static collisions
-            if ((one == other)
-                || (one.IsStatic && other.IsStatic)
-                || (one.IsKinematic && other.IsStatic)
-                || (one.IsStatic && other.IsKinematic))
-                return false;
-            return true;
-        }
-
-        internal static bool CanCollide_MoveAndCollide(VoltBody one, VoltBody other)
-        {
-            if ((one == other))
-                return false;
-            return true;
-        }
-
         internal void ApplyImpulse(VoltVector2 j, VoltVector2 r)
         {
             this.LinearVelocity += j * this.InvMass;
@@ -837,55 +825,6 @@ namespace Volatile
 
             this.BodyType = VoltBodyType.Static;
         }
-        #endregion
-
-        #region Debug
-#if UNITY && DEBUG
-    public void GizmoDraw(
-      Color edgeColor,
-      Color normalColor,
-      Color bodyOriginColor,
-      Color shapeOriginColor,
-      Color bodyAabbColor,
-      Color shapeAabbColor,
-      Fix64 normalLength)
-    {
-      Color current = Gizmos.color;
-
-      // Draw origin
-      Gizmos.color = bodyOriginColor;
-      Gizmos.DrawWireSphere(this.Position, 0.1f);
-
-      // Draw facing
-      Gizmos.color = normalColor;
-      Gizmos.DrawLine(
-        this.Position,
-        this.Position + this.Facing * normalLength);
-
-      this.AABB.GizmoDraw(bodyAabbColor);
-
-      for (int i = 0; i < this.shapeCount; i++)
-        this.shapes[i].GizmoDraw(
-          edgeColor,
-          normalColor,
-          shapeOriginColor,
-          shapeAabbColor,
-          normalLength);
-
-      Gizmos.color = current;
-    }
-
-    public void GizmoDrawHistory(Color aabbColor)
-    {
-      Color current = Gizmos.color;
-
-      if (this.history != null)
-        foreach (HistoryRecord record in this.history.GetValues())
-          record.aabb.GizmoDraw(aabbColor);
-
-      Gizmos.color = current;
-    }
-#endif
         #endregion
     }
 }

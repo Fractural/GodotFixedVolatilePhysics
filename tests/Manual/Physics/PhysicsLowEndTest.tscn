@@ -2,7 +2,7 @@
 
 [ext_resource path="res://tests/Manual/Physics/DynamicGroup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
-[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs" type="Script" id=4]
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileStaticBody.cs" type="Script" id=3]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=5]
 [ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=9]
 
@@ -12,6 +12,7 @@
 
 [node name="VolatileWorld" type="Node2D" parent="Node2D"]
 script = ExtResource( 5 )
+DebugDraw = true
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="Group" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
@@ -24,7 +25,7 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 [node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( 0.445465, 249.061 )
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
 
 [node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
