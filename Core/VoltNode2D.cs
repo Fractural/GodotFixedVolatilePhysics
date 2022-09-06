@@ -61,14 +61,23 @@ namespace Volatile.GodotEngine
             set => FixedPosition = VoltType.DeserializeOrDefault<VoltVector2>(value);
         }
 
-        private VoltVector2 fixedScale = VoltVector2.One;
         public VoltVector2 FixedScale
         {
-            get => fixedScale;
+            get => FixedTransform.Scale;
             set
             {
-                fixedScale = value;
-                UpdateFixedTransformRotationAndScale();
+#if TOOLS
+                if (Engine.EditorHint)
+                {
+                    var copy = FixedTransform;
+                    copy.Scale = value;
+                    FixedTransform = copy;
+                }
+                else
+#endif
+                {
+                    fixedTransform.Scale = value;
+                }
             }
         }
         private byte[] _FixedScale
@@ -77,14 +86,23 @@ namespace Volatile.GodotEngine
             set => FixedScale = VoltType.DeserializeOrDefault<VoltVector2>(value);
         }
 
-        private Fix64 fixedRotation = Fix64.Zero;
         public Fix64 FixedRotation
         {
-            get => fixedRotation;
+            get => FixedTransform.Rotation;
             set
             {
-                fixedRotation = value;
-                UpdateFixedTransformRotationAndScale();
+#if TOOLS
+                if (Engine.EditorHint)
+                {
+                    var copy = FixedTransform;
+                    copy.Rotation = value;
+                    FixedTransform = copy;
+                }
+                else
+#endif
+                {
+                    fixedTransform.Rotation = value;
+                }
             }
         }
         private byte[] _FixedRotation
@@ -207,21 +225,9 @@ namespace Volatile.GodotEngine
 #endif
         }
 
-        private void UpdateFixedTransformRotationAndScale()
-        {
-            var copy = FixedTransform;
-            copy.SetRotationAndScale(FixedRotation, fixedScale);
-            FixedTransform = copy;
-        }
-
         public void UpdateFixedTransform(VoltTransform2D transform, bool emitChanged = true)
         {
             FixedTransform = transform;
-
-            // We don't want to trigger the FixedTransform updates,
-            // so we set the backing fields instead
-            fixedScale = transform.Scale;
-            fixedRotation = transform.Rotation;
             if (emitChanged) FixedTransformChanged();
         }
 

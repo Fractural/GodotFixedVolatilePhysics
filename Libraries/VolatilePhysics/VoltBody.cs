@@ -578,30 +578,7 @@ namespace Volatile
             var bestBodyCollisionResult = World.QueryCollisions(this, false, VoltBody.CanCollide_MoveAndCollide);
 
             if (!bestBodyCollisionResult.HasCollision)
-            {
-                GD.Print("exit early " + originalPosition + " result " + Position);
                 return new VoltKinematicCollisionResult();
-            }
-
-            // Use binary search to fine tune onto the exact point of collision (8 iterations for now)
-            //Fix64 low = Fix64.Zero;
-            //Fix64 high = Fix64.One;
-            //for (int i = 0; i < 8; i++)
-            //{
-            //    Fix64 middle = low + (high - low) * Fix64.Half;
-            //    Position = originalPosition + linearVelocity * middle;
-            //    this.OnPositionUpdated();
-            //    var result = World.QueryCollisions(this, false);
-            //    if (result.HasCollision)
-            //    {
-            //        bestBodyCollisionResult = result;
-            //        high = middle;
-            //    }
-            //    else
-            //    {
-            //        low = middle;
-            //    }
-            //}
 
             // Unstuck the body.
             // Otherwise it would inch closer into the collider every time
@@ -609,9 +586,6 @@ namespace Volatile
             Position += bestBodyCollisionResult.CumulativePenetrationVector();
             this.OnPositionUpdated();
 
-            GD.Print("original position: " + originalPosition + "bestBodyCollisionResult: " + bestBodyCollisionResult.CumulativePenetrationVector() + " " + bestBodyCollisionResult.CumulativePenetrationVector().Magnitude + " result " + Position);
-
-            // TODO: Find 
             return new VoltKinematicCollisionResult(
                 bestCollision: bestBodyCollisionResult,
                 remainingVelocity: linearVelocity - (linearVelocity) //* low)
