@@ -1,6 +1,0 @@
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\bin\Debug\StubProj.dll
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\bin\Debug\StubProj.pdb
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\obj\Debug\StubProject.csproj.AssemblyReference.cache
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\obj\Debug\StubProject.csproj.CoreCompileInputs.cache
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\obj\Debug\StubProj.dll
-C:\Users\Alan\Documents\GODOT\PROJECTS\GODOTFIXEDVOLATILEPHYSICS\addons\GodotVisualStudioStub\obj\Debug\StubProj.pdb
