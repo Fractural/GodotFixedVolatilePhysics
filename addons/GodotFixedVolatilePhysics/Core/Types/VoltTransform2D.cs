@@ -153,11 +153,11 @@ namespace Volatile
             get => new VoltVector2(X.Magnitude, (Fix64)Fix64.Sign(BasisDeterminant()) * Y.Magnitude);
             set
             {
-                X = X.Normalized;
-                Y = Y.Normalized;
+                X = X.TryNormalized;
+                Y = Y.TryNormalized;
                 if (!Fix64.Approx(value.x, Fix64.One))
                     X *= value.x;
-                if (!Fix64.Approx(value.x, Fix64.One))
+                if (!Fix64.Approx(value.y, Fix64.One))
                     Y *= value.y;
             }
         }

@@ -14,6 +14,7 @@ namespace Tests
         public void PreTest()
         {
             voltNode = new VoltNode2D();
+            AddChild(voltNode);
         }
 
         public void PostTest()
@@ -48,9 +49,9 @@ namespace Tests
         {
             var newValue = new VoltVector2(Fix64.From("5.349"), Fix64.From(8));
             voltNode.FixedScale = newValue;
-            Assert.IsTrue(VoltVector2.Approx(voltNode.FixedTransform.Scale, newValue), "Expected FixedTransform.Scale to approx == new scale");
-            Assert.IsTrue(VoltVector2.Approx(voltNode.Transform.Scale.ToVoltVector2(), newValue), "Expected Transform.Scale to approx == new scale");
-            Assert.IsTrue(VoltVector2.Approx(voltNode.Scale.ToVoltVector2(), newValue), "Expected Scale to approx == new scale");
+            Assert.IsTrue(VoltVector2.Approx(voltNode.FixedTransform.Scale, newValue), $"Expected FixedTransform.Scale to approx == new scale: {voltNode.FixedTransform.Scale} != {newValue}");
+            Assert.IsTrue(VoltVector2.Approx(voltNode.Transform.Scale.ToVoltVector2(), newValue), $"Expected Transform.Scale to approx == new scale: {voltNode.Transform.Scale.ToVoltVector2()} != {newValue}");
+            Assert.IsTrue(VoltVector2.Approx(voltNode.Scale.ToVoltVector2(), newValue), $"Expected Scale to approx == new scale: {voltNode.Scale.ToVoltVector2()} != {newValue}");
         }
 
         [Test]
@@ -60,9 +61,9 @@ namespace Tests
             voltNode.FixedRotation = newValue;
             // Rotation is from FixedTransform has lower accuracy due to using trig functions,
             // so we're comparing with 0.01 amount of error
-            Assert.IsTrue(Fix64.Approx(voltNode.FixedTransform.Rotation, newValue, (Fix64)0.01f), "Expected FixedTransform.Rotation to approx == new rotation");
-            Assert.IsTrue(Fix64.Approx((Fix64)voltNode.Transform.Rotation, newValue), "Expected Transform.Rotation to approx == new rotation");
-            Assert.IsTrue(Fix64.Approx((Fix64)voltNode.Rotation, newValue), "Expected Rotation to approx == new rotation");
+            Assert.IsTrue(Fix64.Approx(voltNode.FixedTransform.Rotation, newValue, (Fix64)0.01f), $"Expected FixedTransform.Rotation to approx == new rotation: {voltNode.FixedTransform.Rotation} != {newValue}");
+            Assert.IsTrue(Fix64.Approx((Fix64)voltNode.Transform.Rotation, newValue), $"Expected Transform.Rotation to approx == new rotation: {(Fix64)voltNode.Transform.Rotation} != {newValue}");
+            Assert.IsTrue(Fix64.Approx((Fix64)voltNode.Rotation, newValue), $"Expected Rotation to approx == new rotation: {(Fix64)voltNode.Rotation} != {newValue}");
         }
 
         [Test]

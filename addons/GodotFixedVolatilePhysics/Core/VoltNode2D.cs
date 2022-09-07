@@ -50,9 +50,19 @@ namespace Volatile.GodotEngine
             get => FixedTransform.Origin;
             set
             {
-                var copy = FixedTransform;
-                copy.Origin = value;
-                FixedTransform = copy;
+#if TOOLS
+                if (Engine.EditorHint)
+                {
+                    var copy = FixedTransform;
+                    copy.Origin = value;
+                    FixedTransform = copy;
+                }
+                else
+#endif
+                {
+                    fixedTransform.Origin = value;
+                    FixedTransformChanged();
+                }
             }
         }
         private byte[] _FixedPosition
@@ -77,6 +87,7 @@ namespace Volatile.GodotEngine
 #endif
                 {
                     fixedTransform.Scale = value;
+                    FixedTransformChanged();
                 }
             }
         }
@@ -102,6 +113,7 @@ namespace Volatile.GodotEngine
 #endif
                 {
                     fixedTransform.Rotation = value;
+                    FixedTransformChanged();
                 }
             }
         }
