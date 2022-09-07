@@ -72,7 +72,7 @@ namespace Volatile.GodotEngine
             if (!DebugDraw && (!Engine.EditorHint || EditorRadius == 0)) return;
             var radius = EditorRadius;
 
-            var color = Palette.Main;
+            var color = GetShapeDrawColor();
             var fill = color;
             fill.a = 0.075f;
 

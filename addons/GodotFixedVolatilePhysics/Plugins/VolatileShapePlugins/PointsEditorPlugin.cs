@@ -28,10 +28,10 @@ namespace Volatile.GodotEngine.Plugin
 
         protected GDC.Array<Anchor> anchors = new GDC.Array<Anchor>();
 
-        const float CIRCLE_RADIUS = 6;
-        const float STROKE_RADIUS = 2;
-        readonly Color STROKE_COLOR = Palette.Main;
-        readonly Color FILL_COLOR = Palette.Blank;
+        protected const float CIRCLE_RADIUS = 6;
+        protected const float STROKE_RADIUS = 3;
+        protected static readonly Color STROKE_COLOR = Palette.Main;
+        protected static readonly Color FILL_COLOR = Palette.Blank;
 
         private Node2D editedTarget;
         protected Node2D EditedTarget
@@ -65,8 +65,8 @@ namespace Volatile.GodotEngine.Plugin
 
         public abstract void AddAndDrawAnchors();
 
-        public void AddAndDrawAnchor(Anchor anchor) => AddAndDrawAnchor(anchor, CIRCLE_RADIUS, STROKE_RADIUS, FILL_COLOR, STROKE_COLOR);
-        public void AddAndDrawAnchor(Anchor anchor, float radius, float strokeRadius, Color fillColor, Color strokeColor)
+        public virtual void AddAndDrawAnchor(Anchor anchor) => AddAndDrawAnchor(anchor, CIRCLE_RADIUS, STROKE_RADIUS, FILL_COLOR, STROKE_COLOR);
+        public virtual void AddAndDrawAnchor(Anchor anchor, float radius, float strokeRadius, Color fillColor, Color strokeColor)
         {
             var anchorSize = Vector2.One * radius * 2f;
             anchor.rect = new Rect2(anchor.position - anchorSize / 2f, anchorSize);

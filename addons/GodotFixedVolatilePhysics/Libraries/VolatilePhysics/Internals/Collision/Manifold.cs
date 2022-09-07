@@ -84,23 +84,43 @@ namespace Volatile
             return true;
         }
 
+        #region Solving/Updating Collision
         internal void PreStep()
         {
+            // Don't process triggers for dynamic collisions
+            if (VoltCollisionFilters.AtleastOneOfType(ShapeA.Body, ShapeB.Body, VoltBodyType.Trigger))
+                return;
+
             for (int i = 0; i < this.UsedContacts; i++)
                 this.Contacts[i].PreStep(this);
         }
 
         internal void Solve()
         {
+            // Don't process triggers for dynamic collisions
+            if (VoltCollisionFilters.AtleastOneOfType(ShapeA.Body, ShapeB.Body, VoltBodyType.Trigger))
+                return;
+
             for (int i = 0; i < this.UsedContacts; i++)
                 this.Contacts[i].Solve(this);
         }
 
         internal void SolveCached()
         {
+            // Don't process triggers for dynamic collisions
+            if (VoltCollisionFilters.AtleastOneOfType(ShapeA.Body, ShapeB.Body, VoltBodyType.Trigger))
+                return;
+
             for (int i = 0; i < this.UsedContacts; i++)
                 this.Contacts[i].SolveCached(this);
         }
+
+        internal void PostStep()
+        {
+            ShapeA.Body.AddBodyCollisionEvent(ShapeB.Body);
+            ShapeB.Body.AddBodyCollisionEvent(ShapeA.Body);
+        }
+        #endregion
 
         private void ClearContacts()
         {

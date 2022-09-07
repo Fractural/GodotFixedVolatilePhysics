@@ -125,6 +125,22 @@ namespace Volatile.GodotEngine
         [Export]
         public bool DebugDraw { get; set; } = false;
 
+        public Color GetShapeDrawColor()
+        {
+            Color color = Palette.DynamicBody;
+            var parent = GetParent();
+            if (parent != null)
+            {
+                if (parent is VolatileStaticBody)
+                    color = Palette.StaticBody;
+                else if (parent is VolatileKinematicBody)
+                    color = Palette.KinematicBody;
+                else if (parent is VolatileArea)
+                    color = Palette.AreaBody;
+            }
+            return color;
+        }
+
         public override void _Draw()
         {
             base._Draw();

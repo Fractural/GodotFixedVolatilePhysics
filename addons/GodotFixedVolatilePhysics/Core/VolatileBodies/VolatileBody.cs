@@ -11,6 +11,9 @@ namespace Volatile.GodotEngine
     [Tool]
     public abstract class VolatileBody : VoltNode2D
     {
+        public delegate void BodyCollidedDelegate(VolatileBody body);
+        public event BodyCollidedDelegate BodyCollided;
+
         public VolatileShape[] Shapes { get; set; }
         [Export]
         public bool DoInterpolation { get; set; } = true;
@@ -62,9 +65,17 @@ namespace Volatile.GodotEngine
             var shapes = shapeNodes.Select(x => x.PrepareShape(world)).ToArray();
 
             Body = CreateBody(world, shapes);
+            Body.UserData = this;
+            Body.BodyCollided += OnBodyCollided;
 
             lastPosition = nextPosition = GlobalFixedPosition;
             lastAngle = nextAngle = GlobalFixedRotation;
+        }
+
+        protected virtual void OnBodyCollided(VoltBody body)
+        {
+            if (body.UserData is VolatileBody volatileBody)
+                BodyCollided?.Invoke(volatileBody);
         }
 
         protected abstract VoltBody CreateBody(VoltWorld world, VoltShape[] shapes);

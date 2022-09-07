@@ -5,7 +5,7 @@ using Godot;
 namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
-    public class VolatileRectPlugin : PointsEditorPlugin
+    public class VolatileRectPlugin : VolatileShapeEditorPlugin
     {
         public override string PluginName => nameof(VolatileRectPlugin);
 

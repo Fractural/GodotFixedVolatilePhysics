@@ -362,7 +362,7 @@ namespace Volatile
         /// otherwise you might get symmetric duplicates on collisions.
         /// </summary>
         public void Update(VoltBody body, bool collideDynamic)
-            => Update(body, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
+            => Update(body, collideDynamic, VoltCollisionFilters.DefaultWorldCollisionFilter);
         public void Update(VoltBody body, bool collideDynamic, VoltCollisionFilter filter)
         {
             if (body.IsStatic)
@@ -532,7 +532,7 @@ namespace Volatile
         /// <param name="collideDynamic"></param>
         /// <returns></returns>
         public bool QueryColliding(VoltBody query, bool collideDynamic = false)
-           => QueryColliding(query, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
+           => QueryColliding(query, collideDynamic, VoltCollisionFilters.DefaultWorldCollisionFilter);
 
         /// <summary>
         /// Returns whether or not this body is currently colliding
@@ -557,7 +557,7 @@ namespace Volatile
         /// <param name="collideDynamic"></param>
         /// <returns></returns>
         public VoltBodyCollisionResult QueryCollisions(VoltBody body, bool collideDynamic)
-            => QueryCollisions(body, collideDynamic, VoltCollisionFilters.DefaultCollisionFilter);
+            => QueryCollisions(body, collideDynamic, VoltCollisionFilters.DefaultWorldCollisionFilter);
 
         /// <summary>
         /// Finds collisions for a body.
@@ -628,7 +628,7 @@ namespace Volatile
 
         private void TestBuffer(VoltBody query)
         {
-            TestBuffer(query, VoltCollisionFilters.DefaultCollisionFilter);
+            TestBuffer(query, VoltCollisionFilters.DefaultWorldCollisionFilter);
         }
 
         /// <summary>
@@ -684,6 +684,15 @@ namespace Volatile
             for (int j = 0; j < this.IterationCount * 2 / 3; j++)
                 for (int i = 0; i < this.manifolds.Count; i++)
                     this.manifolds[i].Solve();
+
+            // Add collision events for each manifold in PostStep
+            for (int i = 0; i < this.manifolds.Count; i++)
+                this.manifolds[i].PostStep();
+
+            // Process the queued collision events separately
+            // (avoids duplicate events for the same body)
+            for (int i = 0; i < this.bodies.Count; i++)
+                this.bodies[i].ProcessCollisionEvents();
         }
 
         #region Pooling

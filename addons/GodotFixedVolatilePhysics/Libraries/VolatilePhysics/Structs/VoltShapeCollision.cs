@@ -38,7 +38,7 @@ namespace Volatile
             var cumulativeNormal = VoltVector2.Zero;
             foreach (var collision in ShapeCollisions)
                 cumulativeNormal += collision.CumulativeNormal();
-            return cumulativeNormal.Normalized;
+            return cumulativeNormal.TryNormalized;
         }
         public VoltVector2 CumulativePenetrationVector()
         {
@@ -88,7 +88,7 @@ namespace Volatile
             var cumulativeNormal = VoltVector2.Zero;
             foreach (var contact in Contacts)
                 cumulativeNormal += contact.Normal;
-            return cumulativeNormal.Normalized;
+            return cumulativeNormal.TryNormalized;
         }
 
         public VoltVector2 CumulativePenetrationVector()

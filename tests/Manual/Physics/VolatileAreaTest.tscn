@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://tests/Manual/VoltNode2D/VolatileAreaTest.cs" type="Script" id=3]
+
+[node name="VolatileAreaTest" type="Node2D"]
+position = Vector2( -280.631, -220.769 )
+script = ExtResource( 3 )
+AutoQuery = true
+hasEntityInsideSpritePath = NodePath("Sprite")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 112, 94, 231, 254, 255, 255, 0, 0, 11, 59, 35, 255, 255, 255 )
+
+[node name="VolatileRect" type="Node2D" parent="."]
+script = ExtResource( 1 )
+Editing = true
+DebugDraw = true
+_extents = PoolByteArray( 0, 0, 112, 252, 48, 0, 0, 0, 0, 0, 57, 89, 85, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0.223529 )
+scale = Vector2( 0.297486, 0.297486 )
+texture = ExtResource( 2 )

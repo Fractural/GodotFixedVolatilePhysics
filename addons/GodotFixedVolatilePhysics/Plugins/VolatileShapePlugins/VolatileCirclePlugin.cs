@@ -4,7 +4,7 @@
 namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
-    public class VolatileCirclePlugin : PointsEditorPlugin
+    public class VolatileCirclePlugin : VolatileShapeEditorPlugin
     {
         public override string PluginName => nameof(VolatileCirclePlugin);
 
@@ -86,7 +86,7 @@ namespace Volatile.GodotEngine.Plugin
         {
             var transform = LocalToViewportTransform;
             var radius = EditedVolatileCircle.EditorRadius;
-            
+
             // Corners of the rect
             AddAndDrawAnchor(new RadiusPointAnchor()
             {
@@ -94,7 +94,7 @@ namespace Volatile.GodotEngine.Plugin
                 editedCircle = EditedVolatileCircle,
                 movementMode = Anchor.MovementMode.XAxis,
                 xRange = new Vector2(0.01f, Mathf.Inf)
-            });;
+            });
         }
     }
 }

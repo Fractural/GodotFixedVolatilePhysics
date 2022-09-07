@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://tests/Manual/Physics/DispersedDynamicGroup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileShapes/VolatileRect.cs" type="Script" id=2]
@@ -8,8 +8,9 @@
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs" type="Script" id=7]
 [ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=8]
-[ext_resource path="res://tests/Manual/VoltNode2D/KinematicFixedMovement.cs" type="Script" id=9]
+[ext_resource path="res://tests/Manual/Physics/VolatileAreaTest.tscn" type="PackedScene" id=9]
 [ext_resource path="res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileKinematicBody.cs" type="Script" id=10]
+[ext_resource path="res://tests/Manual/Physics/VolatileKinematicBodyMovement.tscn" type="PackedScene" id=11]
 
 [node name="PhysicsTest" type="Node"]
 
@@ -110,171 +111,77 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 script = ExtResource( 2 )
 Editing = true
 DebugDraw = true
-_extents = PoolByteArray( 0, 0, 120, 239, 72, 0, 0, 0, 0, 0, 32, 108, 107, 1, 0, 0 )
+_extents = PoolByteArray( 0, 0, 156, 63, 73, 0, 0, 0, 0, 0, 16, 35, 110, 1, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
-[node name="KinematicMovement" type="Node2D" parent="Node2D/VolatileWorld"]
+[node name="VolatileKinematicBodyMovement" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
 position = Vector2( 261.629, -50.7239 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 5, 1, 0, 0, 0, 0, 172, 70, 205, 255, 255, 255 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement2" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( -202.758, -51.6678 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement2" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( 7.62857, -273.724 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 14, 62, 53, 255, 255, 255, 0, 0, 10, 85, 204, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 7, 0, 0, 0, 0, 0, 172, 70, 238, 254, 255, 255 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement2"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement2"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement3" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( -208.421, 129.556 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement3" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -323.371, -64.7239 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 70, 148, 47, 255, 255, 255, 0, 0, 88, 142, 129, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 188, 254, 255, 255, 0, 0, 172, 70, 191, 255, 255, 255 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement3"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement3"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement4" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( -201.814, -227.228 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement4" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -300.371, 111.276 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 178, 47, 54, 255, 255, 255, 0, 0, 132, 197, 28, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 211, 254, 255, 255, 0, 0, 172, 70, 111, 0, 0, 0 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement4"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement4"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement5" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( 249.358, -230.06 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement5" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -43.3714, 176.276 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 178, 91, 249, 0, 0, 0, 0, 0, 158, 240, 25, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 212, 255, 255, 255, 0, 0, 172, 70, 176, 0, 0, 0 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement5"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement5"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement6" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( 257.853, 114.454 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement6" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( 291.629, -263.724 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 98, 218, 1, 1, 0, 0, 0, 0, 62, 116, 114, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 35, 1, 0, 0, 0, 0, 172, 70, 248, 254, 255, 255 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement6"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement6"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement7" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( 34.1549, -292.356 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement7" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( 286.629, 106.276 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 166, 39, 34, 0, 0, 0, 0, 0, 236, 164, 219, 254, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 30, 1, 0, 0, 0, 0, 172, 70, 106, 0, 0, 0 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement7"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement7"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement8" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( 14.3335, 154.097 )
-script = ExtResource( 9 )
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement8" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -249.371, 4.27606 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 94, 85, 14, 0, 0, 0, 0, 0, 198, 24, 154, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 6, 255, 255, 255, 0, 0, 172, 70, 4, 0, 0, 0 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement8"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement8"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
-
-[node name="KinematicMovement9" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( -393.42, -137.56 )
-script = ExtResource( 9 )
-Mask = 3
-_speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement9" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -468.371, -205.724 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 106, 148, 118, 254, 255, 255, 0, 0, 140, 112, 118, 255, 255, 255 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 43, 254, 255, 255, 0, 0, 172, 70, 50, 255, 255, 255 )
 
-[node name="VolatileCircle" type="Node2D" parent="Node2D/VolatileWorld/KinematicMovement9"]
-script = ExtResource( 3 )
-Editing = true
-DebugDraw = true
-_radius = PoolByteArray( 0, 0, 168, 211, 23, 0, 0, 0 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+[node name="VolatileKinematicBodyMovement10" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -390.371, -299.724 )
+joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 121, 254, 255, 255, 0, 0, 172, 70, 212, 254, 255, 255 )
 
-[node name="Sprite" type="Sprite" parent="Node2D/VolatileWorld/KinematicMovement9"]
-scale = Vector2( 0.124448, 0.124448 )
-texture = ExtResource( 6 )
+[node name="VolatileKinematicBodyMovement11" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -446.371, 33.2761 )
+joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 65, 254, 255, 255, 0, 0, 172, 70, 33, 0, 0, 0 )
+
+[node name="VolatileKinematicBodyMovement12" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( -340.371, 195.276 )
+joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 171, 254, 255, 255, 0, 0, 172, 70, 195, 0, 0, 0 )
+
+[node name="VolatileKinematicBodyMovement13" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( 458.629, 118.276 )
+joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 202, 1, 0, 0, 0, 0, 172, 70, 118, 0, 0, 0 )
+
+[node name="VolatileKinematicBodyMovement14" parent="Node2D/VolatileWorld" instance=ExtResource( 11 )]
+position = Vector2( 241.629, -160.724 )
+joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 234, 160, 241, 0, 0, 0, 0, 0, 172, 70, 95, 255, 255, 255 )
 
 [node name="EmptyKinemtaicBody" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( 473.689, -299.51 )
@@ -377,6 +284,17 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 self_modulate = Color( 1, 1, 1, 0.32549 )
 scale = Vector2( 0.124448, 0.124448 )
 texture = ExtResource( 6 )
+
+[node name="VolatileAreaTest" parent="Node2D/VolatileWorld" instance=ExtResource( 9 )]
+position = Vector2( -280.631, -220.769 )
+
+[node name="VolatileAreaTest2" parent="Node2D/VolatileWorld" instance=ExtResource( 9 )]
+position = Vector2( -143.631, 75.2306 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 112, 94, 112, 255, 255, 255, 0, 0, 11, 59, 75, 0, 0, 0 )
+
+[node name="VolatileAreaTest3" parent="Node2D/VolatileWorld" instance=ExtResource( 9 )]
+position = Vector2( 388.369, -34.7694 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 112, 94, 132, 1, 0, 0, 0, 0, 11, 59, 221, 255, 255, 255 )
 
 [node name="Camera2D" type="Camera2D" parent="Node2D"]
 position = Vector2( 1.11679, -62.0694 )

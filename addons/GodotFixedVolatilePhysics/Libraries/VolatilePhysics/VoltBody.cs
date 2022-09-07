@@ -21,6 +21,7 @@
 using FixMath.NET;
 using Godot;
 using System;
+using System.Collections.Generic;
 
 #if UNITY
 using UnityEngine;
@@ -49,17 +50,6 @@ namespace Volatile
         void IVoltPoolable<VoltBody>.Reset() { this.Reset(); }
         int IIndexedValue.Index { get; set; }
         #endregion
-
-        /// <summary>
-        /// A predefined filter that disallows collisions between dynamic bodies.
-        /// </summary>
-        public static bool DisallowDynamic(VoltBody a, VoltBody b)
-        {
-            return
-              (a != null) &&
-              (b != null) &&
-              (a.IsStatic || b.IsStatic);
-        }
 
         #region History
         /// <summary>
@@ -129,13 +119,48 @@ namespace Volatile
         }
         #endregion
 
+        #region Collision Events
+        public delegate void ShapeCollidedEventDelegate(VoltShape shape);
+        public delegate void BodyCollidedEventDelegate(VoltBody body);
+        public event BodyCollidedEventDelegate BodyCollided;
+
+        /// <summary>
+        /// Temporary HashSet used by the world to keep track of 
+        /// all bodies that are colliding with this body this 
+        /// phsyics frame.
+        /// </summary>
+        internal HashSet<VoltBody> collidingBodies = new HashSet<VoltBody>();
+
+        /// <summary>
+        /// Adds a body collision event for the given <paramref name="body"/>. 
+        /// If the event already exists, nothing will happen.
+        /// </summary>
+        /// <param name="body"></param>
+        internal void AddBodyCollisionEvent(VoltBody body)
+        {
+            collidingBodies.Add(body);
+        }
+
+        /// <summary>
+        /// Processes all the queued up collision events.
+        /// Ex. <see cref="BodyExited"/> and <see cref="BodyCollided"/>.
+        /// </summary>
+        internal void ProcessCollisionEvents()
+        {
+            if (collidingBodies.Count == 0) return;
+            foreach (var body in collidingBodies)
+                BodyCollided?.Invoke(body);
+            collidingBodies.Clear();
+        }
+        #endregion
+
         public static bool Filter(VoltBody body, VoltBodyFilter filter)
         {
             return ((filter == null) || (filter.Invoke(body) == true));
         }
 
         /// <summary>
-        /// Static objects are considered to have infinite mass and cannot move.
+        /// Static bodies are considered to have infinite mass and cannot move.
         /// </summary>
         public bool IsStatic
         {
@@ -146,6 +171,11 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Static;
             }
         }
+        /// <summary>
+        /// Kinematic bodies can be moved freely, and are not influenced by physics forces.
+        /// They will however push dynamic bodies, as well as collide with static bodies
+        /// if methods like <see cref="MoveAndSlide(VoltVector2, int)"/> are used.
+        /// </summary>
         public bool IsKinematic
         {
             get
@@ -155,6 +185,9 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Kinematic;
             }
         }
+        /// <summary>
+        /// Dynamic bodies are physically based bodies that react to force, have mass, etc.
+        /// </summary>
         public bool IsDynamic
         {
             get
@@ -164,6 +197,10 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Dynamic;
             }
         }
+        /// <summary>
+        /// Trigger bodies aren't moved by the physics simulation, and act as sensors to
+        /// detect collisions.
+        /// </summary>
         public bool IsTrigger
         {
             get
@@ -547,6 +584,9 @@ namespace Volatile
 
             this.BiasVelocity = VoltVector2.Zero;
             this.BiasRotation = Fix64.Zero;
+
+            this.BodyCollided = null;
+            this.collidingBodies.Clear();
         }
 
         /// <summary>
@@ -581,6 +621,9 @@ namespace Volatile
 
             this.history = null;
             this.currentState = default(HistoryRecord);
+
+            this.BodyCollided = null;
+            this.collidingBodies.Clear();
         }
 
         #region Trigger

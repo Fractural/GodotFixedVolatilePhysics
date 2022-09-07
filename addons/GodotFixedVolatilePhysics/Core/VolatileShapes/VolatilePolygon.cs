@@ -98,7 +98,7 @@ namespace Volatile.GodotEngine
             var points = EditorPoints;
             if (points.Length > 0)
             {
-                var color = Palette.Main;
+                var color = GetShapeDrawColor();
                 var fill = color;
                 fill.a = 0.075f;
 

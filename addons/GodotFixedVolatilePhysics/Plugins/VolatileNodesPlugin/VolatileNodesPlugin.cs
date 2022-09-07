@@ -34,8 +34,8 @@ namespace Volatile.GodotEngine.Plugin
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileArea.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltArea.svg"));
             Plugin.AddCustomType(nameof(VolatileRigidBody), nameof(Node2D),
-                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBody.cs"),
-                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltBody.svg"));
+                GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileBodies/VolatileRigidBody.cs"),
+                GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltRigidBody.svg"));
             Plugin.AddCustomType(nameof(VolatileWorld), nameof(Node2D),
                 GD.Load<CSharpScript>("res://addons/GodotFixedVolatilePhysics/Core/VolatileWorld.cs"),
                 GD.Load<Texture>("res://addons/GodotFixedVolatilePhysics/Assets/VoltWorld.svg"));
