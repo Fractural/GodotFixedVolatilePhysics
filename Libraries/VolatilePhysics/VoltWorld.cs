@@ -228,10 +228,12 @@ namespace Volatile
         public VoltBody CreateStaticBody(
           VoltVector2 position,
           Fix64 radians,
-          params VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
             VoltBody body = this.bodyPool.Allocate();
-            body.InitializeStatic(position, radians, shapesToAdd);
+            body.InitializeStatic(position, radians, shapesToAdd, layer, mask);
             this.AddBodyInternal(body);
             return body;
         }
@@ -242,10 +244,12 @@ namespace Volatile
         public VoltBody CreateDynamicBody(
           VoltVector2 position,
           Fix64 radians,
-          params VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
             VoltBody body = this.bodyPool.Allocate();
-            body.InitializeDynamic(position, radians, shapesToAdd);
+            body.InitializeDynamic(position, radians, shapesToAdd, layer, mask);
             this.AddBodyInternal(body);
             return body;
         }
@@ -256,10 +260,12 @@ namespace Volatile
         public VoltBody CreateKinematicBody(
           VoltVector2 position,
           Fix64 radians,
-          params VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
             VoltBody body = this.bodyPool.Allocate();
-            body.InitializeKinematic(position, radians, shapesToAdd);
+            body.InitializeKinematic(position, radians, shapesToAdd, layer, mask);
             this.AddBodyInternal(body);
             return body;
         }
@@ -270,10 +276,12 @@ namespace Volatile
         public VoltBody CreateTriggerBody(
           VoltVector2 position,
           Fix64 radians,
-          params VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
             VoltBody body = this.bodyPool.Allocate();
-            body.InitializeTrigger(position, radians, shapesToAdd);
+            body.InitializeTrigger(position, radians, shapesToAdd, layer, mask);
             this.AddBodyInternal(body);
             return body;
         }

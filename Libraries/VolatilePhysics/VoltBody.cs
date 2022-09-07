@@ -146,7 +146,6 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Static;
             }
         }
-
         public bool IsKinematic
         {
             get
@@ -156,7 +155,6 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Kinematic;
             }
         }
-
         public bool IsDynamic
         {
             get
@@ -166,8 +164,6 @@ namespace Volatile
                 return this.BodyType == VoltBodyType.Dynamic;
             }
         }
-
-
         public bool IsTrigger
         {
             get
@@ -234,6 +230,15 @@ namespace Volatile
 
         public VoltVector2 BiasVelocity { get; private set; }
         public Fix64 BiasRotation { get; private set; }
+
+        /// <summary>
+        /// Collision layers that this body is a part of.
+        /// </summary>
+        public int Layer { get; private set; }
+        /// <summary>
+        /// Collision layers that this body can collide with.
+        /// </summary>
+        public int Mask { get; private set; }
 
         // Used for broadphase structures
         internal int ProxyId { get; set; }
@@ -416,9 +421,11 @@ namespace Volatile
         internal void InitializeTrigger(
           VoltVector2 position,
           Fix64 radians,
-          VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
-            this.Initialize(position, radians, shapesToAdd);
+            this.Initialize(position, radians, shapesToAdd, layer, mask);
             this.OnPositionUpdated();
             this.SetTrigger();
         }
@@ -426,9 +433,11 @@ namespace Volatile
         internal void InitializeKinematic(
           VoltVector2 position,
           Fix64 radians,
-          VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
-            this.Initialize(position, radians, shapesToAdd);
+            this.Initialize(position, radians, shapesToAdd, layer, mask);
             this.OnPositionUpdated();
             this.SetKinematic();
         }
@@ -436,9 +445,11 @@ namespace Volatile
         internal void InitializeDynamic(
           VoltVector2 position,
           Fix64 radians,
-          VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
-            this.Initialize(position, radians, shapesToAdd);
+            this.Initialize(position, radians, shapesToAdd, layer, mask);
             this.OnPositionUpdated();
             this.ComputeDynamics();
         }
@@ -446,9 +457,11 @@ namespace Volatile
         internal void InitializeStatic(
           VoltVector2 position,
           Fix64 radians,
-          VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
-            this.Initialize(position, radians, shapesToAdd);
+            this.Initialize(position, radians, shapesToAdd, layer, mask);
             this.OnPositionUpdated();
             this.SetStatic();
         }
@@ -456,8 +469,12 @@ namespace Volatile
         private void Initialize(
           VoltVector2 position,
           Fix64 radians,
-          VoltShape[] shapesToAdd)
+          VoltShape[] shapesToAdd,
+          int layer = 1,
+          int mask = 1)
         {
+            this.Layer = layer;
+            this.Mask = mask;
             this.Position = position;
             this.Angle = radians;
             this.Facing = VoltMath.Polar(radians);
@@ -593,7 +610,7 @@ namespace Volatile
         public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
         {
             if (linearVelocity == VoltVector2.Zero) return new VoltKinematicCollisionResult();
-            
+
             VoltVector2 originalPosition = Position;
             Position += linearVelocity;
             this.OnPositionUpdated();

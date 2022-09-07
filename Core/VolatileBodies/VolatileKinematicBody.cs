@@ -6,7 +6,7 @@ namespace Volatile.GodotEngine
     public class VolatileKinematicBody : VolatileBody
     {
         protected override VoltBody CreateBody(VoltWorld world, VoltShape[] shapes)
-            => world.CreateKinematicBody(GlobalFixedPosition, GlobalFixedRotation, shapes);
+            => world.CreateKinematicBody(GlobalFixedPosition, GlobalFixedRotation, shapes, Layer, Mask);
 
         public VoltKinematicCollisionResult MoveAndCollide(VoltVector2 linearVelocity)
         {
