@@ -15,6 +15,10 @@ data_*/
 
 Builds/
 
+# Ignore stub bin and obj folders
+bin/
+obj/
+
 # Tests
 tests/results.xml
 tests/metadata.json
