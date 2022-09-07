@@ -6,7 +6,7 @@ using System.Linq;
 namespace Volatile.GodotEngine.Plugin
 {
     [Tool]
-    public class VolatilePolygonPlugin : PointsEditorPlugin
+    public class VolatilePolygonPlugin : VolatileShapeEditorPlugin
     {
         public override string PluginName => nameof(VolatilePolygonPlugin);
 

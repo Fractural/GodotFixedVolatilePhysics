@@ -52,16 +52,16 @@ namespace Volatile
         /// <param name="one"></param>
         /// <param name="other"></param>
         /// <returns></returns>
-        public static bool DefaultCollisionFilter(VoltBody one, VoltBody other)
+        public static bool DefaultWorldCollisionFilter(VoltBody one, VoltBody other)
         {
             // Ignore self collisions
             // Ignore static-static collisions
             // Ignore kinematic and static collisions
-            // Ignore trigger collisions
+            // Ignore kinematic and dynamic collisions
             if (!BaseCollisionFilter(one, other)
                 || BothOfType(one, other, VoltBodyType.Static)
-                || AtleastOneOfType(one, other, VoltBodyType.Kinematic)
-                || AtleastOneOfType(one, other, VoltBodyType.Trigger))
+                || BothOfTypes(one, other, VoltBodyType.Kinematic, VoltBodyType.Static)
+                || BothOfTypes(one, other, VoltBodyType.Kinematic, VoltBodyType.Kinematic))
                 return false;
             return true;
         }
@@ -89,33 +89,34 @@ namespace Volatile
         public static bool DefaultMoveAndCollideFilter(VoltBody one, VoltBody other)
         {
             if (!BaseCollisionFilter(one, other)
-                || AtleastOneOfType(one, other, VoltBodyType.Dynamic))
+                || AtleastOneOfType(one, other, VoltBodyType.Dynamic)
+                || AtleastOneOfType(one, other, VoltBodyType.Trigger))
                 return false;
             return true;
         }
         #endregion
 
         #region Helpers
-        private static bool CanCollideWithLayersAndMask(VoltBody one, VoltBody other)
+        public static bool CanCollideWithLayersAndMask(VoltBody one, VoltBody other)
         {
             return (one.Mask & other.Layer) > 0;
         }
-        private static bool BothOfType(VoltBody one, VoltBody other, VoltBodyType type)
+        public static bool BothOfType(VoltBody one, VoltBody other, VoltBodyType type)
         {
             return one.BodyType == type && other.BodyType == type;
         }
 
-        private static bool OneOfType(VoltBody one, VoltBody other, VoltBodyType type)
+        public static bool OneOfType(VoltBody one, VoltBody other, VoltBodyType type)
         {
             return (one.BodyType != type && other.BodyType == type) || (one.BodyType == type && other.BodyType != type);
         }
 
-        private static bool AtleastOneOfType(VoltBody one, VoltBody other, VoltBodyType type)
+        public static bool AtleastOneOfType(VoltBody one, VoltBody other, VoltBodyType type)
         {
             return one.BodyType == type || other.BodyType == type;
         }
 
-        private static bool BothOfTypes(VoltBody one, VoltBodyType oneType, VoltBody other, VoltBodyType otherType)
+        public static bool BothOfTypes(VoltBody one, VoltBody other, VoltBodyType oneType, VoltBodyType otherType)
         {
             return (one.BodyType == oneType && other.BodyType == otherType) || (one.BodyType == otherType && other.BodyType == oneType);
         }

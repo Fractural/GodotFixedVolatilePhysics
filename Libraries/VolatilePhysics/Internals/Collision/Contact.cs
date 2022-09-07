@@ -79,11 +79,12 @@ namespace Volatile
             return this;
         }
 
+        #region Solving/Updating Collision
         internal void PreStep(Manifold manifold)
         {
             VoltBody bodyA = manifold.ShapeA.Body;
             VoltBody bodyB = manifold.ShapeB.Body;
-
+            
             this.toA = this.position - bodyA.Position;
             this.toB = this.position - bodyB.Position;
             this.toALeft = this.toA.Left();
@@ -114,6 +115,8 @@ namespace Volatile
         {
             VoltBody bodyA = manifold.ShapeA.Body;
             VoltBody bodyB = manifold.ShapeB.Body;
+            
+            // Dynamic collisions stuff
             Fix64 elasticity = bodyA.World.Elasticity;
 
             // Calculate relative bias velocity
@@ -152,6 +155,7 @@ namespace Volatile
             // Apply the normal and tangent impulse
             this.ApplyContactImpulse(bodyA, bodyB, jn, jt);
         }
+        #endregion
 
         #region Internals
         private void Reset()

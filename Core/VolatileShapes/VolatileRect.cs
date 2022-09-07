@@ -86,7 +86,7 @@ namespace Volatile.GodotEngine
             base._Draw();
             if (!DebugDraw && (!Engine.EditorHint || EditorExtents == Vector2.Zero)) return;
             var extents = EditorExtents;
-            var color = Palette.Main;
+            var color = GetShapeDrawColor();
             var fill = color;
             fill.a = 0.075f;
 

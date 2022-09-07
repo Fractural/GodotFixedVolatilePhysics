@@ -56,6 +56,17 @@ namespace Volatile
             }
         }
 
+        public VoltVector2 TryNormalized
+        {
+            get
+            {
+                Fix64 magnitude = this.Magnitude;
+                if (magnitude == Fix64.Zero)
+                    return Zero;
+                return new VoltVector2(this.x / magnitude, this.y / magnitude);
+            }
+        }
+
         public VoltVector2 Normalized
         {
             get
