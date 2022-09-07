@@ -51,12 +51,8 @@ namespace Tests
         {
             base._PhysicsProcess(delta);
             if (Engine.EditorHint) return;
-            //if (joystick.Output != Vector2.Zero)
-            //    MoveAndSlide(joystick.Output.ToVoltVector2() * speed);
-
-            var movementInput = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down").ToVoltVector2();
-            if (movementInput != VoltVector2.Zero)
-                MoveAndSlide(movementInput * speed);
+            if (joystick.Output != Vector2.Zero)
+                MoveAndSlide(joystick.Output.ToVoltVector2() * speed);
         }
     }
 }

@@ -31,6 +31,8 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 position = Vector2( -7.12259, -36.8426 )
 rotation = -0.071726
 script = ExtResource( 4 )
+Layer = 2
+Mask = 2
 _fixedTransform = PoolByteArray( 0, 126, 87, 255, 0, 0, 0, 0, 128, 100, 167, 237, 255, 255, 255, 255, 128, 155, 88, 18, 0, 0, 0, 0, 0, 126, 87, 255, 0, 0, 0, 0, 0, 0, 158, 224, 248, 255, 255, 255, 0, 0, 78, 40, 219, 255, 255, 255 )
 
 [node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
@@ -47,6 +49,8 @@ _fixedTransform = PoolByteArray( 192, 250, 0, 204, 255, 255, 255, 255, 0, 246, 1
 position = Vector2( -71.9344, -24.3559 )
 rotation = -0.382194
 script = ExtResource( 4 )
+Layer = 2
+Mask = 2
 _fixedTransform = PoolByteArray( 0, 125, 135, 237, 0, 0, 0, 0, 128, 227, 133, 160, 255, 255, 255, 255, 128, 28, 122, 95, 0, 0, 0, 0, 0, 125, 135, 237, 0, 0, 0, 0, 0, 128, 205, 16, 184, 255, 255, 255, 0, 0, 230, 164, 231, 255, 255, 255 )
 
 [node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect6"]
@@ -256,6 +260,7 @@ texture = ExtResource( 6 )
 [node name="KinematicMovement9" type="Node2D" parent="Node2D/VolatileWorld"]
 position = Vector2( -393.42, -137.56 )
 script = ExtResource( 9 )
+Mask = 3
 _speed = PoolByteArray( 0, 0, 0, 0, 20, 0, 0, 0 )
 joystickPath = NodePath("../../../CanvasLayer/Control/Virtual joystick")
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 106, 148, 118, 254, 255, 255, 0, 0, 140, 112, 118, 255, 255, 255 )

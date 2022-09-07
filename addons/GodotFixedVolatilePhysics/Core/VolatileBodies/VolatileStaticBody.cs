@@ -6,7 +6,7 @@ namespace Volatile.GodotEngine
     public class VolatileStaticBody : VolatileBody
     {
         protected override VoltBody CreateBody(VoltWorld world, VoltShape[] shapes)
-            => world.CreateStaticBody(GlobalFixedPosition, GlobalFixedRotation, shapes);
+            => world.CreateStaticBody(GlobalFixedPosition, GlobalFixedRotation, shapes, Layer, Mask);
 
     }
 }

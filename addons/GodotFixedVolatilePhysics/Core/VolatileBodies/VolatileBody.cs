@@ -14,7 +14,10 @@ namespace Volatile.GodotEngine
         public VolatileShape[] Shapes { get; set; }
         [Export]
         public bool DoInterpolation { get; set; } = true;
-
+        [Export(PropertyHint.Layers2dPhysics)]
+        public int Layer { get; set; } = 1;
+        [Export(PropertyHint.Layers2dPhysics)]
+        public int Mask { get; set; } = 1;
         public VoltBody Body { get; private set; }
 
         // Interpolation

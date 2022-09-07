@@ -32,6 +32,21 @@ namespace Volatile
     {
         #region Filters
         /// <summary>
+        /// Base filter used by every other filter. This filter implements collision mask functionality
+        /// and prevents an object from colliding with itself.
+        /// </summary>
+        /// <param name="one"></param>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        private static bool BaseCollisionFilter(VoltBody one, VoltBody other)
+        {
+            if ((one == other)
+                || !CanCollideWithLayersAndMask(one, other))
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Default collision filter used to handle world collisions
         /// </summary>
         /// <param name="one"></param>
@@ -43,7 +58,7 @@ namespace Volatile
             // Ignore static-static collisions
             // Ignore kinematic and static collisions
             // Ignore trigger collisions
-            if ((one == other)
+            if (!BaseCollisionFilter(one, other)
                 || BothOfType(one, other, VoltBodyType.Static)
                 || AtleastOneOfType(one, other, VoltBodyType.Kinematic)
                 || AtleastOneOfType(one, other, VoltBodyType.Trigger))
@@ -59,7 +74,7 @@ namespace Volatile
         /// <returns></returns>
         public static bool DefaultTriggerQueryFilter(VoltBody one, VoltBody other)
         {
-            if ((one == other))
+            if (!BaseCollisionFilter(one, other))
                 return false;
             return true;
         }
@@ -73,7 +88,7 @@ namespace Volatile
         /// <returns></returns>
         public static bool DefaultMoveAndCollideFilter(VoltBody one, VoltBody other)
         {
-            if ((one == other)
+            if (!BaseCollisionFilter(one, other)
                 || AtleastOneOfType(one, other, VoltBodyType.Dynamic))
                 return false;
             return true;
@@ -81,7 +96,10 @@ namespace Volatile
         #endregion
 
         #region Helpers
-
+        private static bool CanCollideWithLayersAndMask(VoltBody one, VoltBody other)
+        {
+            return (one.Mask & other.Layer) > 0;
+        }
         private static bool BothOfType(VoltBody one, VoltBody other, VoltBodyType type)
         {
             return one.BodyType == type && other.BodyType == type;

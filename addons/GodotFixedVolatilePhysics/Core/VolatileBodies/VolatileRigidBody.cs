@@ -7,7 +7,7 @@ namespace Volatile.GodotEngine
     public class VolatileRigidBody : VolatileBody
     {
         protected override VoltBody CreateBody(VoltWorld world, VoltShape[] shapes)
-            => world.CreateDynamicBody(GlobalFixedPosition, GlobalFixedRotation, shapes);
+            => world.CreateDynamicBody(GlobalFixedPosition, GlobalFixedRotation, shapes, Layer, Mask);
 
         public void AddForce(VoltVector2 force)
         {
