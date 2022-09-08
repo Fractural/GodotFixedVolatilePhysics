@@ -73,7 +73,7 @@ namespace Volatile.GodotEngine
 
 		protected override void FixedTransformChanged()
 		{
-			if (!Engine.EditorHint)
+			if (!Engine.EditorHint && Body != null)
 				Body.Set(FixedPosition, FixedRotation);
 			base.FixedTransformChanged();
 		}
