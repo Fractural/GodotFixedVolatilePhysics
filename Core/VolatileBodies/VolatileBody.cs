@@ -1,111 +1,114 @@
 using FixMath.NET;
 using Godot;
-using System;
 using System.Linq;
 using Fractural.Utils;
-using System.Collections.Generic;
 
 namespace Volatile.GodotEngine
 {
 
-    [Tool]
-    public abstract class VolatileBody : VoltNode2D
-    {
-        public delegate void BodyCollidedDelegate(VolatileBody body);
-        public event BodyCollidedDelegate BodyCollided;
+	[Tool]
+	public abstract class VolatileBody : VoltNode2D
+	{
+		public delegate void BodyCollidedDelegate(VolatileBody body);
+		public event BodyCollidedDelegate BodyCollided;
 
-        public VolatileShape[] Shapes { get; set; }
-        [Export]
-        public bool DoInterpolation { get; set; } = true;
-        [Export(PropertyHint.Layers2dPhysics)]
-        public int Layer { get; set; } = 1;
-        [Export(PropertyHint.Layers2dPhysics)]
-        public int Mask { get; set; } = 1;
-        public VoltBody Body { get; private set; }
+		public VolatileShape[] Shapes { get; set; }
+		[Export]
+		public bool DoInterpolation { get; set; } = true;
+		[Export(PropertyHint.Layers2dPhysics)]
+		public int Layer { get; set; } = 1;
+		[Export(PropertyHint.Layers2dPhysics)]
+		public int Mask { get; set; } = 1;
+		public VoltBody Body { get; private set; }
 
-        // Interpolation
-        private VoltVector2 lastPosition;
-        private VoltVector2 nextPosition;
+		// Interpolation
+		private VoltVector2 lastPosition;
+		private VoltVector2 nextPosition;
 
-        private Fix64 lastAngle;
-        private Fix64 nextAngle;
+		private Fix64 lastAngle;
+		private Fix64 nextAngle;
 
+		public override string _GetConfigurationWarning()
+		{
+			var volatileWorld = this.GetAncestor<VolatileWorld>(false);
+			if (volatileWorld == null)
+				return $"This node must be a descendant of a VolatileWorld.";
 
-        public override string _GetConfigurationWarning()
-        {
-            var volatileWorld = this.GetAncestor<VolatileWorld>(false);
-            if (volatileWorld == null)
-                return $"This node must be a descendant of a VolatileWorld.";
+			var shapes = this.GetDescendants<VolatileShape>();
+			if (shapes.Count == 0)
+				return "This node has no shape, so it can't collide or interact with other objects.\nConsider addinga VolatileShape (VolatilePolygon, VolatileRect, VolatileRect) as a child to define its shape.";
+			return "";
+		}
 
-            var shapes = this.GetDescendants<VolatileShape>();
-            if (shapes.Count == 0)
-                return "This node has no shape, so it can't collide or interact with other objects.\nConsider addinga VolatileShape (VolatilePolygon, VolatileRect, VolatileRect) as a child to define its shape.";
-            return "";
-        }
-
-        public override void _Ready()
-        {
-            base._Ready();
+		public override void _Ready()
+		{
+			base._Ready();
 #if TOOLS
-            if (Engine.EditorHint)
-            {
-                SetPhysicsProcess(false);
-                return;
-            }
+			if (Engine.EditorHint)
+			{
+				SetPhysicsProcess(false);
+				return;
+			}
 #endif
-            var volatileWorldNode = this.GetAncestor<VolatileWorld>(false);
-            if (volatileWorldNode == null)
-                return;
+			var volatileWorldNode = this.GetAncestor<VolatileWorld>(false);
+			if (volatileWorldNode == null)
+				return;
 
-            var shapeNodes = this.GetDescendants<VolatileShape>();
-            if (shapeNodes.Count == 0)
-                return;
+			var shapeNodes = this.GetDescendants<VolatileShape>();
+			if (shapeNodes.Count == 0)
+				return;
 
-            var world = volatileWorldNode.World;
-            var shapes = shapeNodes.Select(x => x.PrepareShape(world)).ToArray();
+			var world = volatileWorldNode.World;
+			var shapes = shapeNodes.Select(x => x.PrepareShape(world)).ToArray();
 
-            Body = CreateBody(world, shapes);
-            Body.UserData = this;
-            Body.BodyCollided += OnBodyCollided;
+			Body = CreateBody(world, shapes);
+			Body.UserData = this;
+			Body.BodyCollided += OnBodyCollided;
 
-            lastPosition = nextPosition = GlobalFixedPosition;
-            lastAngle = nextAngle = GlobalFixedRotation;
-        }
+			lastPosition = nextPosition = GlobalFixedPosition;
+			lastAngle = nextAngle = GlobalFixedRotation;
+		}
 
-        protected virtual void OnBodyCollided(VoltBody body)
-        {
-            if (body.UserData is VolatileBody volatileBody)
-                BodyCollided?.Invoke(volatileBody);
-        }
+		protected override void FixedTransformChanged()
+		{
+			Body.Set(FixedPosition, FixedRotation);
+			base.FixedTransformChanged();
+		}
 
-        protected abstract VoltBody CreateBody(VoltWorld world, VoltShape[] shapes);
+		protected virtual void OnBodyCollided(VoltBody body)
+		{
+			if (body.UserData is VolatileBody volatileBody)
+				BodyCollided?.Invoke(volatileBody);
+		}
 
-        public override void _Process(float delta)
-        {
-            base._Process(delta);
+		protected abstract VoltBody CreateBody(VoltWorld world, VoltShape[] shapes);
 
-            if (Engine.EditorHint) return;
-            if (DoInterpolation)
-            {
-                Fix64 t = (Fix64)Engine.GetPhysicsInterpolationFraction();
+		public override void _Process(float delta)
+		{
+			base._Process(delta);
 
-                GlobalFixedPosition = VoltVector2.Lerp(lastPosition, nextPosition, t);
-                Fix64 angle = Fix64.Lerp(lastAngle, nextAngle, t);
-                GlobalFixedRotation = angle;
-            }
-            else
-            {
-                GlobalFixedPosition = Body.Position;
-                GlobalFixedRotation = Body.Angle;
-            }
-        }
+			if (Engine.EditorHint) return;
+			if (DoInterpolation)
+			{
+				Fix64 t = (Fix64)Engine.GetPhysicsInterpolationFraction();
 
-        public override void _PhysicsProcess(float delta)
-        {
-            lastPosition = nextPosition;
-            lastAngle = nextAngle;
-            nextPosition = Body.Position;
-            nextAngle = Body.Angle;
-        }
-    }
+				GlobalFixedPosition = VoltVector2.Lerp(lastPosition, nextPosition, t);
+				Fix64 angle = Fix64.Lerp(lastAngle, nextAngle, t);
+				GlobalFixedRotation = angle;
+			}
+			else
+			{
+				GlobalFixedPosition = Body.Position;
+				GlobalFixedRotation = Body.Angle;
+			}
+		}
+
+		public override void _PhysicsProcess(float delta)
+		{
+			lastPosition = nextPosition;
+			lastAngle = nextAngle;
+			nextPosition = Body.Position;
+			nextAngle = Body.Angle;
+		}
+	}
 }
