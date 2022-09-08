@@ -15,6 +15,8 @@ namespace Volatile.GodotEngine
 		public VolatileShape[] Shapes { get; set; }
 		[Export]
 		public bool DoInterpolation { get; set; } = true;
+		[Export]
+		public bool ProcessSelf { get; set; } = true;
 		[Export(PropertyHint.Layers2dPhysics)]
 		public int Layer { get; set; } = 1;
 		[Export(PropertyHint.Layers2dPhysics)]
@@ -96,19 +98,25 @@ namespace Volatile.GodotEngine
 				Fix64 angle = Fix64.Lerp(lastAngle, nextAngle, t);
 				GlobalFixedRotation = angle;
 			}
-			else
-			{
-				GlobalFixedPosition = Body.Position;
-				GlobalFixedRotation = Body.Angle;
-			}
 		}
 
 		public override void _PhysicsProcess(float delta)
 		{
-			lastPosition = nextPosition;
-			lastAngle = nextAngle;
-			nextPosition = Body.Position;
-			nextAngle = Body.Angle;
+			if (ProcessSelf)
+			{
+				if (DoInterpolation)
+				{
+					lastPosition = nextPosition;
+					lastAngle = nextAngle;
+					nextPosition = Body.Position;
+					nextAngle = Body.Angle;
+				}
+				else
+				{
+					GlobalFixedPosition = Body.Position;
+					GlobalFixedRotation = Body.Angle;
+				}
+			}
 		}
 	}
 }
