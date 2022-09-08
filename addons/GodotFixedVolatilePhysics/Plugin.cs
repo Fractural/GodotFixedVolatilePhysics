@@ -1,28 +1,29 @@
 using Fractural.Plugin;
+using Fractural.Plugin.AssetsRegistry;
 using Godot;
-using Godot.Attributes;
 
 #if TOOLS
 namespace Volatile.GodotEngine.Plugin
 {
-    [Tool]
-    public class Plugin : ExtendedPlugin
-    {
-        public override string PluginName => "Godot Fixed Volatile Physics";
+	[Tool]
+	public class Plugin : ExtendedPlugin
+	{
+		public override string PluginName => "Godot Fixed Volatile Physics";
 
-        protected override void Load()
-        {
-            AddSubPlugin(new VolatilePolygonPlugin());
-            AddSubPlugin(new VolatileRectPlugin());
-            AddSubPlugin(new VolatileCirclePlugin());
-            AddSubPlugin(new VoltTypesPlugin());
-            AddSubPlugin(new VolatileNodesPlugin());
-        }
+		protected override void Load()
+		{
+			AssetsRegistry = new EditorAssetsRegistry(this);
+			AddSubPlugin(new VolatilePolygonPlugin());
+			AddSubPlugin(new VolatileRectPlugin());
+			AddSubPlugin(new VolatileCirclePlugin());
+			AddSubPlugin(new VoltTypesPlugin());
+			AddSubPlugin(new VolatileNodesPlugin());
+		}
 
-        protected override void Unload()
-        {
+		protected override void Unload()
+		{
 
-        }
-    }
+		}
+	}
 }
 #endif
