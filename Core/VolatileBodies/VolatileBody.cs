@@ -44,7 +44,7 @@ namespace Volatile.GodotEngine
         private Fix64 nextAngle;
 
         // Used to prevent lerping from affecting body position;
-        private bool isLerping = false;
+        private bool stopFixedToBodySync = false;
 
         public override string _GetConfigurationWarning()
         {
@@ -89,7 +89,7 @@ namespace Volatile.GodotEngine
 
         protected override void FixedTransformChanged()
         {
-            if (!Engine.EditorHint && Body != null && !isLerping)
+            if (!Engine.EditorHint && Body != null && !stopFixedToBodySync)
                 Body.Set(FixedPosition, FixedRotation);
             base.FixedTransformChanged();
         }
@@ -110,10 +110,10 @@ namespace Volatile.GodotEngine
             if (DoInterpolation)
             {
                 Fix64 t = (Fix64)Engine.GetPhysicsInterpolationFraction();
-                isLerping = true;
+                stopFixedToBodySync = true;
                 GlobalFixedPosition = VoltVector2.Lerp(lastPosition, nextPosition, t);
                 GlobalFixedRotation = Fix64.Lerp(lastAngle, nextAngle, t);
-                isLerping = false;
+                stopFixedToBodySync = false;
             }
         }
 
@@ -130,8 +130,10 @@ namespace Volatile.GodotEngine
                 }
                 else
                 {
+                    stopFixedToBodySync = true;
                     GlobalFixedPosition = Body.Position;
                     GlobalFixedRotation = Body.Angle;
+                    stopFixedToBodySync = false;
                 }
             }
         }
