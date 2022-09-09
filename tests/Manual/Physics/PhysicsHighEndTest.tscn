@@ -16,7 +16,8 @@ DebugDraw = true
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="Group" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
-position = Vector2( -130.167, 169.706 )
+position = Vector2( -127.497, 172.375 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 192, 128, 128, 255, 255, 255, 0, 0, 24, 96, 172, 0, 0, 0 )
 
 [node name="Group2" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
 position = Vector2( 139.781, 169.706 )

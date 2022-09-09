@@ -17,13 +17,13 @@ namespace Tests
             hasEntityInsideSprite = GetNode<Sprite>(hasEntityInsideSpritePath);
         }
 
-        protected override void OnBodyEntered(VolatileBody body)
+        protected override void OnBodyEntered(IVolatileBody body)
         {
             base.OnBodyEntered(body);
             OnBodyCollidingWithChanged();
         }
 
-        protected override void OnBodyExited(VolatileBody body)
+        protected override void OnBodyExited(IVolatileBody body)
         {
             base.OnBodyExited(body);
             OnBodyCollidingWithChanged();

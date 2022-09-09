@@ -16,17 +16,17 @@ DebugDraw = true
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="Group" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
-position = Vector2( -175.313, 166.755 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 247, 175, 80, 255, 255, 255, 0, 0, 68, 193, 166, 0, 0, 0 )
+position = Vector2( -153.986, 180.224 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 159, 3, 102, 255, 255, 255, 0, 0, 120, 57, 180, 0, 0, 0 )
 
 [node name="Group2" parent="Node2D/VolatileWorld" instance=ExtResource( 1 )]
-position = Vector2( 131.056, 161.993 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 71, 14, 131, 0, 0, 0, 0, 0, 36, 254, 161, 0, 0, 0 )
+position = Vector2( 128.811, 164.238 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 143, 207, 128, 0, 0, 0, 0, 0, 216, 60, 164, 0, 0, 0 )
 
 [node name="StaticRect" type="Node2D" parent="Node2D/VolatileWorld"]
-position = Vector2( 0.445465, 249.061 )
+position = Vector2( -5.16684, 256.919 )
 script = ExtResource( 3 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 114, 0, 0, 0, 0, 0, 0, 189, 15, 249, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 74, 213, 250, 255, 255, 255, 0, 0, 48, 235, 0, 1, 0, 0 )
 
 [node name="VolatileRect" type="Node2D" parent="Node2D/VolatileWorld/StaticRect"]
 script = ExtResource( 2 )

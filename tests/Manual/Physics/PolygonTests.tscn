@@ -12,6 +12,7 @@
 
 [node name="VolatileWorld" type="Node2D" parent="."]
 script = ExtResource( 1 )
+DebugDraw = true
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="VolatileBody" type="Node2D" parent="VolatileWorld"]
@@ -27,7 +28,7 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 [node name="SimpleForce" type="Node2D" parent="VolatileWorld/VolatileBody"]
 script = ExtResource( 6 )
-_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 78, 0, 0 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="VolatileBody2" type="Node2D" parent="VolatileWorld"]
@@ -44,13 +45,13 @@ _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 [node name="SimpleForce2" type="Node2D" parent="VolatileWorld/VolatileBody2"]
 script = ExtResource( 6 )
-_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 78, 0, 0 )
+_force = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0 )
 _fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="StaticRect" type="Node2D" parent="VolatileWorld"]
-position = Vector2( 0, 171.542 )
+position = Vector2( 0, 204.544 )
 script = ExtResource( 7 )
-_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+_fixedTransform = PoolByteArray( 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 139, 204, 0, 0, 0 )
 
 [node name="VolatileRect" type="Node2D" parent="VolatileWorld/StaticRect"]
 script = ExtResource( 4 )
