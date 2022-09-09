@@ -5,11 +5,24 @@ using Fractural.Utils;
 
 namespace Volatile.GodotEngine
 {
+	public delegate void BodyCollidedDelegate(IVolatileBody body);
+
+	public interface IVolatileBody
+	{
+		VoltNode2D Node { get; }
+		event BodyCollidedDelegate BodyCollided;
+
+		VolatileShape[] Shapes { get; set; }
+		bool DoInterpolation { get; set; }
+		int Layer { get; set; }
+		int Mask { get; set; }
+		VoltBody Body { get; }
+	}
 
 	[Tool]
-	public abstract class VolatileBody : VoltNode2D
+	public abstract class VolatileBody : VoltNode2D, IVolatileBody
 	{
-		public delegate void BodyCollidedDelegate(VolatileBody body);
+		VoltNode2D IVolatileBody.Node => this;
 		public event BodyCollidedDelegate BodyCollided;
 
 		public VolatileShape[] Shapes { get; set; }
@@ -80,7 +93,7 @@ namespace Volatile.GodotEngine
 
 		protected virtual void OnBodyCollided(VoltBody body)
 		{
-			if (body.UserData is VolatileBody volatileBody)
+			if (body.UserData is IVolatileBody volatileBody)
 				BodyCollided?.Invoke(volatileBody);
 		}
 
