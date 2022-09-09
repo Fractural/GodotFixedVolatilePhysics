@@ -1,4 +1,4 @@
-# GodotFixedVoltatilePhysics
+# Godot Fixed Volatile Physics 💥
 
 ![Deploy](https://github.com/Fractural/GodotFixedVolatilePhysics/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/GodotFixedVolatilePhysics/actions/workflows/tests.yml/badge.svg)
 
