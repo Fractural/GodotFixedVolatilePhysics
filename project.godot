@@ -56,7 +56,7 @@ Cache_Tests=true
 [application]
 
 config/name="GodotFixedVolatilePhysics"
-run/main_scene="res://tests/Manual/Physics/PhysicsHighEndTest.tscn"
+run/main_scene="res://tests/Manual/Physics/CompleteTest.tscn"
 boot_splash/image="res://bootsplash.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
@@ -78,6 +78,10 @@ pointing/emulate_touch_from_mouse=true
 
 file_logging/enable_file_logging=true
 file_logging/max_log_files=10
+
+[mono]
+
+project/assembly_name="GodotFixedVolatilePhysics"
 
 [physics]
 

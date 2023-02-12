@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://tests/Manual/Physics/GDKinematicMovement.cs" type="Script" id=1]
 [ext_resource path="res://addons/VirtualJoystick/virtual_joystick.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tests/Manual/Physics/FPSCounter.cs" type="Script" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -12,6 +13,8 @@ extents = Vector2( 139.795, 10 )
 extents = Vector2( 139.795, 10 )
 
 [sub_resource type="CircleShape2D" id=4]
+
+[sub_resource type="CapsuleShape2D" id=6]
 
 [node name="Node2D" type="Node2D"]
 
@@ -35,11 +38,6 @@ shape = SubResource( 2 )
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2( 10.9941, -65.4072 )
-rotation = -0.00475952
-shape = SubResource( 2 )
-
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
 position = Vector2( 195.536, -17.3529 )
 rotation = -1.89518
@@ -56,11 +54,73 @@ shape = SubResource( 3 )
 position = Vector2( -9.01018, 24.0271 )
 shape = SubResource( 4 )
 
+[node name="RigidBody2D3" type="RigidBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D3"]
+position = Vector2( -9.01018, 24.0271 )
+shape = SubResource( 4 )
+
 [node name="RigidBody2D2" type="RigidBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
 position = Vector2( 34.3722, 13.3484 )
 shape = SubResource( 4 )
+
+[node name="RigidBody2D4" type="RigidBody2D" parent="."]
+position = Vector2( -14, -134 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D4"]
+shape = SubResource( 4 )
+
+[node name="RigidBody2D5" type="RigidBody2D" parent="."]
+position = Vector2( 50, -208 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D5"]
+shape = SubResource( 4 )
+
+[node name="RigidBody2D6" type="RigidBody2D" parent="."]
+position = Vector2( -62, -223 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D6"]
+shape = SubResource( 4 )
+
+[node name="RigidBody2D7" type="RigidBody2D" parent="."]
+position = Vector2( 3, -249.5 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D7"]
+position = Vector2( -0.5, -4.75 )
+polygon = PoolVector2Array( -1, -13, 28.5, -2.5, 14.75, 20.75, -22, 18.5 )
+
+[node name="RigidBody2D10" type="RigidBody2D" parent="."]
+position = Vector2( -66.8591, -176.592 )
+rotation = 0.930929
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D10"]
+position = Vector2( -7.55629, 1.93155 )
+polygon = PoolVector2Array( -12.0983, 22.2786, -26.625, 1.18127, 6.91319, -29.6408, 42.2842, -10.1692, 31.1991, 21.4713 )
+
+[node name="RigidBody2D11" type="RigidBody2D" parent="."]
+position = Vector2( 44.0462, -157.715 )
+rotation = 0.930929
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D11"]
+position = Vector2( -7.55629, 1.93155 )
+polygon = PoolVector2Array( -12.0983, 22.2786, -26.625, 1.18127, 6.91319, -29.6408, 42.2842, -10.1692, 31.1991, 21.4713 )
+
+[node name="RigidBody2D8" type="RigidBody2D" parent="."]
+position = Vector2( -32.5133, -248.32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D8"]
+rotation = 0.666947
+shape = SubResource( 6 )
+
+[node name="RigidBody2D9" type="RigidBody2D" parent="."]
+position = Vector2( -21.8346, -199.932 )
+rotation = -1.7627
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D9"]
+rotation = 0.666947
+shape = SubResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -70,3 +130,10 @@ anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 400.739, -19.6251 )
 
 [node name="Virtual joystick" parent="CanvasLayer/Control" instance=ExtResource( 2 )]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+margin_left = 11.0
+margin_top = 9.5
+margin_right = 51.0
+margin_bottom = 23.5
+script = ExtResource( 3 )
