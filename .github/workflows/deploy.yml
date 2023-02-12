@@ -14,8 +14,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          submodules: recursive
+
+      - name: Update Submodules
+        run: git submodule update --init
 
       # Deploy to local repo
       - name: Deploy to Release Branch
